@@ -4,26 +4,26 @@ Note that some of these TODOs have already been implemented.
 
   * baseline align the month/year range labels (cairo/tikz)
 
-  * Add --date --date-range argument, possibly replacing -b and -e.
+  * Add `--date` `--date-range` argument, possibly replacing `-b` and `-e`.
 
-    --date=2011      from 2011-01-01 to 2011-12-31
+    `--date=2011`      from 2011-01-01 to 2011-12-31
 
-    --date=2011-02   from 2011-02-01 to 2011-02-28
+    `--date=2011-02`   from 2011-02-01 to 2011-02-28
 
-    --date=2011-02-01..2011-04-30   from 2011-02-01 to 2011-04-30
+    `--date=2011-02-01..2011-04-30`   from 2011-02-01 to 2011-04-30
       Problem: Should be the same range char as in kg range.
 
-  * Add --weight parameter.
+  * Add `--weight` parameter.
 
-    --weight=80.0-90.5
-    --weight=86.5+4.0-6.0
-    --weight=85.0+-5
-    --weight=85
+    `--weight=80.0-90.5`
+    `--weight=86.5+4.0-6.0`
+    `--weight=85.0+-5`
+    `--weight=85`
 
-  * Add --height parameter. If not given, do not plot BMI or make BMI
+  * Add `--height` parameter. If not given, do not plot BMI or make BMI
     based guesses.
 
-  * Time support for --plot-mode. Keep day axis in 8 week mode for
+  * Time support for `--plot-mode`. Keep day axis in 8 week mode for
     manually marking values in non-plot-mode. Otherwise, allow
     plotting
 
@@ -43,12 +43,12 @@ Note that some of these TODOs have already been implemented.
   * Pass the args Namespace object down to improve decision making
     deeper down.
 
-  * Add --show-punch-holes: Show punch hole location.
+  * Add `--show-punch-holes`: Show punch hole location.
 
-  * Add --show-filing-info: Add dates to corners for easy retrieval
+  * Add `--show-filing-info`: Add dates to corners for easy retrieval
     from file.
 
-  * Add --show-meta-info: Add meta information like the data file, the
+  * Add `--show-meta-info`: Add meta information like the data file, the
     options, the driver used, etc.
 
   * Support different units for weight scale: lbs, or lbs and st.

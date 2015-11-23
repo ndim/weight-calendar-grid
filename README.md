@@ -7,23 +7,23 @@ every day.
 
 Initial setup:
 
-   1. Print a page.
-   2. Hang printed page on wall or put it in similarly available space.
-   3. Keep a dedicated pen at that very location.
+  1. Print a page.
+  2. Hang printed page on wall or put it in similarly available space.
+  3. Keep a dedicated pen at that very location.
 
 Daily:
 
-   1. Step on scale and read the weight.
-   2. Mark that day's weight on the page.
+  1. Step on scale and read the weight.
+  2. Mark that day's weight on the page.
 
 Every few weeks or months:
 
-   1. Print a new page and replace the old page with it.
-   2. Optionally, type the marked values into some computer file.
+  1. Print a new page and replace the old page with it.
+  2. Optionally, type the marked values into some computer file.
 
 NOTE: The documentation is a bit out of date.
 
-To print a page, create a PDF file with plot-wcg and print that.
+To print a page, create a PDF file with `plot-wcg` and print that.
 
 Example for someone of 1.78m height and a weight of around 85kg:
 
@@ -37,7 +37,7 @@ Example for someone of 1.78m height and normal weight:
 
     $ ./plot-wcg -o my-weight.pdf --height=1.78
 
-For detailed information on how to call plot-wcg, read the output of
+For detailed information on how to call `plot-wcg`, read the output of
 
     $ ./plot-wcg --help
 
@@ -74,7 +74,7 @@ Recording Details
 
 This program can plot recorded weight values into the grid paper it
 prints.  For this to happen, you need to keep long term records of
-your measured weights in a simple text file `foo.dat' where every line
+your measured weights in a simple text file `foo.dat` where every line
 looks as follows:
 
     # my weights
@@ -90,15 +90,15 @@ looks as follows:
     2011-06-05     81.3
     2011-06-06     81.7
 
-Feed this file to weight-grid with the `--input=' option and play
-around with the `--begin' date for an actual plot.  The `auto' weight
+Feed this file to `plot-wcg` with the `--input=` option and play
+around with the `--begin` date for an actual plot.  The `auto` weight
 range might be useful.
 
 
 GUI
 ===
 
-The Gtk3 GUI script `gui-wcg` is a definite Work In Progress.
+The Gtk3 based GUI script `gui-wcg` is a definite Work In Progress.
 
 
 Web Service
@@ -112,10 +112,15 @@ implemented yet in this department, though.
 Requirements
 ============
 
-  * Python3
+  * [Python3](https://www.python.org/)
 
   * pdflatex and TikZ if you want really nice looking PDFs
 
   * Gtk3 if you want to run the GUI
 
-  * cairo and pycairo if you want basic PDFs without pdflatex or the GUI
+  * [cairo](http://cairographics.org/) and
+    [pycairo](http://cairographics.org/pycairo/) if you want basic
+    PDFs without pdflatex or if you want the GUI
+
+  * [ReportLab](http://www.reportlab.com) if you want to hack on the
+    ReportLab based PDF driver
