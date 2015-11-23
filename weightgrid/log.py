@@ -36,9 +36,12 @@ outfile = sys.stderr
 ########################################################################
 
 try:
-    # Two variants: For make -j processing with PID, and without.
-    # from weightgrid.version import program_name as prog
-    from weightgrid.version import program_name as _prog
+    # Two variants possible: For make -j processing with PID, and without.
+    # No way to distinguish between the cases, so always print the PID.
+    try:
+        _prog = os.path.basename(sys.argv[0])
+    except:
+        from weightgrid.version import program_name as _prog
     prog = "%s(%d)" % (_prog, os.getpid())
     del _prog
 except ImportError:
