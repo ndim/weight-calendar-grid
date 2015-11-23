@@ -13,6 +13,8 @@ import collections
 import datetime
 import math
 from pprint import pprint
+from abc import abstractmethod
+from abc import ABCMeta
 
 
 ########################################################################
@@ -45,7 +47,7 @@ class NoSuchDriverError(Exception):
 ########################################################################
 
 
-class DriverMetaClass(type):
+class DriverMetaClass(ABCMeta):
 
     """Driver registry metaclass.
 
@@ -126,10 +128,7 @@ def is_last_day_of_year(date):
 
 class GenericDriver(object, metaclass=DriverMetaClass):
 
-    """Abstract base class for output drivers
-
-    TODO: Define @abstractmethod methods here instead of just defining the same functions in child classes.
-    """
+    """Abstract base class for output drivers"""
 
 
     def __init__(self, height, kg_range, date_range,
@@ -399,12 +398,14 @@ class GenericDriver(object, metaclass=DriverMetaClass):
         return (self.end_date - self.begin_date).days
 
 
+    @abstractmethod
     def _get_x(self, _day):
-        raise AbstractMethodError()
+        return None
 
 
+    @abstractmethod
     def _get_y(self, kg):
-        raise AbstractMethodError()
+        return None
 
 
     @property
@@ -418,11 +419,32 @@ class GenericDriver(object, metaclass=DriverMetaClass):
         return getattr(self, name)
 
 
+    @abstractmethod
     def gen_outfile(self, outfile, output_format):
-        raise AbstractMethodError()
+        pass
 
+
+    @abstractmethod
     def fix_dimensions(self):
-        raise AbstractMethodError()
+        pass
+
+
+    @abstractmethod
+    def render_axis_bmi_begin(self, ctx):
+        pass
+
+    @abstractmethod
+    def render_axis_bmi_end(self, ctx):
+        pass
+
+    @abstractmethod
+    def render_axis_bmi_tick(self, ctx, y, bmi, strbmi, p):
+        pass
+
+
+    @abstractmethod
+    def render_time_tick(self, ctx, style, date, label_str, id_str):
+        pass
 
 
 ########################################################################
@@ -607,6 +629,7 @@ class AbstractAxis(object):
     def style(self, key):
         return self.__styles[key]
 
+    @abstractmethod
     def count(self, receive):
         raise AbstractMethodError()
 
@@ -1017,8 +1040,9 @@ class PageDriver(GenericDriver):
         self.render_ending(ctx)
 
 
+    @abstractmethod
     def render_initials(self, ctx):
-        raise AbstractMethodError()
+        pass
 
 
     def __render_plot(self, ctx, draw_marks):
@@ -1110,37 +1134,45 @@ class PageDriver(GenericDriver):
     def render_plot_value_line_end(self, r):
         pass
 
+    @abstractmethod
     def render_plot_value_line_segment(self, ctx, point1, point2):
         (x1, y1) = point1
         (x2, y2) = point2
-        raise AbstractMethodError()
+        pass
 
+    @abstractmethod
     def render_plot_stem_point(self, ctx, point, color):
         (x, y) = point
-        raise AbstractMethodError()
+        pass
 
+    @abstractmethod
     def render_plot_mavg_segment(self, ctx, point1, point2, color):
         (x1, y1) = point1
         (x2, y2) = point2
-        raise AbstractMethodError()
+        pass
 
+    @abstractmethod
     def render_plot_stem(self, ctx, coords, color):
         (x, y, ay) = coords
-        raise AbstractMethodError()
+        pass
 
+    @abstractmethod
     def render_plot_point(self, ctx, point):
         (x, y) = point
-        raise AbstractMethodError()
+        pass
 
+    @abstractmethod
     def render_plot_mark(self, ctx, point):
         (x, y) = point
-        raise AbstractMethodError()
+        pass
 
 
+    @abstractmethod
     def render_beginning(self, ctx):
         pass
 
 
+    @abstractmethod
     def render_ending(self, ctx):
         pass
 
@@ -1228,11 +1260,12 @@ class PageDriver(GenericDriver):
         self.render_time_tick(ctx, style, date, label_str, id_str)
 
 
+    @abstractmethod
     def render_calendar_range(self, ctx, date_range, is_first_last,
                               level, label_str, p, north=False):
         (begin_date, end_date) = date_range
         (is_begin_first, is_end_last) = is_first_last
-        raise AbstractMethodError()
+        pass
 
 
     def __render_axis_bmi(self, ctx):
@@ -1260,6 +1293,18 @@ class PageDriver(GenericDriver):
 
 
     def render_comment(self, ctx, msg):
+        pass
+
+    @abstractmethod
+    def render_axis_kg_begin(self, ctx):
+        pass
+
+    @abstractmethod
+    def render_axis_kg_end(self, ctx):
+        pass
+
+    @abstractmethod
+    def render_axis_kg_tick(self, ctx, y, kg_str, p):
         pass
 
 

@@ -55,7 +55,7 @@ def print_driver_list(outfile=None):
 
 def __load_drivers():
 
-    for driver_module_name in ['Cairo', 'TikZ']:
+    for driver_module_name in ['Cairo', 'ReportLab', 'TikZ']:
         try:
             importlib.import_module('.'.join([__name__, driver_module_name]), __name__)
         except ImportError as e:

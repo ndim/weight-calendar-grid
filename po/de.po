@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plot-weight-calendar-grid 0.1.1\n"
 "Report-Msgid-Bugs-To: 'Hans Ulrich Niedermann <hun@n-dimensional.de>'\n"
-"POT-Creation-Date: 2015-11-23 20:52+0100\n"
+"POT-Creation-Date: 2015-11-23 21:28+0100\n"
 "PO-Revision-Date: 2015-10-24 22:42+0200\n"
 "Last-Translator: Hans Ulrich Niedermann <hun@n-dimensional.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: ../weightgrid/cmdline.py:240
+#: ../weightgrid/cmdline.py:241
 msgid "plot weight/calendar grid for easy weight tracking"
 msgstr "Gewicht-Kalender-Gitter zur einfachen Gewichtskontrolle"
 
@@ -239,11 +239,11 @@ msgstr "Erzeuge Familien-PDF"
 msgid "(from %(begin)s to %(end)s)"
 msgstr "(von %(begin)s bis %(end)s)"
 
-#: ../weightgrid/drivers/TikZ.py:156
+#: ../weightgrid/drivers/TikZ.py:158
 msgid "<language specific options to LaTeX babel package>"
 msgstr "english,ngerman"
 
-#: ../weightgrid/drivers/TikZ.py:277
+#: ../weightgrid/drivers/TikZ.py:279
 msgid ""
 "\\textbf{Use:} Print this page. Keep in accessible place with pen. Mark one "
 "{\\marktikz} every day. Connect {\\connectmarktikz} to yesterday's mark. "
@@ -253,11 +253,11 @@ msgstr ""
 "Täglich ein {\\marktikz} eintragen und {\\connectmarktikz} mit gestrigem "
 "verbinden. Nach Bedarf Werte in Computer übertragen."
 
-#: ../weightgrid/drivers/TikZ.py:326
+#: ../weightgrid/drivers/TikZ.py:328
 msgid "weight in \\bfseries kg"
 msgstr "Gewicht in \\bfseries kg"
 
-#: ../weightgrid/drivers/TikZ.py:328
+#: ../weightgrid/drivers/TikZ.py:330
 #, python-format, python-brace-format
 msgid "\\textbf{BMI} for height %.2f\\,m"
 msgstr "\\textbf{BMI} für Körpergröße %.2f\\,m"

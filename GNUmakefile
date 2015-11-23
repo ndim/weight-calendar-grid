@@ -67,6 +67,7 @@ PY_FILES_TIKZ  = weightgrid/drivers/TikZ.py
 ALL_PY_FILES =
 ALL_PY_FILES += $(PY_FILES)
 ALL_PY_FILES += $(PY_FILES_CAIRO)
+ALL_PY_FILES += weightgrid/drivers/ReportLab.py
 ALL_PY_FILES += $(PY_FILES_TIKZ)
 
 .PHONY: pylint
