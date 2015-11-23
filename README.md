@@ -107,3 +107,15 @@ Web Service
 A web service with an HTML5 webapp might be an interesting way to
 supply many people with weight calendar grids. We have nothing
 implemented yet in this department, though.
+
+
+Requirements
+============
+
+  * Python3
+
+  * pdflatex and TikZ if you want really nice looking PDFs
+
+  * Gtk3 if you want to run the GUI
+
+  * cairo and pycairo if you want basic PDFs without pdflatex or the GUI
