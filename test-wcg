@@ -1,0 +1,254 @@
+#!/usr/bin/python3
+
+
+########################################################################
+
+
+import os
+import sys
+import traceback
+
+
+########################################################################
+
+
+import weightgrid.cmdline as cmdline
+import weightgrid.log as log
+
+
+########################################################################
+
+
+class Testcase(object):
+
+   def __init__(self, name, args,
+                retcode=0,
+                filename=None,
+                dry_run=False,
+                infile=None):
+      super(Testcase, self).__init__()
+
+      assert(retcode == None or type(retcode) == int)
+      assert(filename == None or type(filename) == str)
+
+      self._name = name
+      self._args = args
+      self._retcode = retcode
+      self._filename = filename
+      self._dry_run = dry_run
+      self._infile = infile
+
+   @property
+   def name(self): return self._name
+
+   def run(self):
+
+      testname = self._name
+      testargs = self._args
+      expected_retcode = self._retcode
+      expected_filename = self._filename
+      dry_run = self._dry_run
+
+      log.verbose("Testcase.run(%s)", vars())
+
+      failed = False
+
+      log.quiet("[user@host cwd]$ %s", ' '.join(['plot-wcg'] + testargs))
+
+      try:
+         cmdline.main(testargs, simulated_infile=self._infile)
+      except SystemExit as e:
+         if e.code != expected_retcode:
+            log.error("TEST CMD EXIT %d EXPECTED %d", e.code, expected_retcode)
+            failed = True
+         else:
+            log.quiet("TEST CMD EXIT %d EXPECTED %d", e.code, expected_retcode)
+      except Exception as e:
+         exc_info = sys.exc_info()
+         traceback.print_exception(
+            exc_info[0], exc_info[1], exc_info[2],
+            None, sys.stderr)
+         failed = True
+
+      if expected_filename:
+         log.verbose('expected_filename %s dry_run %s',
+                     expected_filename, dry_run)
+         if dry_run:
+            if os.path.exists(expected_filename):
+               log.error("Expected file %s to not be created",
+                         repr(expected_filename))
+               failed = True
+         else:
+            if not os.path.exists(expected_filename):
+               log.error("Expected file %s to exist",
+                         repr(expected_filename))
+               failed = True
+            elif os.path.getsize(expected_filename) < 8096:
+               log.error("Expected file %s to be 8K or larger",
+                         repr(expected_filename))
+               failed = True
+
+      return (not failed)
+
+
+########################################################################
+
+
+def run_testsuite(testsuite):
+
+   failed_tests = []
+   passed_tests = []
+
+   run_tests = OnceDict()
+
+   for i, testcase in enumerate(testsuite):
+      run_tests[testcase.name] = testcase
+
+      log.info("BEGIN TEST %d/%d %s",
+               i+1, len(testsuite), repr(testcase.name))
+      if testcase.run():
+         log.quiet("PASSED TEST %d/%d %s",
+                   i+1, len(testsuite), repr(testcase.name))
+         passed_tests.append(testcase.name)
+      else:
+         log.error("FAILED TEST %d/%d %s",
+                   i+1, len(testsuite), repr(testcase.name))
+         failed_tests.append(testcase.name)
+
+   log.quiet("TEST SUMMARY: %d PASSED, %d FAILED, %d TOTAL",
+             len(passed_tests), len(failed_tests),
+             len(passed_tests) + len(failed_tests))
+   if failed_tests:
+      log.quiet("FAILED TESTS: %s", ' '.join(failed_tests))
+
+   return not(failed_tests)
+
+
+########################################################################
+
+
+class ItemAlreadySetException(Exception):
+   pass
+
+
+class OnceDict(dict):
+
+   def __setitem__(self, key, value):
+      if key in self:
+         raise ItemAlreadySetException(key)
+      super(OnceDict, self).__setitem__(key, value)
+
+
+########################################################################
+
+
+class SimInfile(list):
+
+   @property
+   def name(self):
+      return '<simulated input>'
+
+
+########################################################################
+
+
+def main():
+   suite = []
+   suite.append(Testcase('1-no-args', [], retcode=2)),
+   suite.append(Testcase('1-help', ['--help']))
+   suite.append(Testcase('1-version', ['--version']))
+
+   def nt(name, args, dry_run=False, infile=None):
+      ofname = 'test--%s.pdf' % name
+      cmdargs = []
+      cmdargs.append('-v')
+      cmdargs.append('-v')
+      cmdargs.append('-v')
+      if dry_run:
+         cmdargs.append('--dry-run')
+      cmdargs.append('-d=cairo')
+      cmdargs.append('-o=%s' % ofname)
+      suite.append(Testcase(name, cmdargs + args,
+                            filename=ofname, dry_run=dry_run,
+                            infile=infile))
+
+   for r in ['auto', '76', '80-90', '82+-4']:
+      nt('kgrangeparse-%s' % r,
+         ['--dry-run', '--height=1.78', '--weight', r], dry_run=True)
+
+   for h in [1.45, 1.62, 1.78, 1.92, 2.00, 2.10]:
+      nt('auto-%03dcm' % (int(100*h)),
+         ['--height=%.2f' % h, '--weight=auto'])
+
+   infiles = {
+      'empty':
+         [],
+      'one-item':
+         ['2013-01-13 85.2',
+          ],
+      'two-items-line':
+         ['2013-01-13 85.1',
+          '2013-01-14 85.2',
+          ],
+      'two-items-sep':
+         ['2013-01-13 85.1',
+          '2013-01-20 85.2',
+          ],
+      'line-three':
+         ['2013-01-13 85.1',
+          '2013-01-14 85.2',
+          '2013-01-15 85.3',
+          ],
+      'multi-seg-close':
+         ['2013-01-13 85.1',
+          '2013-01-14 85.2',
+          '2013-01-16 85.3',
+          '2013-01-17 85.4',
+          '2013-01-18 85.5',
+          '2013-01-27 85.6',
+          '2013-01-28 85.7',
+          '2013-01-29 85.8',
+          ],
+      'multi-seg-far':
+         ['2012-01-13 85.1',
+          '2012-01-14 85.2',
+          '2013-01-16 85.3',
+          '2013-01-17 85.4',
+          '2013-01-18 85.5',
+          '2013-01-27 85.6',
+          '2013-01-28 85.7',
+          '2013-01-29 85.8',
+          ],
+      }
+
+   for name, lines in infiles.items():
+      nt('aplot-%s' % name,
+         ['--height=1.89', '--weight=auto'], infile=SimInfile(lines))
+
+   kgranges = [2, 3, 4, 5, 7, 8, 10, 12, 15, 20, 25, 30, 40, 45, 50, 60, 70]
+   hargs = ['--mode=history', ]
+   for dkg in kgranges:
+      mkg = 70
+      nt('kgrange-%03dkg' % (dkg),
+         hargs + ['--weight=%d-%d' % (mkg, mkg + dkg)])
+
+   hargs = ['--mode=history', '--height=1.90']
+   for dkg in kgranges:
+      mkg = 70
+      nt('bmirange-%03dkg' % (dkg),
+         hargs + ['--weight=%d-%d' % (mkg, mkg + dkg)])
+
+   if not run_testsuite(suite):
+      sys.exit(2)
+
+
+########################################################################
+
+
+if __name__ == '__main__':
+   log.prog = 'test-wcg'
+   cmdline.set_lang()
+   main()
+
+
+########################################################################
