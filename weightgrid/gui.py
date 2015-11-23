@@ -300,23 +300,18 @@ class WeightGridWindow(Gtk.Window):
         self.user_store = Gtk.ListStore(str, str, int, int, int, bool)
         self.__marked_users = 0
 
-        print("AAA")
         self.yaml_data = None
         parsed_yaml_data = None
         try:
             with open(self.data_fname, 'r') as stream:
-                print("FFF")
                 self.yaml_data = stream.read()
                 parsed_yaml_data = yaml.safe_load(self.yaml_data)
-                print("GGG")
         except EnvironmentError as err:
-            print("EEE")
             print("Error opening %s:" % repr(self.data_fname), err)
             # default values
             parsed_yaml_data = {'start_date': weightgrid.get_latest_sunday(datetime.date.today()),
                                 'weeks': 8,
                                 'users': {}}
-            print("HHH")
 
         pprint(parsed_yaml_data)
         self.period_weeks.set_value(parsed_yaml_data['weeks'])
