@@ -1,3 +1,5 @@
+Note that some of these TODOs have already been implemented.
+
   * Optionally print for non-color printers, probably without BMI.
 
   * baseline align the month/year range labels (cairo/tikz)

@@ -27,19 +27,19 @@ To print a page, create a PDF file with plot-wcg and print that.
 
 Example for someone of 1.78m height and a weight of around 85kg:
 
-   $ ./plot-wcg -o my-weight.pdf --height=1.78 --weight=80-90
+    $ ./plot-wcg -o my-weight.pdf --height=1.78 --weight=80-90
 
 Example for someone of  unspecified height and a weight of around 85kg:
 
-   $ ./plot-wcg -o my-weight.pdf --weight=85+-5
+    $ ./plot-wcg -o my-weight.pdf --weight=85+-5
 
 Example for someone of 1.78m height and normal weight:
 
-   $ ./plot-wcg -o my-weight.pdf --height=1.78
+    $ ./plot-wcg -o my-weight.pdf --height=1.78
 
 For detailed information on how to call plot-wcg, read the output of
 
-   $ ./plot-wcg --help
+    $ ./plot-wcg --help
 
 
 
@@ -93,3 +93,17 @@ looks as follows:
 Feed this file to weight-grid with the `--input=' option and play
 around with the `--begin' date for an actual plot.  The `auto' weight
 range might be useful.
+
+
+GUI
+===
+
+The Gtk3 GUI script `gui-wcg` is a definite Work In Progress.
+
+
+Web Service
+===========
+
+A web service with an HTML5 webapp might be an interesting way to
+supply many people with weight calendar grids. We have nothing
+implemented yet in this department, though.
