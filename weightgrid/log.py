@@ -64,66 +64,67 @@ def log(lvl, msg, *args, **kwargs):
                 exc_info[0], exc_info[1], exc_info[2],
                 None, sys.stderr)
 
-        p = {}
+        if msg:
+            p = {}
 
-        if args:
-            p['message'] = msg % args
-        else:
-            p['message'] = msg
+            if args:
+                p['message'] = msg % args
+            else:
+                p['message'] = msg
 
-        p['prog'] = prog
+            p['prog'] = prog
 
-        p['catmsg'] = {
-            DATA:    'DATA:  ',
-            DEBUG:   'DEBUG: ',
-            VERBOSE: 'VERB:  ',
-            INFO:    'INFO:  ',
-            QUIET:   'QUIET: ',
-            WARN:    'WARN:  ',
-            ERROR:   'ERROR: ',
-            }[lvl]
+            p['catmsg'] = {
+                DATA:    'DATA:  ',
+                DEBUG:   'DEBUG: ',
+                VERBOSE: 'VERB:  ',
+                INFO:    'INFO:  ',
+                QUIET:   'QUIET: ',
+                WARN:    'WARN:  ',
+                ERROR:   'ERROR: ',
+                }[lvl]
 
-        print("%(prog)s: %(catmsg)s%(message)s" % p, file=outfile)
+            print("%(prog)s: %(catmsg)s%(message)s" % p, file=outfile)
 
 ########################################################################
 
-def data(msg, *args, **kwargs):
+def data(msg=None, *args, **kwargs):
     """Log message at DATA level"""
     log(DATA, msg, *args, **kwargs)
 
 ########################################################################
 
-def debug(msg, *args, **kwargs):
+def debug(msg=None, *args, **kwargs):
     """Log message at DEBUG level"""
     log(DEBUG, msg, *args, **kwargs)
 
 ########################################################################
 
-def verbose(msg, *args, **kwargs):
+def verbose(msg=None, *args, **kwargs):
     """Log message at VERBOSE level"""
     log(VERBOSE, msg, *args, **kwargs)
 
 ########################################################################
 
-def info(msg, *args, **kwargs):
+def info(msg=None, *args, **kwargs):
     """Log message at INFO level"""
     log(INFO, msg, *args, **kwargs)
 
 ########################################################################
 
-def quiet(msg, *args, **kwargs):
+def quiet(msg=None, *args, **kwargs):
     """Log message at QUIET level"""
     log(QUIET, msg, *args, **kwargs)
 
 ########################################################################
 
-def warn(msg, *args, **kwargs):
+def warn(msg=None, *args, **kwargs):
     """Log message at WARN level"""
     log(WARN, msg, *args, **kwargs)
 
 ########################################################################
 
-def error(msg, *args, **kwargs):
+def error(msg=None, *args, **kwargs):
     """Log message at ERROR level"""
     log(ERROR, msg, *args, **kwargs)
 

@@ -65,9 +65,9 @@ def __load_drivers():
         try:
             importlib.import_module('.'.join([__name__, driver_module_name]), __name__)
         except ImportError as e:
-            log.warn("Could not load %s driver",
-                     repr(driver_module_name),
-                     exc_info=True)
+            log.debug(exc_info=True)
+            log.warn("Could not load %s driver, looking for another driver",
+                     repr(driver_module_name))
 
     if len(GenericDriver.drivers) == 0:
         log.error("Error: No drivers found.")
