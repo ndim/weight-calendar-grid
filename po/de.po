@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plot-weight-calendar-grid 0.1.1\n"
 "Report-Msgid-Bugs-To: 'Hans Ulrich Niedermann <hun@n-dimensional.de>'\n"
-"POT-Creation-Date: 2015-11-24 17:27+0100\n"
-"PO-Revision-Date: 2015-10-24 22:42+0200\n"
+"POT-Creation-Date: 2015-11-24 18:06+0100\n"
+"PO-Revision-Date: 2015-11-24 18:05+0100\n"
 "Last-Translator: Hans Ulrich Niedermann <hun@n-dimensional.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -208,7 +208,7 @@ msgstr "Lösche ausgewählten Benutzer aus der Liste"
 
 #: ../weightgrid/gui.py:458
 msgid "All heights in <b>cm</b>. All weights in <b>kg</b>."
-msgstr ""
+msgstr "Alle Größen in <b>cm</b>. Alle Gewichte in <b>kg</b>."
 
 #: ../weightgrid/gui.py:552
 msgid "Save as"
@@ -241,20 +241,20 @@ msgstr "(von %(begin)s bis %(end)s)"
 
 #: ../weightgrid/drivers/ReportLab.py:80 ../weightgrid/drivers/TikZ.py:279
 msgid "Use:"
-msgstr ""
+msgstr "Anleitung:"
 
 #: ../weightgrid/drivers/ReportLab.py:83 ../weightgrid/drivers/TikZ.py:280
 msgid "Print this page. Keep in accessible place with pen. Mark one "
-msgstr ""
+msgstr "Ausdrucken und mit Stiff griffbereit aufbewahren. Täglich ein "
 
 #: ../weightgrid/drivers/ReportLab.py:87 ../weightgrid/drivers/TikZ.py:284
 msgid " every day. Connect "
-msgstr ""
+msgstr " eintragen und "
 
 #: ../weightgrid/drivers/ReportLab.py:90 ../weightgrid/drivers/TikZ.py:287
 msgid ""
 " to yesterday's mark. Type marked values into computer as deemed useful."
-msgstr ""
+msgstr " mit gestrigem verbinden. Nach Bedarf Werte in Computer übertragen."
 
 #: ../weightgrid/drivers/TikZ.py:158
 msgid "<language specific options to LaTeX babel package>"
