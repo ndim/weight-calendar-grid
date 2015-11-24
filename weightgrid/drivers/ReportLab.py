@@ -6,8 +6,8 @@
 ########################################################################
 
 
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import cm
+from reportlab.lib.pagesizes import A4, landscape
+from reportlab.lib.units import cm, mm
 from reportlab.pdfgen import canvas
 
 
@@ -37,7 +37,7 @@ class ReportLabDriver(PageDriver):
 
     def gen_outfile(self, outfile, output_format):
         assert(output_format == 'pdf')
-        pdf = canvas.Canvas(outfile, pagesize=A4)
+        pdf = canvas.Canvas(outfile, pagesize=landscape(A4))
         self.render(pdf)
         pdf.save()
 
@@ -63,13 +63,34 @@ class ReportLabDriver(PageDriver):
         pass
 
     def render_beginning(self, pdf):
-        for i in range(1, 15):
+        for i in range(3, 19+1):
             pdf.setLineWidth(0.5 + 3 * i % 2)
-            pdf.line(20, i * cm, 580, i * cm)
-        pass
+            pdf.line((20-1.5)*mm, i*cm, (297-20+1.5)*mm, i*cm)
+        for i in range(1, 27+1):
+            pdf.setLineWidth(0.5 + 3 * i % 2)
+            pdf.line(-1.5*mm+(i+1)*cm, 30*mm, -1.5*mm+(i+1)*cm, (210-20)*mm)
+
 
     def render_ending(self, pdf):
-        pass
+        # TODO: Use platypus Flowables to add the marks to the text.
+        textobject = pdf.beginText()
+        textobject.setTextOrigin(2*cm, 1*cm)
+        textobject.setFont("Helvetica-Bold", 10)
+        print(textobject.getCursor())
+        textobject.textOut(r"%s " % _("Use:"))
+        textobject.setFont("Helvetica", 10)
+        print(textobject.getCursor())
+        textobject.textOut(_("Print this page. "
+                             "Keep in accessible place with pen. "
+                             "Mark one "))
+        print(textobject.getCursor())
+        textobject.textOut(_(" every day. "
+                             "Connect "))
+        print(textobject.getCursor())
+        textobject.textOut(_(" to yesterday's mark. "
+                             "Type marked values into computer as deemed useful."))
+        print(textobject.getCursor())
+        pdf.drawText(textobject)
 
     def render_plot_mark(self, pdf, point):
         (x, y) = point

@@ -276,12 +276,16 @@ class TikZDriver(PageDriver):
             d['mark_delta_left']  = mdleft
             d['mark_delta_right'] = mdright
             # TODO: Only print Use: line if scaling of axes actually allow entering data.
-            d['use_text'] = _(r"\textbf{Use:} "
-                              "Print this page. "
+            d['use_text'] = (r"\textbf{%s} " % _("Use:") +
+                             _("Print this page. "
                               "Keep in accessible place with pen. "
-                              "Mark one {\marktikz} every day. "
-                              "Connect {\connectmarktikz} to yesterday's mark. "
-                              "Type marked values into computer as deemed useful.")
+                              "Mark one ") +
+                             "{\marktikz}" +
+                             _(" every day. "
+                               "Connect ") +
+                             "{\connectmarktikz}" +
+                             _(" to yesterday's mark. "
+                               "Type marked values into computer as deemed useful."))
             ctx.append(r"""
 \begin{scope}[every node/.style={inner sep=0}]
   \newcommand{\marktikz}{\tikz[baseline=-%(mark_delta)fmm]{\plotmark{0mm}{0mm}}}

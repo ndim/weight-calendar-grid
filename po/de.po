@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plot-weight-calendar-grid 0.1.1\n"
 "Report-Msgid-Bugs-To: 'Hans Ulrich Niedermann <hun@n-dimensional.de>'\n"
-"POT-Creation-Date: 2015-11-23 21:28+0100\n"
+"POT-Creation-Date: 2015-11-24 17:27+0100\n"
 "PO-Revision-Date: 2015-10-24 22:42+0200\n"
 "Last-Translator: Hans Ulrich Niedermann <hun@n-dimensional.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -100,167 +100,183 @@ msgstr "Dauer der anzuzeigenden Periode"
 msgid "weeks"
 msgstr "Wochen"
 
-#: ../weightgrid/gui.py:352
+#: ../weightgrid/gui.py:347
 msgid "nick"
 msgstr "Name"
 
-#: ../weightgrid/gui.py:361
+#: ../weightgrid/gui.py:356
 msgid "lang"
 msgstr "Sprache"
 
-#: ../weightgrid/gui.py:372
+#: ../weightgrid/gui.py:367
 msgid "height in cm"
 msgstr "Größe in cm"
 
-#: ../weightgrid/gui.py:386
+#: ../weightgrid/gui.py:381
 msgid "weight(min)"
 msgstr "Gewicht(min)"
 
-#: ../weightgrid/gui.py:394
+#: ../weightgrid/gui.py:389
 msgid "weight(max)"
 msgstr "Gewicht(max)"
 
-#: ../weightgrid/gui.py:401
+#: ../weightgrid/gui.py:396
 msgid "Print _selected user"
 msgstr "_Drucke ausgewählten Benutzer"
 
-#: ../weightgrid/gui.py:403
+#: ../weightgrid/gui.py:398
 msgid "Generate and print grid for the one selected user"
 msgstr "Erzeuge und drucke Diagramm für den ausgewählten Benutzer"
 
-#: ../weightgrid/gui.py:408
+#: ../weightgrid/gui.py:403
 msgid "Print _all marked users"
 msgstr "Drucke _alle markierten Benutzer"
 
-#: ../weightgrid/gui.py:410
+#: ../weightgrid/gui.py:405
 msgid "Generate and print grid for all marked user"
 msgstr "Erzeuge und drucke Diagramm für alle mit Häkchen markierten Benutzer"
 
-#: ../weightgrid/gui.py:426
+#: ../weightgrid/gui.py:421
 msgid "Generate1"
 msgstr "Erzeuge1"
 
-#: ../weightgrid/gui.py:427
+#: ../weightgrid/gui.py:422
 msgid "Generate PDF for selected user"
 msgstr "Erzeuge PDF für ausgewählten Benutzer"
 
-#: ../weightgrid/gui.py:428
+#: ../weightgrid/gui.py:423
 msgid "Print1"
 msgstr "Drucke1"
 
-#: ../weightgrid/gui.py:429
+#: ../weightgrid/gui.py:424
 msgid "Print the PDF for selected user"
 msgstr "Drucke das PDF für den ausgewählten Benutzer"
 
-#: ../weightgrid/gui.py:430
+#: ../weightgrid/gui.py:425
 msgid "View1"
 msgstr "Betrachte1"
 
-#: ../weightgrid/gui.py:431
+#: ../weightgrid/gui.py:426
 msgid "View the PDF for selected user in evince"
 msgstr "Betrachte das PDF für den ausgewählten Benutzer in evince"
 
-#: ../weightgrid/gui.py:432
+#: ../weightgrid/gui.py:427
 msgid "GenerateF"
 msgstr "ErzeugeF"
 
-#: ../weightgrid/gui.py:433
+#: ../weightgrid/gui.py:428
 msgid "Generate PDF for all marked users"
 msgstr "Erzeuge PDF für alle mit Häkchen markierten Benutzer"
 
-#: ../weightgrid/gui.py:434
+#: ../weightgrid/gui.py:429
 msgid "PrintF"
 msgstr "DruckeF"
 
-#: ../weightgrid/gui.py:435
+#: ../weightgrid/gui.py:430
 msgid "Print the PDF for all marked users"
 msgstr "Drucke PDF für alle mit Häkchen markierten Benutzer"
 
-#: ../weightgrid/gui.py:436
+#: ../weightgrid/gui.py:431
 msgid "ViewF"
 msgstr "BetrachteF"
 
-#: ../weightgrid/gui.py:437
+#: ../weightgrid/gui.py:432
 msgid "View the PDF for all marked users in evince"
 msgstr "Betrachte das PDF für alle markierten Benutzer in evince"
 
-#: ../weightgrid/gui.py:443
+#: ../weightgrid/gui.py:438
 msgid "_User list"
 msgstr "Liste der _Benutzer"
 
-#: ../weightgrid/gui.py:446
+#: ../weightgrid/gui.py:441
 msgid "_New user"
 msgstr "_Neu"
 
-#: ../weightgrid/gui.py:447
+#: ../weightgrid/gui.py:442
 msgid "Add new user to list of users. You must then enter a nick name."
 msgstr ""
 "Füge neuen Benutzer in Liste ein. Anschließend muss ein kurzer Name "
 "eingegeben werden."
 
-#: ../weightgrid/gui.py:451
+#: ../weightgrid/gui.py:446
 msgid "_Delete user"
 msgstr "_Löschen"
 
-#: ../weightgrid/gui.py:453
+#: ../weightgrid/gui.py:448
 msgid "Remove selected user from the list of users"
 msgstr "Lösche ausgewählten Benutzer aus der Liste"
 
-#: ../weightgrid/gui.py:463
+#: ../weightgrid/gui.py:458
 msgid "All heights in <b>cm</b>. All weights in <b>kg</b>."
 msgstr ""
 
-#: ../weightgrid/gui.py:557
+#: ../weightgrid/gui.py:552
 msgid "Save as"
 msgstr "Speichern unter"
 
-#: ../weightgrid/gui.py:570
+#: ../weightgrid/gui.py:565
 msgid "Portable Document Format (PDF)"
 msgstr "Portable Document Format (PDF)"
 
-#: ../weightgrid/gui.py:575
+#: ../weightgrid/gui.py:570
 msgid "Any files"
 msgstr "Alle Dateien"
 
-#: ../weightgrid/gui.py:603
+#: ../weightgrid/gui.py:598
 msgid "Generating PDF for single user:"
 msgstr "Erzeuge PDF für Benutzer:"
 
-#: ../weightgrid/gui.py:697
+#: ../weightgrid/gui.py:692
 msgid "Generating PDF for single user"
 msgstr "Erzeuge PDF für Benutzer:"
 
-#: ../weightgrid/gui.py:732
+#: ../weightgrid/gui.py:727
 msgid "Generating family PDF"
 msgstr "Erzeuge Familien-PDF"
 
-#: ../weightgrid/gui.py:759
+#: ../weightgrid/gui.py:754
 #, python-format
 msgid "(from %(begin)s to %(end)s)"
 msgstr "(von %(begin)s bis %(end)s)"
+
+#: ../weightgrid/drivers/ReportLab.py:80 ../weightgrid/drivers/TikZ.py:279
+msgid "Use:"
+msgstr ""
+
+#: ../weightgrid/drivers/ReportLab.py:83 ../weightgrid/drivers/TikZ.py:280
+msgid "Print this page. Keep in accessible place with pen. Mark one "
+msgstr ""
+
+#: ../weightgrid/drivers/ReportLab.py:87 ../weightgrid/drivers/TikZ.py:284
+msgid " every day. Connect "
+msgstr ""
+
+#: ../weightgrid/drivers/ReportLab.py:90 ../weightgrid/drivers/TikZ.py:287
+msgid ""
+" to yesterday's mark. Type marked values into computer as deemed useful."
+msgstr ""
 
 #: ../weightgrid/drivers/TikZ.py:158
 msgid "<language specific options to LaTeX babel package>"
 msgstr "english,ngerman"
 
-#: ../weightgrid/drivers/TikZ.py:279
-msgid ""
-"\\textbf{Use:} Print this page. Keep in accessible place with pen. Mark one "
-"{\\marktikz} every day. Connect {\\connectmarktikz} to yesterday's mark. "
-"Type marked values into computer as deemed useful."
-msgstr ""
-"\\textbf{Anleitung:} Ausdrucken und mit Stift griffbereit aufbewahren. "
-"Täglich ein {\\marktikz} eintragen und {\\connectmarktikz} mit gestrigem "
-"verbinden. Nach Bedarf Werte in Computer übertragen."
-
-#: ../weightgrid/drivers/TikZ.py:328
+#: ../weightgrid/drivers/TikZ.py:332
 msgid "weight in \\bfseries kg"
 msgstr "Gewicht in \\bfseries kg"
 
-#: ../weightgrid/drivers/TikZ.py:330
+#: ../weightgrid/drivers/TikZ.py:334
 #, python-format, python-brace-format
 msgid "\\textbf{BMI} for height %.2f\\,m"
 msgstr "\\textbf{BMI} für Körpergröße %.2f\\,m"
+
+#~ msgid ""
+#~ "\\textbf{Use:} Print this page. Keep in accessible place with pen. Mark "
+#~ "one {\\marktikz} every day. Connect {\\connectmarktikz} to yesterday's "
+#~ "mark. Type marked values into computer as deemed useful."
+#~ msgstr ""
+#~ "\\textbf{Anleitung:} Ausdrucken und mit Stift griffbereit aufbewahren. "
+#~ "Täglich ein {\\marktikz} eintragen und {\\connectmarktikz} mit gestrigem "
+#~ "verbinden. Nach Bedarf Werte in Computer übertragen."
 
 #~ msgid "All heights given in cm."
 #~ msgstr "Alle Größenangaben in cm."
