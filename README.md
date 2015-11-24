@@ -124,3 +124,16 @@ Requirements
 
   * [ReportLab](http://www.reportlab.com) if you want to hack on the
     ReportLab based PDF driver
+
+  * [gettext](http://www.gnu.org/software/gettext/) for the translations
+
+
+Build and Install
+=================
+
+After the `git clone`, run `make`.
+
+After that, you can run `./plot-wcg` and `./gui-wcg`.
+
+Installing the software anywhere is not supported yet, so you have to
+run the programs from the source tree.
