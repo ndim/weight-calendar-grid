@@ -30,7 +30,7 @@ class ReportLabDriver(PageDriver):
     driver_name = 'reportlab'
     driver_formats = ['pdf']
 
-    font_size = 10
+    font_size = 9.5
 
 
     def __init__(self, *args, **kwargs):
@@ -141,7 +141,7 @@ class ReportLabDriver(PageDriver):
 
         pdf.setFillColorRGB(0,0,0)
         text = pdf.beginText()
-        text.setTextOrigin(0.5*self.page_height*mm-5*mm-x, (7-self.page_width)*mm)
+        text.setTextOrigin(0.5*self.page_height*mm-5*mm-x, (5-self.page_width)*mm)
         text.setFont("Helvetica", self.font_size)
         text.textOut("weight in ")
         text.setFont("Helvetica-Bold", self.font_size)
@@ -150,7 +150,7 @@ class ReportLabDriver(PageDriver):
 
         pdf.setFillColorRGB(255,0,0)
         text = pdf.beginText()
-        text.setTextOrigin(0.5*self.page_height*mm+5*mm, (7-self.page_width)*mm)
+        text.setTextOrigin(0.5*self.page_height*mm+5*mm, (5-self.page_width)*mm)
         text.setFont("Helvetica-Bold", self.font_size)
         text.textOut('BMI')
         text.setFont("Helvetica", self.font_size)
