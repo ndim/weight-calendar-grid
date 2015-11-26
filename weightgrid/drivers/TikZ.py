@@ -328,10 +328,10 @@ class TikZDriver(PageDriver):
   \end{scope}
 \end{scope}""" % d)
 
-        d['weight_label_text'] = _(r'weight in \bfseries kg')
+        d['weight_label_text'] = _(r'weight in %s') % '\bfseries kg'
         if self.show_bmi: # label vertical axes
-            d['bmi_label_text']    = (_(r'\textbf{BMI} for height %.2f\,m')
-                                      % self.height)
+            d['bmi_label_text']    = (_(r'%s for height %.2f\,m')
+                                      % ('\textbf{BMI}', self.height))
             ctx.append(r"""
 %% axis labels
 \begin{scope}[every node/.style={rotate=90,inner sep=0}]

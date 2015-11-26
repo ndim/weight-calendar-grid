@@ -60,6 +60,8 @@ class ReportLabDriver(PageDriver):
         print('y', repr(y), 'bmi', repr(bmi),
               'strbmi', repr(strbmi), 'p', repr(p))
 
+        pdf.saveState()
+
         pdf.setLineWidth(p.line_width)
         pdf.setStrokeColorRGB(*p.line_color)
         pdf.line(p.begin_ofs*mm, y, (self.page_width-p.end_ofs)*mm, y)
@@ -72,8 +74,10 @@ class ReportLabDriver(PageDriver):
         # FIXME: Move top text vertically
         pdf.drawString((self.page_width - p.end_ofs)*mm, y, strbmi)
         pdf.drawRightString((p.begin_ofs)*mm, y, strbmi)
+        pdf.restoreState()
 
     def render_time_tick(self, pdf, style, date, label_str, id_str):
+        pdf.saveState()
         x = self._get_x(date)
         south_ofs = style.begin_ofs
         north_ofs = style.end_ofs
@@ -82,23 +86,30 @@ class ReportLabDriver(PageDriver):
         pdf.line(x, north_ofs*mm, x, (self.page_height-south_ofs)*mm)
 
         if style.do_label:
+            pdf.setFillColorRGB(0,0,0)
             if style.font_bold:
                 pdf.setFont("Helvetica-Bold", self.font_size)
             else:
                 pdf.setFont("Helvetica", self.font_size)
+            pdf.drawCentredString(x, (style.end_ofs - 3.0)*mm, label_str)
+            pdf.drawCentredString(x, (self.page_height-style.begin_ofs+1.0)*mm, label_str)
+        pdf.restoreState()
 
     def render_initials(self, pdf):
+        pdf.saveState()
         pdf.setFillColorRGB(0,0,0)
         pdf.drawString(7*mm, 7*mm, self.initials)
         pdf.drawRightString((self.page_width-7)*mm, 7*mm, self.initials)
         # FIXME: Move top text vertically
         pdf.drawString(7*mm, (self.page_height-7)*mm, self.initials)
         pdf.drawRightString((self.page_width-7)*mm, (self.page_height-7)*mm, self.initials)
+        pdf.restoreState()
 
     def render_beginning(self, pdf):
         pass
 
     def render_ending(self, pdf):
+        pdf.saveState()
         # TODO: Use platypus Flowables to add the marks to the text.
         pdf.setFillColorRGB(0,0,0)
         textobject = pdf.beginText()
@@ -119,6 +130,7 @@ class ReportLabDriver(PageDriver):
                              "Type marked values into computer as deemed useful."))
         print(textobject.getCursor())
         pdf.drawText(textobject)
+        pdf.restoreState()
 
     def render_plot_mark(self, pdf, point):
         (x, y) = point
@@ -150,13 +162,13 @@ class ReportLabDriver(PageDriver):
                               level, label_str, p, north=False):
         (begin_date, end_date) = date_range
         (is_begin_first, is_end_last) = is_first_last
-        pass
 
 
     def render_axis_kg_begin(self, pdf):
         pass
 
     def render_axis_kg_tick(self, pdf, y, kg_str, p):
+        pdf.saveState()
         pdf.setLineWidth(p.line_width)
         pdf.setStrokeColorRGB(*p.line_color)
         pdf.line(p.begin_ofs*mm, y, (self.page_width-p.end_ofs)*mm, y)
@@ -170,6 +182,7 @@ class ReportLabDriver(PageDriver):
             # FIXME: Move top text vertically
             pdf.drawString((self.page_width - p.end_ofs)*mm, y, kg_str)
             pdf.drawRightString((p.begin_ofs)*mm, y, kg_str)
+        pdf.restoreState()
 
     def render_axis_kg_end(self, pdf):
         pass
