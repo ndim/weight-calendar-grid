@@ -110,6 +110,56 @@ class ReportLabDriver(PageDriver):
 
     def render_ending(self, pdf):
         pdf.saveState()
+
+        text = pdf.beginText()
+        text.setTextOrigin(0, 0)
+        text.setFont("Helvetica", self.font_size)
+        text.textOut("weight in ")
+        text.setFont("Helvetica-Bold", self.font_size)
+        text.textOut("kg")
+        x = text.getX();
+
+        pdf.rotate(90)
+
+        pdf.setFillColorRGB(0,0,0)
+        text = pdf.beginText()
+        text.setTextOrigin(0.5*self.page_height*mm-5*mm-x, -7*mm)
+        text.setFont("Helvetica", self.font_size)
+        text.textOut("weight in ")
+        text.setFont("Helvetica-Bold", self.font_size)
+        text.textOut("kg")
+        pdf.drawText(text)
+
+        pdf.setFillColorRGB(255,0,0)
+        text = pdf.beginText()
+        text.setTextOrigin(0.5*self.page_height*mm+5*mm, -7*mm)
+        text.setFont("Helvetica-Bold", self.font_size)
+        text.textOut('BMI')
+        text.setFont("Helvetica", self.font_size)
+        text.textOut(_(' for height %.2fm') % self.height)
+        pdf.drawText(text)
+
+        pdf.setFillColorRGB(0,0,0)
+        text = pdf.beginText()
+        text.setTextOrigin(0.5*self.page_height*mm-5*mm-x, (7-self.page_width)*mm)
+        text.setFont("Helvetica", self.font_size)
+        text.textOut("weight in ")
+        text.setFont("Helvetica-Bold", self.font_size)
+        text.textOut("kg")
+        pdf.drawText(text)
+
+        pdf.setFillColorRGB(255,0,0)
+        text = pdf.beginText()
+        text.setTextOrigin(0.5*self.page_height*mm+5*mm, (7-self.page_width)*mm)
+        text.setFont("Helvetica-Bold", self.font_size)
+        text.textOut('BMI')
+        text.setFont("Helvetica", self.font_size)
+        text.textOut(_(' for height %.2fm') % self.height)
+        pdf.drawText(text)
+
+        pdf.restoreState()
+
+        pdf.saveState()
         # TODO: Use platypus Flowables to add the marks to the text.
         pdf.setFillColorRGB(0,0,0)
         textobject = pdf.beginText()
