@@ -21,16 +21,17 @@ from pprint import pprint
 ########################################################################
 
 
-import weightgrid
-import weightgrid.version
-import weightgrid.log as log
+from . import generate_grid
+from . import drivers
+from . import log
+from . import version
 
 
 ########################################################################
 
 
-prog_name = weightgrid.version.program_name
-prog_version = weightgrid.version.package_version
+prog_name = version.program_name
+prog_version = version.package_version
 
 
 ########################################################################
@@ -74,7 +75,7 @@ class KGRangeType(object):
 class DriverAction(argparse.Action):
 
     def __call__(self, parser, namespace, values, option_string=None):
-        driver_cls = weightgrid.drivers.get_driver(values)
+        driver_cls = drivers.get_driver(values)
         setattr(namespace, self.dest, driver_cls)
 
 
@@ -121,7 +122,7 @@ class OptionListAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         log.debug('%r %r %r', namespace, values, option_string)
         outfile = sys.stderr
-        weightgrid.drivers.print_driver_list(outfile)
+        drivers.print_driver_list(outfile)
         print_language_list(outfile)
         print_plot_mode_list(outfile)
         parser.exit()
@@ -235,7 +236,7 @@ class OutFileType(argparse.FileType):
 
 
 def main(argv=None, simulated_infile=None):
-
+    set_lang()
     parser = argparse.ArgumentParser(
         prog=prog_name,
         description=_('plot weight/calendar grid for easy weight tracking'),
@@ -267,7 +268,7 @@ Note that the KG_RANGE can take one of four forms:
     output_grp.add_argument(
         '-d', '--driver', metavar='DRIVER',
         dest='driver_cls', action=DriverAction,
-        default=weightgrid.drivers.get_driver(None),
+        default=drivers.get_driver(None),
         help='use this output driver (--list-drivers for a list)')
 
     global_grp.add_argument(
@@ -408,7 +409,7 @@ Note that the KG_RANGE can take one of four forms:
     log.debug('locale LC_MESSAGES %s', locale.getlocale(locale.LC_MESSAGES))
     log.debug('locale LC_TIME %s', locale.getlocale(locale.LC_TIME))
 
-    weightgrid.generate_grid(
+    generate_grid(
         args.height,
         args.weight,
         (args.begin_date, args.end_date),

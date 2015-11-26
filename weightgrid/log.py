@@ -41,7 +41,7 @@ try:
     try:
         _prog = os.path.basename(sys.argv[0])
     except:
-        from weightgrid.version import program_name as _prog
+        from .version import program_name as _prog
     prog = "%s(%d)" % (_prog, os.getpid())
     del _prog
 except ImportError:

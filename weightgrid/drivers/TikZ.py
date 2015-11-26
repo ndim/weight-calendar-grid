@@ -27,9 +27,8 @@ del __import_check
 ########################################################################
 
 
-import weightgrid.drivers
-from weightgrid.drivers.basic import PageDriver
-import weightgrid.log as log
+from .basic import PageDriver
+from .. import log
 
 
 ########################################################################

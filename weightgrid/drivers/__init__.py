@@ -13,14 +13,15 @@ you want.
 
 import datetime
 import importlib
+import os
 import sys
 
 
 ########################################################################
 
 
-import weightgrid.log as log
-from weightgrid.drivers.basic import GenericDriver
+from .. import log as log
+from .basic import GenericDriver
 
 
 ########################################################################
@@ -55,7 +56,12 @@ def print_driver_list(outfile=None):
 
 def __load_drivers():
 
-    for driver_module_name in ['Cairo', 'ReportLab', 'TikZ']:
+    # List all driver modules, in shell syntax: [A-Z]*.py
+    driver_module_list = [ os.path.splitext(fn)[0]
+                           for fn in os.listdir(os.path.dirname(__file__))
+                           if ((os.path.splitext(fn)[1] == '.py') and
+                               ('A' <= fn[0]) and (fn[0] <= 'Z')) ]
+    for driver_module_name in driver_module_list:
         try:
             importlib.import_module('.'.join([__name__, driver_module_name]), __name__)
         except ImportError as e:

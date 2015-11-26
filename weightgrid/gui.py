@@ -5,18 +5,18 @@ import datetime
 import os
 import subprocess
 import sys
-import weightgrid
-import weightgrid.cmdline
 import yaml
-
-
 from gi.repository import Gtk, cairo, GLib, Poppler
+from pprint import pprint
 
 
 ##################################################################################
 
 
-from pprint import pprint
+from . import generate_grid
+from .utils import get_earliest_sunday, get_latest_sunday
+from . import drivers
+from .cmdline import set_lang
 
 
 ##################################################################################
@@ -162,7 +162,7 @@ class WeightGrid(Gtk.DrawingArea):
             return
 
         # set up scaling
-        drv = weightgrid.drivers.Cairo.CairoDriver
+        drv = drivers.Cairo.CairoDriver
         width  = self.get_allocated_width()
         height = self.get_allocated_height()
 
@@ -173,22 +173,22 @@ class WeightGrid(Gtk.DrawingArea):
         else:
             cr.scale(h_scale, h_scale)
 
-        weightgrid.cmdline.set_lang(self.user_lang)
+        set_lang(self.user_lang)
 
         # draw the grid
-        weightgrid.generate_grid(
+        generate_grid(
             0.01 * self.user_height,
             (self.user_weight_lo, self.user_weight_hi),
             (self.begin_date, self.end_date),
             infile=None, # open('ndim.dat', 'r'),
-            driver_cls=weightgrid.drivers.Cairo.CairoDriver,
-            output_format=weightgrid.drivers.Cairo.CairoOutputFormat.name,
+            driver_cls=drivers.Cairo.CairoDriver,
+            output_format=drivers.Cairo.CairoOutputFormat.name,
             outfile=cr,
             keep_tmp_on_error=False,
             history_mode=False,
             initials=self.user_nick)
 
-        weightgrid.cmdline.set_lang()
+        set_lang()
 
 
 ##################################################################################
@@ -287,7 +287,7 @@ class WeightGridWindow(Gtk.Window):
         self.vbox.pack_start(lbox, False, False, 0)
         self.period_weeks.connect('changed', self.on_period_weeks_changed)
 
-        date_begin = weightgrid.get_latest_sunday(self.calendar_begin.datetime_date)
+        date_begin = get_latest_sunday(self.calendar_begin.datetime_date)
 
         self.vbox.pack_start(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL),
                              False, False, 0)
@@ -309,7 +309,7 @@ class WeightGridWindow(Gtk.Window):
         except EnvironmentError as err:
             print("Error opening %s:" % repr(self.data_fname), err)
             # default values
-            parsed_yaml_data = {'start_date': weightgrid.get_latest_sunday(datetime.date.today()),
+            parsed_yaml_data = {'start_date': get_latest_sunday(datetime.date.today()),
                                 'weeks': 8,
                                 'users': {}}
 
@@ -766,7 +766,7 @@ class WeightGridWindow(Gtk.Window):
     def on_latest_sunday_clicked(self, btn):
         o = self.calendar_begin.datetime_date
         #print "on_latest_sunday for ", year, month, day
-        date_begin = weightgrid.get_latest_sunday(o)
+        date_begin = get_latest_sunday(o)
         if o == date_begin:
             return
         self.calendar_begin.select_month(date_begin.month, date_begin.year)
@@ -777,7 +777,7 @@ class WeightGridWindow(Gtk.Window):
     def on_earliest_sunday_clicked(self, btn):
         o = self.calendar_begin.datetime_date
         #print "on_earliest_sunday for ", year, month, day
-        date_begin = weightgrid.get_earliest_sunday(o)
+        date_begin = get_earliest_sunday(o)
         if o == date_begin:
             return
         self.calendar_begin.select_month(date_begin.month, date_begin.year)
@@ -925,7 +925,7 @@ class WeightGridApp(Gtk.Application):
 
     def __init__(self):
         super(WeightGridApp, self).__init__(application_id="net.lauft.app.wcg.gtk")
-        weightgrid.cmdline.set_lang()
+        set_lang()
 
     def do_activate(self):
         win = WeightGridWindow(self)
@@ -936,6 +936,15 @@ class WeightGridApp(Gtk.Application):
 #    def do_startup(self, *args):
 #        print "do_startup", args
 #        super(WeightGridApp, self).do_startup()
+
+
+##################################################################################
+
+
+def main():
+    app = WeightGridApp()
+    exit_status = app.run(sys.argv)
+    sys.exit(exit_status)
 
 
 ##################################################################################

@@ -14,9 +14,8 @@ from reportlab.pdfgen import canvas
 ########################################################################
 
 
-import weightgrid.drivers
-from weightgrid.drivers.basic import PageDriver
-import weightgrid.log as log
+from .basic import PageDriver
+from .. import log
 
 
 ########################################################################

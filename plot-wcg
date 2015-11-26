@@ -4,15 +4,14 @@
 ########################################################################
 
 
-import weightgrid.cmdline
+from weightgrid.cmdline import main
 
 
 ########################################################################
 
 
 if __name__ == '__main__':
-    weightgrid.cmdline.set_lang()
-    weightgrid.cmdline.main()
+    main()
 
 
 ########################################################################

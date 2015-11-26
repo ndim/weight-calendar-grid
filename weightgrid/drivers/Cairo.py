@@ -13,10 +13,9 @@ from pprint import pprint
 ########################################################################
 
 
-import weightgrid
-import weightgrid.drivers
-from weightgrid.drivers.basic import PageDriver
-import weightgrid.log as log
+from .basic import PageDriver
+from .. import log
+from ..utils import InternalLogicError
 
 
 ########################################################################
@@ -49,7 +48,7 @@ class OutputFormatMetaClass(type):
 
             if 'default' in clsdict and clsdict['default'] == True:
                 if hasattr(mcs, 'default_format'):
-                    raise weightgrid.InternalLogicError("default_format already set to %s (new: %s)" % (mcs.default_format, fmt_name))
+                    raise InternalLogicError("default_format already set to %s (new: %s)" % (mcs.default_format, fmt_name))
                 mcs.default_format = fmt_name
         return cls
 

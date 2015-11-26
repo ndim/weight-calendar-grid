@@ -20,12 +20,9 @@ from abc import ABCMeta
 ########################################################################
 
 
-import weightgrid
-# from weightgrid import get_latest_first
-# from weightgrid import get_next_first
-
-import weightgrid.drivers
-import weightgrid.log as log
+from .. import log
+from ..utils import (get_latest_first, get_next_first, get_latest_sunday,
+                     InternalLogicError)
 
 
 ########################################################################
@@ -818,10 +815,10 @@ class TimeAxisMonths(TimeAxis):
     def count(self, receiver):
 
         def year_range(begin, end):
-            real_end = weightgrid.get_next_first(end) - datetime.timedelta(days=1)
+            real_end = get_next_first(end) - datetime.timedelta(days=1)
             receiver.year_range(begin, real_end)
 
-        day = weightgrid.get_latest_first(self.begin)
+        day = get_latest_first(self.begin)
         prev_day = None
         first_day_of_year = day
 
@@ -835,7 +832,7 @@ class TimeAxisMonths(TimeAxis):
                 first_day_of_year = day
 
             prev_day = day
-            day = weightgrid.get_next_first(day)
+            day = get_next_first(day)
             if day > self.end:
                 break
 
@@ -899,7 +896,7 @@ class PageDriver(GenericDriver):
             log.info("using default begin_date %s", begin_date)
         elif (not begin_date) and (not end_date):
             begin_date = datetime.date.today()
-            begin_date = weightgrid.get_latest_sunday(begin_date)
+            begin_date = get_latest_sunday(begin_date)
             end_date = begin_date + datetime.timedelta(days=8*7)
             log.info("using default begin_date %s and end_date %s",
                      begin_date, end_date)
@@ -908,7 +905,7 @@ class PageDriver(GenericDriver):
             log.verbose("keep begin_date %s and end_date %s",
                         begin_date, end_date)
         else:
-            begin_date = weightgrid.get_latest_sunday(begin_date)
+            begin_date = get_latest_sunday(begin_date)
             end_date = begin_date + datetime.timedelta(days=8*7)
             log.verbose("extended date range to begin_date %s and end_date %s",
                         begin_date, end_date)

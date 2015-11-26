@@ -12,8 +12,8 @@ import traceback
 ########################################################################
 
 
-import weightgrid.cmdline as cmdline
-import weightgrid.log as log
+from weightgrid import cmdline
+from weightgrid import log
 
 
 ########################################################################
