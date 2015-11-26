@@ -30,6 +30,8 @@ class ReportLabDriver(PageDriver):
     driver_name = 'reportlab'
     driver_formats = ['pdf']
 
+    font_size = 10
+
 
     def __init__(self, *args, **kwargs):
         super(ReportLabDriver, self).__init__(*args, **kwargs)
@@ -40,11 +42,13 @@ class ReportLabDriver(PageDriver):
         self.render(pdf)
         pdf.save()
 
-    def _get_x(self, _day):
-        return None
-
     def _get_y(self, kg):
-        return None
+        y0 = self.sep_south # self.page_height - self.sep_south
+        eff_h = self.page_height - self.sep_north - self.sep_south
+        return (y0 + eff_h * (kg - self.min_kg) / self.range_kg)*mm
+
+    def _get_x(self, _day):
+        return super(ReportLabDriver, self)._get_x(_day)*mm
 
     def render_axis_bmi_begin(self, pdf):
         pass
@@ -53,31 +57,56 @@ class ReportLabDriver(PageDriver):
         pass
 
     def render_axis_bmi_tick(self, pdf, y, bmi, strbmi, p):
-        pass
+        print('y', repr(y), 'bmi', repr(bmi),
+              'strbmi', repr(strbmi), 'p', repr(p))
+
+        pdf.setLineWidth(p.line_width)
+        pdf.setStrokeColorRGB(*p.line_color)
+        pdf.line(p.begin_ofs*mm, y, (self.page_width-p.end_ofs)*mm, y)
+
+        pdf.setFillColorRGB(*p.font_color)
+        if p.font_bold:
+            pdf.setFont("Helvetica-Bold", self.font_size)
+        else:
+            pdf.setFont("Helvetica", self.font_size)
+        # FIXME: Move top text vertically
+        pdf.drawString((self.page_width - p.end_ofs)*mm, y, strbmi)
+        pdf.drawRightString((p.begin_ofs)*mm, y, strbmi)
 
     def render_time_tick(self, pdf, style, date, label_str, id_str):
-        pass
+        x = self._get_x(date)
+        south_ofs = style.begin_ofs
+        north_ofs = style.end_ofs
+        pdf.setLineWidth(style.line_width)
+        pdf.setStrokeColorRGB(0,0,0)
+        pdf.line(x, north_ofs*mm, x, (self.page_height-south_ofs)*mm)
+
+        if style.do_label:
+            if style.font_bold:
+                pdf.setFont("Helvetica-Bold", self.font_size)
+            else:
+                pdf.setFont("Helvetica", self.font_size)
 
     def render_initials(self, pdf):
-        pass
+        pdf.setFillColorRGB(0,0,0)
+        pdf.drawString(7*mm, 7*mm, self.initials)
+        pdf.drawRightString((self.page_width-7)*mm, 7*mm, self.initials)
+        # FIXME: Move top text vertically
+        pdf.drawString(7*mm, (self.page_height-7)*mm, self.initials)
+        pdf.drawRightString((self.page_width-7)*mm, (self.page_height-7)*mm, self.initials)
 
     def render_beginning(self, pdf):
-        for i in range(3, 19+1):
-            pdf.setLineWidth(0.5 + 3 * i % 2)
-            pdf.line((20-1.5)*mm, i*cm, (297-20+1.5)*mm, i*cm)
-        for i in range(1, 27+1):
-            pdf.setLineWidth(0.5 + 3 * i % 2)
-            pdf.line(-1.5*mm+(i+1)*cm, 30*mm, -1.5*mm+(i+1)*cm, (210-20)*mm)
-
+        pass
 
     def render_ending(self, pdf):
         # TODO: Use platypus Flowables to add the marks to the text.
+        pdf.setFillColorRGB(0,0,0)
         textobject = pdf.beginText()
-        textobject.setTextOrigin(2*cm, 1*cm)
-        textobject.setFont("Helvetica-Bold", 10)
+        textobject.setTextOrigin(self.sep_west*mm, 7*mm)
+        textobject.setFont("Helvetica-Bold", self.font_size)
         print(textobject.getCursor())
         textobject.textOut(r"%s " % _("Use:"))
-        textobject.setFont("Helvetica", 10)
+        textobject.setFont("Helvetica", self.font_size)
         print(textobject.getCursor())
         textobject.textOut(_("Print this page. "
                              "Keep in accessible place with pen. "
@@ -128,7 +157,19 @@ class ReportLabDriver(PageDriver):
         pass
 
     def render_axis_kg_tick(self, pdf, y, kg_str, p):
-        pass
+        pdf.setLineWidth(p.line_width)
+        pdf.setStrokeColorRGB(*p.line_color)
+        pdf.line(p.begin_ofs*mm, y, (self.page_width-p.end_ofs)*mm, y)
+
+        if p.do_label:
+            pdf.setFillColorRGB(*p.font_color)
+            if p.font_bold:
+                pdf.setFont("Helvetica-Bold", self.font_size)
+            else:
+                pdf.setFont("Helvetica", self.font_size)
+            # FIXME: Move top text vertically
+            pdf.drawString((self.page_width - p.end_ofs)*mm, y, kg_str)
+            pdf.drawRightString((p.begin_ofs)*mm, y, kg_str)
 
     def render_axis_kg_end(self, pdf):
         pass
