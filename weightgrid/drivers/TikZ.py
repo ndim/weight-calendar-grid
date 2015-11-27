@@ -51,7 +51,8 @@ def _latex_to_pdf(texstr, keep_tmp_on_error, outfile):
     basename = 'weight-grid'
 
     texfname = os.path.join(workdir, '%s.tex' % basename)
-    open(texfname, 'w').write(texstr)
+    with open(texfname, 'w') as texfile:
+        texfile.write(texstr)
     ttyout_fname = os.path.join(workdir, '%s.ttyout' % basename)
 
     def run_latex(stage, stages):
@@ -78,26 +79,29 @@ def _latex_to_pdf(texstr, keep_tmp_on_error, outfile):
             if stage > stages:
                 break
     except:
-        tty_text = open(ttyout_fname, 'r').read()
-        sys.stdout.write(tty_text)
-        if not keep_tmp_on_error:
-            cleanup_workdir()
-            log.warn("To examine the workdir, run with '--keep' option.")
-        else:
-            log.warn("kept workdir %s", workdir)
-            log.warn("examine %s", texfname)
-            r = re.compile(r'^l\.(\d+) ', re.MULTILINE)
-            line_no = 0
-            try:
-                a = r.findall(tty_text)
-                if a:
-                    line_no = int(a[-1])
-                    print("%s:%d: hello emacs" % (texfname, line_no, ), file=sys.stderr)
-            except:
-                pass
+        with open(ttyout_fname, 'r') as ttyout_file:
+            tty_text = ttyout_file.read()
+            sys.stdout.write(tty_text)
+            if not keep_tmp_on_error:
+                cleanup_workdir()
+                log.warn("To examine the workdir, run with '--keep' option.")
+            else:
+                log.warn("kept workdir %s", workdir)
+                log.warn("examine %s", texfname)
+                r = re.compile(r'^l\.(\d+) ', re.MULTILINE)
+                line_no = 0
+                try:
+                    a = r.findall(tty_text)
+                    if a:
+                        line_no = int(a[-1])
+                        print("%s:%d: hello emacs" % (texfname, line_no, ),
+                              file=sys.stderr)
+                except:
+                    pass
         raise
 
-    pdf_data = open(os.path.join(workdir, "%s.pdf" % basename), 'rb').read()
+    with open(os.path.join(workdir, "%s.pdf" % basename), 'rb') as pdf_file:
+        pdf_data = pdf_file.read()
     cleanup_workdir()
 
     outfile.write(pdf_data)
