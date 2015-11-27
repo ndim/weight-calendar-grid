@@ -541,7 +541,7 @@ class WeightGridWindow(Gtk.Window):
         print('CMD:', ' '.join(args))
         proc = subprocess.Popen(args,
                                 executable=script_fname,
-                                stdin=None,
+                                stdin=subprocess.DEVNULL,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT,
                                 close_fds=True,
@@ -728,7 +728,7 @@ class WeightGridWindow(Gtk.Window):
         print('CMD:', ' '.join(args))
         proc = subprocess.Popen(args,
                                 executable='/usr/bin/pdfjoin',
-                                stdin=None,
+                                stdin=subprocess.DEVNULL,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT,
                                 close_fds=True,

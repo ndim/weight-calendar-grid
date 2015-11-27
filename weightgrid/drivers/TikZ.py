@@ -61,7 +61,7 @@ def _latex_to_pdf(texstr, keep_tmp_on_error, outfile):
                  stage, stages, outfile.name)
         retval = subprocess.call(['pdflatex', basename],
                                  cwd = workdir,
-                                 stdin=open('/dev/null','r'),
+                                 stdin=subprocess.DEVNULL,
                                  stdout=ttyout,
                                  stderr=ttyout,
                                  shell=False)
