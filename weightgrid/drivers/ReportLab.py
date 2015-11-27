@@ -17,6 +17,7 @@ from reportlab.pdfgen import canvas
 
 from .basic import PageDriver
 from .. import log
+from .. import version
 
 
 ########################################################################
@@ -40,6 +41,9 @@ class ReportLabDriver(PageDriver):
     def gen_outfile(self, outfile, output_format):
         assert(output_format == 'pdf')
         pdf = canvas.Canvas(outfile, pagesize=landscape(A4))
+        pdf.setCreator('%s %s' % (version.package_name, version.package_version))
+        pdf.setTitle(_("Weight Calendar Grid"))
+        pdf.setSubject(_("Draw one mark a day and graphically watch your weight"))
         self.render(pdf)
         pdf.save()
 
