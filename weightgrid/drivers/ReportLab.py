@@ -113,51 +113,68 @@ class ReportLabDriver(PageDriver):
     def render_ending(self, pdf):
         pdf.saveState()
 
+        # Determine text width
         text = pdf.beginText()
         text.setTextOrigin(0, 0)
         text.setFont("Helvetica", self.font_size)
         text.textOut(_("weight in "))
         text.setFont("Helvetica-Bold", self.font_size)
         text.textOut("kg")
-        x = text.getX();
+        w = text.getX();
+
+        # Determine em size
+        text = pdf.beginText()
+        text.setTextOrigin(0, 0)
+        text.setFont("Helvetica", self.font_size)
+        text.textOut('m')
+        em = text.getX();
 
         pdf.rotate(90)
 
+        # rotated coordinates
+        if self.height:
+            rx = 0.5*self.page_height*mm - 2*em - w
+            ry_left = -7*mm
+            ry_right = 5*mm - self.page_width*mm
+        else:
+            rx = 0.5*self.page_height*mm - 0.5*2*em
+            ry_left = -self.sep_west*mm + 10*mm
+            ry_right = self.sep_east*mm - self.page_width*mm - 10*mm - self.font_size
+
         pdf.setFillColor(black)
         text = pdf.beginText()
-        text.setTextOrigin(0.5*self.page_height*mm-5*mm-x, -7*mm)
+        text.setTextOrigin(rx, ry_left)
         text.setFont("Helvetica", self.font_size)
         text.textOut(_("weight in "))
         text.setFont("Helvetica-Bold", self.font_size)
         text.textOut("kg")
         pdf.drawText(text)
 
-        pdf.setFillColor(red)
         text = pdf.beginText()
-        text.setTextOrigin(0.5*self.page_height*mm+5*mm, -7*mm)
-        text.setFont("Helvetica-Bold", self.font_size)
-        text.textOut('BMI')
-        text.setFont("Helvetica", self.font_size)
-        text.textOut(_(" for height %.2fm") % self.height)
-        pdf.drawText(text)
-
-        pdf.setFillColor(black)
-        text = pdf.beginText()
-        text.setTextOrigin(0.5*self.page_height*mm-5*mm-x, (5-self.page_width)*mm)
+        text.setTextOrigin(rx, ry_right)
         text.setFont("Helvetica", self.font_size)
         text.textOut(_("weight in "))
         text.setFont("Helvetica-Bold", self.font_size)
         text.textOut("kg")
         pdf.drawText(text)
 
-        pdf.setFillColor(red)
-        text = pdf.beginText()
-        text.setTextOrigin(0.5*self.page_height*mm+5*mm, (5-self.page_width)*mm)
-        text.setFont("Helvetica-Bold", self.font_size)
-        text.textOut('BMI')
-        text.setFont("Helvetica", self.font_size)
-        text.textOut(_(" for height %.2fm") % self.height)
-        pdf.drawText(text)
+        if self.height:
+            pdf.setFillColor(red)
+            text = pdf.beginText()
+            text.setTextOrigin(0.5*self.page_height*mm+5*mm, -7*mm)
+            text.setFont("Helvetica-Bold", self.font_size)
+            text.textOut('BMI')
+            text.setFont("Helvetica", self.font_size)
+            text.textOut(_(" for height %.2fm") % self.height)
+            pdf.drawText(text)
+
+            text = pdf.beginText()
+            text.setTextOrigin(0.5*self.page_height*mm+5*mm, (5-self.page_width)*mm)
+            text.setFont("Helvetica-Bold", self.font_size)
+            text.textOut('BMI')
+            text.setFont("Helvetica", self.font_size)
+            text.textOut(_(" for height %.2fm") % self.height)
+            pdf.drawText(text)
 
         pdf.restoreState()
 
