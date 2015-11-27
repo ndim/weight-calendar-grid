@@ -1,12 +1,13 @@
 ##################################################################################
 
 
+import argparse
 import datetime
 import os
 import subprocess
 import sys
 import yaml
-from gi.repository import Gtk, cairo, GLib, Poppler
+from gi.repository import Gio, Gtk, cairo, GLib, Poppler
 from pprint import pprint
 
 
@@ -16,6 +17,7 @@ from pprint import pprint
 from . import generate_grid
 from .utils import get_earliest_sunday, get_latest_sunday
 from . import drivers
+from . import version
 from .cmdline import set_lang
 
 
@@ -313,7 +315,7 @@ class WeightGridWindow(Gtk.Window):
                                 'weeks': 8,
                                 'users': {}}
 
-        pprint(parsed_yaml_data)
+        # pprint(parsed_yaml_data)
         self.period_weeks.set_value(parsed_yaml_data['weeks'])
         date_begin = parsed_yaml_data['start_date']
         for (nick, user_data) in parsed_yaml_data['users'].items():
@@ -924,26 +926,55 @@ class WeightGridWindow(Gtk.Window):
 class WeightGridApp(Gtk.Application):
 
     def __init__(self):
-        super(WeightGridApp, self).__init__(application_id="net.lauft.app.wcg.gtk")
+        super(WeightGridApp, self).__init__(
+            application_id="net.lauft.app.wcg.gtk",
+            flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
+        self.args = None # store for parsed command line options
         set_lang()
 
     def do_activate(self):
         win = WeightGridWindow(self)
+        win.connect('delete_event', self.on_quit)
         win.show_all()
         win.end_label.hide()
         win.calendar_end.hide()
 
-#    def do_startup(self, *args):
-#        print "do_startup", args
-#        super(WeightGridApp, self).do_startup()
+    def do_startup(self,):
+        #super(WeightGridApp, self).do_startup()
+        Gtk.Application.do_startup(self)
+
+    def do_command_line(self, args):
+        # super(WeightGridApp, self).do_command_line(args)
+        Gtk.Application.do_command_line(self, args)
+
+        parser = argparse.ArgumentParser(prog='gui-wcg')
+        parser.add_argument(
+            '-V', '--version', action='version',
+            version = ('%(gui_program_name)s (%(package_name)s) %(package_version)s'
+                       % vars(version)))
+
+        # parse the command line stored in args, but skip the first
+        # element (the program name)
+        self.args = parser.parse_args(args.get_arguments()[1:])
+
+        self.do_activate()
+        return 0
+
+    def do_shutdown(self):
+        Gtk.Application.do_shutdown(self)
+
+    def on_quit(self, widget, data):
+        self.quit()
 
 
 ##################################################################################
 
 
-def main():
+def main(argv=None):
+    if not argv:
+        argv = sys.argv
     app = WeightGridApp()
-    exit_status = app.run(sys.argv)
+    exit_status = app.run(argv)
     sys.exit(exit_status)
 
 

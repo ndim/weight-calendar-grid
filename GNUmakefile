@@ -93,6 +93,7 @@ pdf: $(ALL_PDF_TARGETS) $(PDF_ALL_TARGETS)
 
 
 PACKAGE_NAME = weight-calendar-grid
+GUI_PROGRAM_NAME = gui-wcg
 PROGRAM_NAME = $(PY_MAIN)
 PACKAGE_VERSION = 0.1.1
 
@@ -105,6 +106,7 @@ weightgrid/version.py: GNUmakefile
 	echo 'package_name = "$(PACKAGE_NAME)"' >> $(VERSION_PY).new
 	echo 'package_version = "$(PACKAGE_VERSION)"' >> $(VERSION_PY).new
 	echo 'program_name = "$(PROGRAM_NAME)"' >> $(VERSION_PY).new
+	echo 'gui_program_name = "$(GUI_PROGRAM_NAME)"' >> $(VERSION_PY).new
 	echo '# End of file.' >> $(VERSION_PY).new
 	set -x; if cmp "$(VERSION_PY).new" "$(VERSION_PY)"; then \
 		rm -f "$(VERSION_PY).new"; \
