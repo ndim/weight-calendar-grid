@@ -8,6 +8,7 @@
 
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.units import cm, mm
+from reportlab.lib.colors import white, red, black
 from reportlab.pdfgen import canvas
 
 
@@ -57,9 +58,6 @@ class ReportLabDriver(PageDriver):
         pass
 
     def render_axis_bmi_tick(self, pdf, y, bmi, strbmi, p):
-        print('y', repr(y), 'bmi', repr(bmi),
-              'strbmi', repr(strbmi), 'p', repr(p))
-
         pdf.saveState()
 
         pdf.setLineWidth(p.line_width)
@@ -71,9 +69,8 @@ class ReportLabDriver(PageDriver):
             pdf.setFont("Helvetica-Bold", self.font_size)
         else:
             pdf.setFont("Helvetica", self.font_size)
-        # FIXME: Move top text vertically
-        pdf.drawString((self.page_width - p.end_ofs)*mm, y, strbmi)
-        pdf.drawRightString((p.begin_ofs)*mm, y, strbmi)
+        pdf.drawString((self.page_width - p.end_ofs + 0.5)*mm, y-1.25*mm, strbmi)
+        pdf.drawRightString((p.begin_ofs-0.5)*mm, y-1.25*mm, strbmi)
         pdf.restoreState()
 
     def render_time_tick(self, pdf, style, date, label_str, id_str):
@@ -82,11 +79,11 @@ class ReportLabDriver(PageDriver):
         south_ofs = style.begin_ofs
         north_ofs = style.end_ofs
         pdf.setLineWidth(style.line_width)
-        pdf.setStrokeColorRGB(0,0,0)
+        pdf.setStrokeColor(black)
         pdf.line(x, north_ofs*mm, x, (self.page_height-south_ofs)*mm)
 
         if style.do_label:
-            pdf.setFillColorRGB(0,0,0)
+            pdf.setFillColor(black)
             if style.font_bold:
                 pdf.setFont("Helvetica-Bold", self.font_size)
             else:
@@ -97,7 +94,7 @@ class ReportLabDriver(PageDriver):
 
     def render_initials(self, pdf):
         pdf.saveState()
-        pdf.setFillColorRGB(0,0,0)
+        pdf.setFillColor(black)
         pdf.drawString(7*mm, 7*mm, self.initials)
         pdf.drawRightString((self.page_width-7)*mm, 7*mm, self.initials)
         # FIXME: Move top text vertically
@@ -121,7 +118,7 @@ class ReportLabDriver(PageDriver):
 
         pdf.rotate(90)
 
-        pdf.setFillColorRGB(0,0,0)
+        pdf.setFillColor(black)
         text = pdf.beginText()
         text.setTextOrigin(0.5*self.page_height*mm-5*mm-x, -7*mm)
         text.setFont("Helvetica", self.font_size)
@@ -130,7 +127,7 @@ class ReportLabDriver(PageDriver):
         text.textOut("kg")
         pdf.drawText(text)
 
-        pdf.setFillColorRGB(255,0,0)
+        pdf.setFillColor(red)
         text = pdf.beginText()
         text.setTextOrigin(0.5*self.page_height*mm+5*mm, -7*mm)
         text.setFont("Helvetica-Bold", self.font_size)
@@ -139,7 +136,7 @@ class ReportLabDriver(PageDriver):
         text.textOut(_(' for height %.2fm') % self.height)
         pdf.drawText(text)
 
-        pdf.setFillColorRGB(0,0,0)
+        pdf.setFillColor(black)
         text = pdf.beginText()
         text.setTextOrigin(0.5*self.page_height*mm-5*mm-x, (5-self.page_width)*mm)
         text.setFont("Helvetica", self.font_size)
@@ -148,7 +145,7 @@ class ReportLabDriver(PageDriver):
         text.textOut("kg")
         pdf.drawText(text)
 
-        pdf.setFillColorRGB(255,0,0)
+        pdf.setFillColor(red)
         text = pdf.beginText()
         text.setTextOrigin(0.5*self.page_height*mm+5*mm, (5-self.page_width)*mm)
         text.setFont("Helvetica-Bold", self.font_size)
@@ -161,24 +158,24 @@ class ReportLabDriver(PageDriver):
 
         pdf.saveState()
         # TODO: Use platypus Flowables to add the marks to the text.
-        pdf.setFillColorRGB(0,0,0)
+        pdf.setFillColor(black)
         textobject = pdf.beginText()
         textobject.setTextOrigin(self.sep_west*mm, 7*mm)
         textobject.setFont("Helvetica-Bold", self.font_size)
-        print(textobject.getCursor())
+        # print(textobject.getCursor())
         textobject.textOut(r"%s " % _("Use:"))
         textobject.setFont("Helvetica", self.font_size)
-        print(textobject.getCursor())
+        # print(textobject.getCursor())
         textobject.textOut(_("Print this page. "
                              "Keep in accessible place with pen. "
                              "Mark one "))
-        print(textobject.getCursor())
+        # print(textobject.getCursor())
         textobject.textOut(_(" every day. "
                              "Connect "))
-        print(textobject.getCursor())
+        # print(textobject.getCursor())
         textobject.textOut(_(" to yesterday's mark. "
                              "Type marked values into computer as deemed useful."))
-        print(textobject.getCursor())
+        # print(textobject.getCursor())
         pdf.drawText(textobject)
         pdf.restoreState()
 
@@ -213,6 +210,63 @@ class ReportLabDriver(PageDriver):
         (begin_date, end_date) = date_range
         (is_begin_first, is_end_last) = is_first_last
 
+        delta_x = self.delta_x_per_day
+        range_distance = 3
+        if delta_x >= range_distance:
+            dx2 = 0.5 * (delta_x - range_distance)
+        else:
+            dx2 = 0.0
+
+        begin_x = self._get_x(begin_date) - dx2
+        end_x   = self._get_x(end_date)   + dx2
+
+        # FIXME: set yofs in caller
+        yofs = 2.0 + 1.5 + 3.5 * (level + 0)
+
+        if north:
+            y0 = self.page_height - self.sep_north + yofs
+        else:
+            y0 = self.sep_south - yofs
+        y0 = y0*mm
+
+        pdf.saveState()
+
+        pdf.setLineWidth(p.line_width)
+        pdf.setStrokeColorRGB(*(p.line_color))
+
+        # line along the range
+        pdf.line(begin_x, y0, end_x, y0)
+
+        # arrow tip for beginning of range
+        if is_begin_first:
+            pdf.line(begin_x, y0-1.2*mm, begin_x, y0+1.2*mm)
+        else:
+            pass
+
+        # arrow tip for end of range
+        if is_end_last:
+            pdf.line(end_x, y0-1.2*mm, end_x, y0+1.2*mm)
+        else:
+            pass
+
+        if label_str:
+            if p.font_bold:
+                pdf.setFont("Helvetica-Bold", self.font_size)
+            else:
+                pdf.setFont("Helvetica", self.font_size)
+            text = pdf.beginText()
+            text.setTextOrigin(0,0)
+            text.textOut(label_str)
+            w = text.getX()
+
+            cx = 0.5*(begin_x+end_x)
+            cy = y0-1.25*mm
+            pdf.setFillColor(white)
+            pdf.rect(cx-0.5*w-0.5*mm, cy-0.5*mm, w+2*0.5*mm,
+                     self.font_size, stroke=0, fill=1)
+            pdf.setFillColorRGB(*(p.font_color))
+            pdf.drawCentredString(cx, cy, label_str)
+        pdf.restoreState()
 
     def render_axis_kg_begin(self, pdf):
         pass
@@ -229,9 +283,8 @@ class ReportLabDriver(PageDriver):
                 pdf.setFont("Helvetica-Bold", self.font_size)
             else:
                 pdf.setFont("Helvetica", self.font_size)
-            # FIXME: Move top text vertically
-            pdf.drawString((self.page_width - p.end_ofs)*mm, y, kg_str)
-            pdf.drawRightString((p.begin_ofs)*mm, y, kg_str)
+            pdf.drawString((self.page_width - p.end_ofs + 0.5)*mm, y-1.25*mm, kg_str)
+            pdf.drawRightString((p.begin_ofs-0.5)*mm, y-1.25*mm, kg_str)
         pdf.restoreState()
 
     def render_axis_kg_end(self, pdf):
