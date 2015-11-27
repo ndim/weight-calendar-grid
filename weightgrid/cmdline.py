@@ -114,7 +114,7 @@ class OptionListAction(argparse.Action):
 
     def __call__(self, parser, namespace, values, option_string=None):
         log.debug('%r %r %r', namespace, values, option_string)
-        outfile = sys.stderr
+        outfile = sys.stdout
         drivers.print_driver_list(outfile)
         print_language_list(outfile)
         print_plot_mode_list(outfile)
