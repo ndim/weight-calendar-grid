@@ -269,7 +269,7 @@ Note that the KG_RANGE can take one of four forms:
         '-d', '--driver', metavar='DRIVER',
         dest='driver_cls', action=DriverAction,
         default=drivers.get_driver(None),
-        help='use this output driver (--list-drivers for a list)')
+        help='use this output driver (--list-options for a list)')
 
     global_grp.add_argument(
         '-N', '--dry-run', action='store_true',
@@ -288,7 +288,7 @@ Note that the KG_RANGE can take one of four forms:
         dest='output_format',
         action=OutputFormatAction,
         help='select output format to use '
-        '(default: driver dependent, see --list-drivers)')
+        '(default: driver dependent, see --list-options)')
 
     person_grp.add_argument(
         '-H', '--height', type=float, metavar='HEIGHT',
