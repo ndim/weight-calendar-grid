@@ -40,7 +40,7 @@ def print_driver_list(outfile=None):
     if not outfile:
         outfile = sys.stdout
     print("List of output drivers:", file=outfile)
-    for drv in GenericDriver.drivers:
+    for drv in sorted(GenericDriver.drivers):
         print("   ", "driver", drv, file=outfile)
         formats = GenericDriver.drivers[drv].driver_formats
         default_fmt = formats[0]
