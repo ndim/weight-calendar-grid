@@ -194,10 +194,10 @@ def generate_grid(height,
         height_str = "%.2fm" % height
     else:
         height_str = "None"
-    log.info("driver=%s output_format=%s height=%s initials=%s"
-             % (repr(driver_cls.driver_name),
-                repr(output_format), height_str,
-                repr(initials)))
+    log.verbose("driver=%s output_format=%s height=%s initials=%s"
+                % (repr(driver_cls.driver_name),
+                   repr(output_format), height_str,
+                   repr(initials)))
 
     if not output_format:
         output_format = driver_cls.driver_formats[0]

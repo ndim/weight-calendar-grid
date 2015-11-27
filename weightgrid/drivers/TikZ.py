@@ -37,7 +37,7 @@ from .. import log
 def _latex_to_pdf(texstr, keep_tmp_on_error, outfile):
 
     workdir = tempfile.mkdtemp(prefix='weight-grid.', suffix='.wd')
-    log.info("created workdir %s", workdir)
+    log.debug("created workdir %s", workdir)
 
     def cleanup_workdir():
         for (dirpath, dirnames, filenames) in os.walk(workdir, topdown=False):
@@ -46,7 +46,7 @@ def _latex_to_pdf(texstr, keep_tmp_on_error, outfile):
         for d in dirnames:
             os.rmdir(os.path.join(dirpath, d))
         os.rmdir(workdir)
-        log.info("cleaned up workdir %s", workdir)
+        log.debug("cleaned up workdir %s", workdir)
 
     basename = 'weight-grid'
 
@@ -58,8 +58,8 @@ def _latex_to_pdf(texstr, keep_tmp_on_error, outfile):
     def run_latex(stage, stages):
         global stage_counter # hack
         ttyout = open(ttyout_fname, 'w')
-        log.info("pdflatex run %d/%d for %s",
-                 stage, stages, outfile.name)
+        log.verbose("pdflatex run %d/%d for %s",
+                    stage, stages, outfile.name)
         retval = subprocess.call(['pdflatex', basename],
                                  cwd = workdir,
                                  stdin=subprocess.DEVNULL,
