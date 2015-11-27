@@ -95,11 +95,12 @@ class ReportLabDriver(PageDriver):
     def render_initials(self, pdf):
         pdf.saveState()
         pdf.setFillColor(black)
+        pdf.setFont("Helvetica", self.font_size)
         pdf.drawString(7*mm, 7*mm, self.initials)
         pdf.drawRightString((self.page_width-7)*mm, 7*mm, self.initials)
-        # FIXME: Move top text vertically
-        pdf.drawString(7*mm, (self.page_height-7)*mm, self.initials)
-        pdf.drawRightString((self.page_width-7)*mm, (self.page_height-7)*mm, self.initials)
+        pdf.drawString(7*mm, (self.page_height-7)*mm-0.5*self.font_size, self.initials)
+        pdf.drawRightString((self.page_width-7)*mm,
+                            (self.page_height-7)*mm-0.5*self.font_size, self.initials)
         pdf.restoreState()
 
     def render_beginning(self, pdf):
