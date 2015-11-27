@@ -414,6 +414,8 @@ Note that the KG_RANGE can take one of four forms:
         args.plot_mode == 'history',
         args.initials)
 
+    sys.exit(0)
+
 
 ########################################################################
 
