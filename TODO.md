@@ -1,5 +1,7 @@
 Note that some of these TODOs have already been implemented.
 
+  * Replace make generated weightgrid/version.py by setuptools based logic.
+
   * Optionally print for non-color printers, probably without BMI.
 
   * baseline align the month/year range labels (cairo/tikz)
