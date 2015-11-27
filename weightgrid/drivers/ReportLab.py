@@ -171,9 +171,15 @@ class ReportLabDriver(PageDriver):
                              "Keep in accessible place with pen. "
                              "Mark one "))
         # print(textobject.getCursor())
+        textobject.setFont("Helvetica-Bold", self.font_size)
+        textobject.textOut('x')
+        textobject.setFont("Helvetica", self.font_size)
         textobject.textOut(_(" every day. "
                              "Connect "))
         # print(textobject.getCursor())
+        textobject.setFont("Helvetica-Bold", self.font_size)
+        textobject.textOut('x-x')
+        textobject.setFont("Helvetica", self.font_size)
         textobject.textOut(_(" to yesterday's mark. "
                              "Type marked values into computer as deemed useful."))
         # print(textobject.getCursor())
