@@ -30,13 +30,6 @@ from . import version
 ########################################################################
 
 
-prog_name = version.program_name
-prog_version = version.package_version
-
-
-########################################################################
-
-
 class KGRangeType(object):
 
     def __init__(self):
@@ -238,7 +231,7 @@ class OutFileType(argparse.FileType):
 def main(argv=None, simulated_infile=None):
     set_lang()
     parser = argparse.ArgumentParser(
-        prog=prog_name,
+        prog=version.program_name,
         description=_('plot weight/calendar grid for easy weight tracking'),
         add_help=False, # we want the help in a different place in the help
         epilog="""\
@@ -355,7 +348,8 @@ Note that the KG_RANGE can take one of four forms:
 
     cmd_grp.add_argument(
         '-V', '--version', action='version',
-        version='%(prog_name)s %(prog_version)s' % globals())
+        version = ('%(program_name)s (%(package_name)s) %(package_version)s'
+                   % vars(version)))
 
     person_grp.add_argument(
         '-W', '--weight', type=KGRangeType(), metavar='KG_RANGE',
