@@ -190,31 +190,31 @@ class ReportLabDriver(PageDriver):
         pdf.drawText(textobject)
         pdf.restoreState()
 
+    # TODO: Actually plot weight data
     def render_plot_mark(self, pdf, point):
         (x, y) = point
-        pass
 
+    # TODO: Actually plot weight data
     def render_plot_mavg_segment(self, pdf, point1, point2, color):
         (x1, y1) = point1
         (x2, y2) = point2
-        pass
 
+    # TODO: Actually plot weight data
     def render_plot_point(self, pdf, point):
         (x, y) = point
-        pass
 
+    # TODO: Actually plot weight data
     def render_plot_stem(self, pdf, coords, color):
         (x, y, ay) = coords
-        pass
 
+    # TODO: Actually plot weight data
     def render_plot_stem_point(self, pdf, point, color):
         (x, y) = point
-        pass
 
+    # TODO: Actually plot weight data
     def render_plot_value_line_segment(self, pdf, point1, point2):
         (x1, y1) = point1
         (x2, y2) = point2
-        pass
 
     def render_calendar_range(self, pdf, date_range, is_first_last,
                               level, label_str, p, north=False):
