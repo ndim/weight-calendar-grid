@@ -11,12 +11,16 @@ from unittest import TestCase
 
 
 from ..gui import main
+from ..version import package_version
 
 
 ########################################################################
 
 
 class TestGui(TestCase):
+
+    def test_000_nothing(self):
+        pass
 
     def __test(self, args, expect_code=0, expect_stdout=None, expect_stderr=None):
         # The GObject/Gtk Magic does not let us call gui.main(args)
@@ -35,13 +39,14 @@ class TestGui(TestCase):
                 outs, errs = proc.communicate(timeout=15)
             self.assertEqual(proc.returncode, expect_code)
             if expect_stderr != None:
-                self.assertEqual(errs, expect_stderr)
+                self.assertEqual(errs.decode(), expect_stderr)
             if expect_stdout != None:
-                self.assertEqual(outs, expect_stdout)
+                self.assertEqual(outs.decode(), expect_stdout)
 
     def test_001_version(self):
         self.__test(['--version'],
-                    expect_stdout=b'gui-wcg (weight-calendar-grid) 0.1.1\n')
+                    expect_stdout=('gui-wcg (weight-calendar-grid) %s\n' %
+                                   package_version))
 
     def test_002_help(self):
         self.__test(['--help'])
