@@ -179,6 +179,11 @@ class OutFileWrapper(object):
         self._dry_run = False
 
 
+    def __del__(self):
+        if self._file:
+            self._file.close()
+
+
     def dry_run(self):
         log.debug('OutfileWrapper.dry_run() called')
         self._dry_run = True
