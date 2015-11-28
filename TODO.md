@@ -1,6 +1,16 @@
 Note that some of these TODOs have already been implemented.
 
-  * Replace make generated weightgrid/version.py by setuptools based logic.
+  * Replace GNUmakefile by setuptools based setup.py which requires
+    the following:
+
+    * Replace make generated weightgrid/version.py by setuptools based
+      logic.
+
+    * In setup.py, extract messages for translation from sourcecode
+      (update-po)
+
+    * In setup.py, compile translated message from source text into
+      binary (update-locale)
 
   * Optionally print for non-color printers, probably without BMI.
 
