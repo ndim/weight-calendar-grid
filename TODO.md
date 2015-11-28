@@ -1,4 +1,4 @@
-Note that some of these TODOs have already been implemented.
+Note that some of these TODOs may have been implemented already.
 
   * Replace GNUmakefile by setuptools based setup.py which requires
     the following:
@@ -14,6 +14,9 @@ Note that some of these TODOs have already been implemented.
 
   * Optionally print for non-color printers, probably without BMI.
 
+  * Rename Python package from `weightgrid` to `weight_cal_grid` or
+    something else similarly containing the calendar word as well.
+
   * baseline align the month/year range labels (cairo/tikz)
 
   * Add `--date` `--date-range` argument, possibly replacing `-b` and `-e`.
@@ -24,16 +27,6 @@ Note that some of these TODOs have already been implemented.
 
     `--date=2011-02-01..2011-04-30`   from 2011-02-01 to 2011-04-30
       Problem: Should be the same range char as in kg range.
-
-  * Add `--weight` parameter.
-
-    `--weight=80.0-90.5`
-    `--weight=86.5+4.0-6.0`
-    `--weight=85.0+-5`
-    `--weight=85`
-
-  * Add `--height` parameter. If not given, do not plot BMI or make BMI
-    based guesses.
 
   * Time support for `--plot-mode`. Keep day axis in 8 week mode for
     manually marking values in non-plot-mode. Otherwise, allow
