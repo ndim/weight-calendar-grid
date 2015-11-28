@@ -2,8 +2,10 @@
 
 
 from io import StringIO
+import itertools
 import os
 import sys
+import tempfile
 from unittest import TestCase
 
 
@@ -16,6 +18,25 @@ from ..cmdline import main
 ########################################################################
 
 
+tempdir = None
+
+def setup():
+    global tempdir
+    tempdir = tempfile.mkdtemp(prefix='weight-calendar-grid',
+                               suffix='.test-output')
+
+def teardown():
+    global tempdir
+    assert(os.path.isdir(tempdir))
+    for fname in os.listdir(tempdir):
+        os.unlink(os.path.join(tempdir, fname))
+    os.rmdir(tempdir)
+    tempdir = None
+
+
+########################################################################
+
+
 class TestCmdline(TestCase):
 
     def __init__(self, *args, **kwargs):
@@ -23,22 +44,11 @@ class TestCmdline(TestCase):
         self.stderr = sys.stderr
         self.pdf_fname_template = 'TESTCASE-%s.pdf'
 
-        # TODO: Make this configurable at runtime.
-        self.keep_pdf_files = True
-        self.keep_pdf_files = False
-
     def setUp(self):
         sys.stderr = StringIO()
 
     def tearDown(self):
         sys.stderr = self.stderr
-
-    def ___test_main(self, args, expected_code=0):
-        try:
-            main(argv=args)
-            self.assertFalse(True, "main() should have exited first")
-        except SystemExit as e:
-            self.assertEqual(e.code, expected_code)
 
     def __test_main(self, args, expected_code=0):
         with self.assertRaises(SystemExit) as cm:
@@ -46,24 +56,19 @@ class TestCmdline(TestCase):
         self.assertEqual(cm.exception.code, expected_code)
 
     def __test_pdf(self, args, pdf_fname=None, expected_code=0):
-        with open('test.log', 'a') as logfile:
+        with open(os.path.join(tempdir, 'test.log'), 'a') as logfile:
             logfile.write('testing with file %s\n' % pdf_fname)
+
+        pdf_path = os.path.join(tempdir, pdf_fname)
         self.assertIsInstance(pdf_fname, str)
-        self.__test_main(args + ['--output=%s' % pdf_fname],
+        self.__test_main(args + ['--output=%s' % pdf_path],
                          expected_code)
 
         # Check generated PDF file has a reasonable size
-        osr = os.stat(pdf_fname)
+        osr = os.stat(pdf_path)
         self.assertNotEqual(osr.st_size, 0)
         self.assertTrue(osr.st_size >= 1024,
                         msg="PDF file appears a bit too small")
-
-        # Clean up generated PDF file
-        if not self.keep_pdf_files:
-            try:
-                os.unlink(pdf_fname)
-            except FileNotFoundError:
-                pass
 
     def test_000_nothing(self):
         # First, make sure the empty test succeeds
@@ -81,94 +86,93 @@ class TestCmdline(TestCase):
     def test_003_list_options(self):
         self.__test_main(['--list-options'])
 
-    def test_101_cairo(self):
-        self.__test_pdf(['--driver=cairo',
-                         '--lang=de',
-                         '--initials=tester',
-                         '--begin-date=2015-11-22',
-                         '--end-date=2016-01-17',
-                         '--height=1.75',
-                         '--weight=70-81',
-        ], self.pdf_fname_template % sys._getframe().f_code.co_name)
-
-    def test_102_reportlab(self):
-        self.__test_pdf(['--driver=reportlab',
-                         '--lang=de',
-                         '--initials=tester',
-                         '--begin-date=2015-11-22',
-                         '--end-date=2016-01-17',
-                         '--height=1.75',
-                         '--weight=70-81',
-        ], self.pdf_fname_template % sys._getframe().f_code.co_name)
-
-    def test_103_tikz(self):
-        self.__test_pdf(['--driver=tikz',
-                         '--lang=de',
-                         '--initials=tester',
-                         '--begin-date=2015-11-22',
-                         '--end-date=2016-01-17',
-                         '--height=1.75',
-                         '--weight=70-81',
-        ], self.pdf_fname_template % sys._getframe().f_code.co_name)
-
-    def test_111_cairo(self):
-        self.__test_pdf(['--driver=cairo',
-                         '--lang=de',
-                         '--initials=tester',
-                         '--begin-date=2015-11-22',
-                         '--end-date=2016-01-17',
-                         '--weight=70-81',
-        ], self.pdf_fname_template % sys._getframe().f_code.co_name)
-
-    def test_112_reportlab(self):
-        self.__test_pdf(['--driver=reportlab',
-                         '--lang=de',
-                         '--initials=tester',
-                         '--begin-date=2015-11-22',
-                         '--end-date=2016-01-17',
-                         '--weight=70-81',
-        ], self.pdf_fname_template % sys._getframe().f_code.co_name)
-
-    def test_113_tikz(self):
-        self.__test_pdf(['--driver=tikz',
-                         '--lang=de',
-                         '--initials=tester',
-                         '--begin-date=2015-11-22',
-                         '--end-date=2016-01-17',
-                         '--weight=70-81',
-        ], self.pdf_fname_template % sys._getframe().f_code.co_name)
-
-    def test_121_cairo(self):
-        self.__test_pdf(['--driver=cairo',
-                         '--lang=en',
-                         '--initials=tester',
-                         '--begin-date=2015-11-22',
-                         '--end-date=2016-01-17',
-                         '--height=1.75',
-                         '--weight=70-81',
-        ], self.pdf_fname_template % sys._getframe().f_code.co_name)
-
-    def test_122_reportlab(self):
-        self.__test_pdf(['--driver=reportlab',
-                         '--lang=en',
-                         '--initials=tester',
-                         '--begin-date=2015-11-22',
-                         '--end-date=2016-01-17',
-                         '--height=1.75',
-                         '--weight=70-81',
-        ], self.pdf_fname_template % sys._getframe().f_code.co_name)
-
-    def test_123_tikz(self):
-        self.__test_pdf(['--driver=tikz',
-                         '--lang=en',
-                         '--initials=tester',
-                         '--begin-date=2015-11-22',
-                         '--end-date=2016-01-17',
-                         '--height=1.75',
-                         '--weight=70-81',
-        ], self.pdf_fname_template % sys._getframe().f_code.co_name)
-
     # TODO: Test plotting actual weight data.
+
+
+########################################################################
+
+
+class ArgList(object):
+
+    def __init__(self, arg_name, value_list=None):
+        super(ArgList, self).__init__()
+        self.arg_name = arg_name
+        if value_list:
+            self.value_list = value_list
+        else:
+            self.value_list = []
+
+    def append(self, value):
+        self.value_list.append(value)
+
+    def __iter__(self):
+        for value in self.value_list:
+            if value:
+                yield ['%s=%s' % (self.arg_name, value)]
+            else:
+                yield []
+
+
+########################################################################
+
+
+def test_comprehensive():
+    # try all combinations of the following arguments
+
+    arg_driver = ArgList('--driver')
+    arg_driver.append('cairo')
+    arg_driver.append('reportlab')
+    arg_driver.append('tikz')
+
+    arg_lang = ArgList('--lang', [None, 'en', 'de'])
+    arg_height = ArgList('--height', [None, 1.75])
+    arg_initials = ArgList('--initials', [None, 'Tester'])
+
+    for no, args in enumerate(itertools.product(arg_driver, arg_lang,
+                                                arg_height, arg_initials)):
+        aa = []
+        for a in args:
+            aa.extend(a)
+        yield check_args, no+1, aa
+
+
+def check_args(no, args):
+    common_args = [
+        '--begin-date=2015-11-22',
+        '--end-date=2016-01-17',
+        '--weight=70-81',
+    ]
+
+    with open(os.path.join(tempdir, 'test.log'), 'a') as logfile:
+        logfile.write('TESTCASE %d\n' % no)
+
+        argv = list(common_args)
+        argv.extend(args)
+        logfile.write('     %s\n' % str(argv))
+        pdf_fname = ('TESTCASE-%03d___%s.pdf' %
+                     (no, '_'.join(argv).replace('.','_')))
+        logfile.write('     %s\n' % pdf_fname)
+
+        assert(isinstance(pdf_fname, str))
+
+        pdf_path = os.path.join(tempdir, pdf_fname)
+        argv.extend(['--output=%s' % pdf_path])
+        logfile.write('  args %s\n' % argv)
+        try:
+            main(argv=argv)
+            assert(False)
+        except SystemExit as se:
+            if se.code == 0:
+                pass
+            else:
+                raise
+
+        # Check generated PDF file has a reasonable size
+        osr = os.stat(pdf_path)
+        assert(osr.st_size > 0)     # PDF file must be non-empty
+        assert(osr.st_size >= 1024) # PDF file appears a bit too small
+
+        logfile.write('  status %s\n' % 'SUCCESS')
 
 
 ########################################################################
