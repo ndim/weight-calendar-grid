@@ -53,52 +53,56 @@ def _latex_to_pdf(texstr, keep_tmp_on_error, outfile):
     texfname = os.path.join(workdir, '%s.tex' % basename)
     with open(texfname, 'w') as texfile:
         texfile.write(texstr)
-    ttyout_fname = os.path.join(workdir, '%s.ttyout' % basename)
 
     def run_latex(stage, stages):
         global stage_counter # hack
-        ttyout = open(ttyout_fname, 'w')
         log.verbose("pdflatex run %d/%d for %s",
                     stage, stages, outfile.name)
-        retval = subprocess.call(['pdflatex', basename],
+        proc = subprocess.Popen(['pdflatex', basename],
                                  cwd = workdir,
                                  stdin=subprocess.DEVNULL,
-                                 stdout=ttyout,
-                                 stderr=ttyout,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.STDOUT,
                                  shell=False)
-        if retval != 0:
-            log.error("Error running pdflatex. Aborting.")
+        try:
+            outs, errs = proc.communicate(timeout=300)
+        except TimeoutExpired:
+            proc.kill()
+            outs, errs = proc.communicate()
+            raise
+        if proc.returncode != 0:
+            log.error("Error running pdflatex (retcode=%d). Aborting.",
+                      proc.returncode)
             sys.exit(1)
+        return outs
 
     try:
         stage  = 1
         stages = 2
         while True:
-            run_latex(stage, stages)
+            tty_text = run_latex(stage, stages)
             stage += 1
             if stage > stages:
                 break
     except:
-        with open(ttyout_fname, 'r') as ttyout_file:
-            tty_text = ttyout_file.read()
-            sys.stdout.write(tty_text)
-            if not keep_tmp_on_error:
-                cleanup_workdir()
-                log.warn("To examine the workdir, run with '--keep' option.")
-            else:
-                log.warn("kept workdir %s", workdir)
-                log.warn("examine %s", texfname)
-                r = re.compile(r'^l\.(\d+) ', re.MULTILINE)
-                line_no = 0
-                try:
-                    a = r.findall(tty_text)
-                    if a:
-                        line_no = int(a[-1])
-                        print("%s:%d: hello emacs" % (texfname, line_no, ),
-                              file=sys.stderr)
-                except:
-                    pass
-        raise
+        sys.stdout.write(tty_text)
+        if not keep_tmp_on_error:
+            cleanup_workdir()
+            log.warn("To examine the workdir, run with '--keep' option.")
+        else:
+            log.warn("kept workdir %s", workdir)
+            log.warn("examine %s", texfname)
+            r = re.compile(r'^l\.(\d+) ', re.MULTILINE)
+            line_no = 0
+            try:
+                a = r.findall(tty_text)
+                if a:
+                    line_no = int(a[-1])
+                    print("%s:%d: hello emacs" % (texfname, line_no, ),
+                          file=sys.stderr)
+            except:
+                pass
+        raise # re-raise error while running pdflatex
 
     with open(os.path.join(workdir, "%s.pdf" % basename), 'rb') as pdf_file:
         pdf_data = pdf_file.read()
