@@ -1,4 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+
+
+# TODO: Migrate all these test cases to Python3 unittest/nose.
 
 
 ########################################################################

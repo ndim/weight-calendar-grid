@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# TODO: Migrate these to a minimized number of test cases for maximum
+#       code coverage Python3 unittest/nose tests.
+
 set -ex
 
 py_main="plot-wcg"
