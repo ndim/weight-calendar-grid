@@ -38,8 +38,10 @@ setup(name='weight-calendar-grid',
       },
       entry_points = {
           'console_scripts': [
-              'gui-wcg=weightgrid.gui:main',
-              'plot-wcg=weightgrid.cmdline:main',
+              'wcg-cli=weightgrid.cmdline:main',
+          ],
+          'gui_scripts': [
+              'wcg-gui=weightgrid.gui:main',
           ],
       },
       test_suite='nose.collector',

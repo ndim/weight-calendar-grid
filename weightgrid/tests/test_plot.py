@@ -14,6 +14,7 @@ from unittest import TestCase
 
 from ..cmdline import main
 from .. import log
+from ..version import package_name, package_version
 
 
 ########################################################################
@@ -41,6 +42,38 @@ def teardown():
 ########################################################################
 
 
+class DuplicateStdout(object):
+
+    def __init__(self):
+        super(DuplicateStdout, self).__init__()
+        self.sio = StringIO()
+        self.stdout = sys.stdout
+        self.outs = None
+
+    def write(self, data):
+        self.sio.write(data)
+        self.stdout.write(data)
+
+    def getvalue(self):
+        return self.outs
+
+    def __enter__(self):
+        print("Enter DS", file=sys.stderr)
+        sys.stdout = self
+        return self
+
+    def __exit__(self, *exc_info):
+        print("Leave DS", file=sys.stderr)
+        self.outs = self.sio.getvalue()
+        print("  outs =", repr(self.outs))
+        self.sio.close()
+        sys.stdout = self.stdout
+        return False
+
+
+########################################################################
+
+
 class TestCmdline(TestCase):
 
     def __init__(self, *args, **kwargs):
@@ -54,19 +87,23 @@ class TestCmdline(TestCase):
     def tearDown(self):
         sys.stderr = self.stderr
 
-    def __test_main(self, args, expected_code=0):
+    def __test_main(self, args, expect_code=0, expect_stdout=None):
+        outs = ''
         with self.assertRaises(SystemExit) as cm:
-            main(argv=args)
-        self.assertEqual(cm.exception.code, expected_code)
+            with DuplicateStdout() as ds:
+                main(argv=args)
+        self.assertEqual(cm.exception.code, expect_code)
+        if expect_stdout != None:
+            self.assertEqual(ds.getvalue(), expect_stdout)
 
-    def __test_pdf(self, args, pdf_fname=None, expected_code=0):
+    def __test_pdf(self, args, pdf_fname=None, expect_code=0):
         with open(os.path.join(tempdir, 'test.log'), 'a') as logfile:
             print('testing with file', pdf_fname, file=logfile)
 
         pdf_path = os.path.join(tempdir, pdf_fname)
         self.assertIsInstance(pdf_fname, str)
         self.__test_main(args + ['--output=%s' % pdf_path],
-                         expected_code)
+                         expect_code)
 
         # Check generated PDF file has a reasonable size
         osr = os.stat(pdf_path)
@@ -82,7 +119,10 @@ class TestCmdline(TestCase):
         pass
 
     def test_001_version(self):
-        self.__test_main(['--version'])
+        self.__test_main(
+            ['--version'],
+            expect_stdout=('wcg-cli (%s) %s\n' % (package_name,
+                                                  package_version)))
 
     def test_002_help(self):
         self.__test_main(['--help'])

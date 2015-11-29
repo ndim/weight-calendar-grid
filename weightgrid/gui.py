@@ -204,7 +204,7 @@ class WeightGridWindow(Gtk.Window):
         super(WeightGridWindow, self).__init__(title=title, application=app)
 
         self.set_icon_from_file(os.path.join(os.path.dirname(__file__),
-                                             'gui-wcg-icon.png'))
+                                             'wcg-gui-icon.png'))
 
         self.data_fname = os.path.expanduser('~/.weight-calendar-grid.yaml')
 
@@ -523,7 +523,7 @@ class WeightGridWindow(Gtk.Window):
     def popen_print_user(self, output_fname, user):
         begin_str = self.calendar_begin.datetime_date.strftime('%Y-%m-%d')
         script_fname = os.path.join(os.path.dirname(os.path.dirname(__file__)),
-                                    'plot-wcg')
+                                    'wcg-cli')
         if user.lang:
             lang_args = ['--lang=%s' % user.lang]
         else:
@@ -947,7 +947,7 @@ class WeightGridApp(Gtk.Application):
         # super(WeightGridApp, self).do_command_line(args)
         Gtk.Application.do_command_line(self, args)
 
-        parser = argparse.ArgumentParser(prog='gui-wcg')
+        parser = argparse.ArgumentParser(prog='wcg-gui')
         parser.add_argument(
             '-V', '--version', action='version',
             version = ('%(gui_program_name)s (%(package_name)s) %(package_version)s'

@@ -28,23 +28,23 @@ Every few weeks or months:
 
 NOTE: The documentation is a bit out of date.
 
-To print a page, create a PDF file with `plot-wcg` and print that.
+To print a page, create a PDF file with `wcg-cli` and print that.
 
 Example for someone of 1.78m height and a weight of around 85kg:
 
-    $ ./plot-wcg -o my-weight.pdf --height=1.78 --weight=80-90
+    $ ./wcg-cli -o my-weight.pdf --height=1.78 --weight=80-90
 
 Example for someone of  unspecified height and a weight of around 85kg:
 
-    $ ./plot-wcg -o my-weight.pdf --weight=85+-5
+    $ ./wcg-cli -o my-weight.pdf --weight=85+-5
 
 Example for someone of 1.78m height and normal weight:
 
-    $ ./plot-wcg -o my-weight.pdf --height=1.78
+    $ ./wcg-cli -o my-weight.pdf --height=1.78
 
-For detailed information on how to call `plot-wcg`, read the output of
+For detailed information on how to call `wcg-cli`, read the output of
 
-    $ ./plot-wcg --help
+    $ ./wcg-cli --help
 
 
 
@@ -95,7 +95,7 @@ looks as follows:
     2011-06-05     81.3
     2011-06-06     81.7
 
-Feed this file to `plot-wcg` with the `--input=` option and play
+Feed this file to `wcg-cli` with the `--input=` option and play
 around with the `--begin` date for an actual plot.  The `auto` weight
 range might be useful.
 
@@ -103,7 +103,7 @@ range might be useful.
 GUI
 ===
 
-The Gtk3 based GUI script `gui-wcg` is a definite Work In Progress.
+The Gtk3 based GUI script `wcg-gui` is a definite Work In Progress.
 
 
 Web Service
@@ -138,7 +138,7 @@ Build and Install
 
 After the `git clone`, run `make`.
 
-After that, you can run `./plot-wcg` and `./gui-wcg`.
+After that, you can run `./wcg-cli` and `./wcg-gui`.
 
 Installing the software anywhere is not supported yet, so you have to
 run the programs from the source tree.
@@ -150,10 +150,10 @@ Development
 Debugging
 ---------
 
-When running `plot-wcg`, you can set up the startup log level by
+When running `wcg-cli`, you can set up the startup log level by
 setting `WCG_LOG_LEVEL` like so:
 
-    $ env WCG_LOG_LEVEL=verbose ./plot-wcg
+    $ env WCG_LOG_LEVEL=verbose ./wcg-cli
 
 Additional -q and -v parameters are optional and make the output one
 level more quiet or more verbose, respectively.

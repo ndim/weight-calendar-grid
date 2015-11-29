@@ -11,7 +11,7 @@ from unittest import TestCase
 
 
 from ..gui import main
-from ..version import package_version
+from ..version import package_name, package_version
 
 
 ########################################################################
@@ -27,7 +27,7 @@ class TestGui(TestCase):
         # with the arguments to test, so we must call the GUI in a
         # separate process.
         with subprocess.Popen([sys.executable,
-                               'gui-wcg'] + args,
+                               'wcg-gui'] + args,
                               stdin=subprocess.DEVNULL,
                               stderr=subprocess.PIPE,
                               stdout=subprocess.PIPE,
@@ -45,8 +45,8 @@ class TestGui(TestCase):
 
     def test_001_version(self):
         self.__test(['--version'],
-                    expect_stdout=('gui-wcg (weight-calendar-grid) %s\n' %
-                                   package_version))
+                    expect_stdout=('wcg-gui (%s) %s\n' %
+                                   (package_name, package_version)))
 
     def test_002_help(self):
         self.__test(['--help'])

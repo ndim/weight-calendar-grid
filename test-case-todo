@@ -56,7 +56,7 @@ class Testcase(object):
 
       failed = False
 
-      log.quiet("[user@host cwd]$ %s", ' '.join(['plot-wcg'] + testargs))
+      log.quiet("[user@host cwd]$ %s", ' '.join(['wcg-cli'] + testargs))
 
       try:
          cmdline.main(testargs, simulated_infile=self._infile)

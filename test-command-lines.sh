@@ -5,7 +5,7 @@
 
 set -ex
 
-py_main="plot-wcg"
+py_main="wcg-cli"
 
 # Common options
 python ${py_main} --version

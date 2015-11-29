@@ -45,7 +45,7 @@ all: update-locale
 .PHONY: plots
 plots: all $(ALL_TARGETS)
 
-PY_MAIN = plot-wcg
+PY_MAIN = wcg-cli
 
 PY_FILES =
 PY_FILES += weightgrid/__init__.py
@@ -79,10 +79,10 @@ pydoc:
 
 .PHONY: sloccount
 sloccount:
-	sloccount --details $(PY_MAIN) weightgrid
+	$(SLOCCOUNT) --details wcg-cli wcg-gui weightgrid
 
 PACKAGE_NAME = weight-calendar-grid
-GUI_PROGRAM_NAME = gui-wcg
+GUI_PROGRAM_NAME = wcg-gui
 PROGRAM_NAME = $(PY_MAIN)
 PACKAGE_VERSION = 0.1.1
 
