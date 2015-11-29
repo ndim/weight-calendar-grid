@@ -13,6 +13,7 @@ from unittest import TestCase
 
 
 from ..cmdline import main
+from .. import log
 
 
 ########################################################################
@@ -29,7 +30,7 @@ def teardown():
     global tempdir
     assert(os.path.isdir(tempdir))
     if 'WCG_TEST_KEEP' in os.environ and os.environ['WCG_TEST_KEEP'] == 'yes':
-        log.quiet('keeping test files in ', tempdir)
+        log.quiet('keeping test files in %s', tempdir)
     else:
         for fname in os.listdir(tempdir):
             os.unlink(os.path.join(tempdir, fname))
