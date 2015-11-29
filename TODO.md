@@ -12,6 +12,23 @@ Note that some of these TODOs may have been implemented already.
     * In setup.py, compile translated message from source text into
       binary (update-locale)
 
+  * Write a web app serving PNGs and PDFs and allowing users to get
+    grids for their data without locally running any special
+    software. This requires a few things:
+
+      1. Move ReportLab driver from drawing onto Canvas to defining a
+         Drawing object.
+
+      2. Have ReportLab driver generate PNG and possibly SVG in
+         addition to PDF.
+
+      3. Produce PNGs and PDFs via WSGI for inclusion into web server.
+
+      4. Write web app using the PNGs and PDFs generated via WSGI.
+
+  * Add reasonable logic for choosing the best quality driver for a
+	given output format like PNG and PDF.
+
   * Optionally print for non-color printers, probably without BMI.
 
   * Rename Python package from `weightgrid` to `weight_cal_grid` or
