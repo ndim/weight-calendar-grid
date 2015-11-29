@@ -364,7 +364,7 @@ Note that the KG_RANGE can take one of four forms:
     args = parser.parse_args(args=argv)
 
     ver_qu = args.verbose - args.quiet
-    log.level = ver_qu
+    log.level = log.startup_level + ver_qu
 
     if args.weight and args.height:
         pass

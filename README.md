@@ -147,6 +147,21 @@ run the programs from the source tree.
 Development
 ===========
 
+Debugging
+---------
+
+When running `plot-wcg`, you can set up the startup log level by
+setting `WCG_LOG_LEVEL` like so:
+
+    $ env WCG_LOG_LEVEL=verbose ./plot-wcg
+
+Additional -q and -v parameters are optional and make the output one
+level more quiet or more verbose, respectively.
+
+
+Testing
+-------
+
 To run the set suite:
 
     $ python3 setup.py test

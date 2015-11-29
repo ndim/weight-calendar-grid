@@ -27,7 +27,8 @@ ERROR   = -3
 
 ########################################################################
 
-level = INFO
+level = None
+startup_level = INFO
 
 ########################################################################
 
@@ -53,7 +54,7 @@ def log(lvl, msg, *args, **kwargs):
 
     """Generic logging function"""
 
-    if level >= lvl:
+    if ((level != None) and (level >= lvl)) or (startup_level >= lvl):
 
         if 'exc_info' in kwargs:
             exc_info = kwargs['exc_info']
@@ -127,5 +128,53 @@ def warn(msg=None, *args, **kwargs):
 def error(msg=None, *args, **kwargs):
     """Log message at ERROR level"""
     log(ERROR, msg, *args, **kwargs)
+
+########################################################################
+
+env_name = 'WCG_LOG_LEVEL'
+
+if env_name in os.environ:
+    env_value = os.environ[env_name]
+    value_map = {'data':    DATA,    'DATA':    DATA,
+                 '3':       DATA,    '+3':      DATA,
+                 'debug':   DEBUG,   'DEBUG':   DEBUG,
+                 '2':       DEBUG,   '+2':      DEBUG,
+                 'verbose': VERBOSE, 'VERBOSE': VERBOSE,
+                 '1':       VERBOSE, '+1':      VERBOSE,
+                 'info':    INFO,    'INFO':    INFO,
+                 '0':       INFO,    '+0':      INFO,    '-0': INFO,
+                 '':        INFO,
+                 'quiet':   QUIET,   'QUIET':   QUIET,   '-1': QUIET,
+                 'warn':    WARN,    'WARN':    WARN,    '-2': WARN,
+                 'error':   ERROR,   'ERROR':   ERROR,   '-3': ERROR,
+    }
+    if env_value in value_map:
+        startup_level = value_map[env_value]
+    else:
+        error('Invalid value for %s OS environment variable: %s',
+              env_name, repr(env_value))
+        error('%s must be one of:', env_name)
+        rev_map = {}
+        for k, v in value_map.items():
+            if v not in rev_map:
+                rev_map[v] = ([], [])
+            if k == '':
+                # rev_map[v][1].append("''")
+                pass
+            else:
+                try:
+                    i = int(k)
+                    rev_map[v][0].append(k)
+                except ValueError:
+                    rev_map[v][1].append(k)
+        for n in range(3, -3-1, -1):
+            error('  %-10s %s',
+                  ' '.join(["%2s" % a
+                            for a in sorted(rev_map[n][0])]),
+                  ' '.join(["%-7s" % a
+                            for a in reversed(sorted(rev_map[n][1]))]))
+        error('If %s is unset or empty, the startup log level is INFO.',
+              env_name)
+        sys.exit(2)
 
 ########################################################################
