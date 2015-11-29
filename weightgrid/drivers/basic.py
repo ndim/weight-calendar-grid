@@ -889,17 +889,17 @@ class PageDriver(GenericDriver):
         elif begin_date and (not end_date):
             end_date = begin_date + datetime.timedelta(days=8*7)
             log.verbose("using given begin_date %s", begin_date)
-            log.info("using default end_date %s", end_date)
+            log.verbose("using default end_date %s", end_date)
         elif (not begin_date) and end_date:
             begin_date = end_date - datetime.timedelta(days=8*7)
             log.verbose("using given end_date %s", end_date)
-            log.info("using default begin_date %s", begin_date)
+            log.verbose("using default begin_date %s", begin_date)
         elif (not begin_date) and (not end_date):
             begin_date = datetime.date.today()
             begin_date = get_latest_sunday(begin_date)
             end_date = begin_date + datetime.timedelta(days=8*7)
-            log.info("using default begin_date %s and end_date %s",
-                     begin_date, end_date)
+            log.verbose("using default begin_date %s and end_date %s",
+                        begin_date, end_date)
 
         if (end_date - begin_date).days >= 5*7+1:
             log.verbose("keep begin_date %s and end_date %s",
