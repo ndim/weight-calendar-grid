@@ -38,7 +38,7 @@ setup(name='weight-calendar-grid',
       },
       entry_points = {
           'console_scripts': [
-              'wcg-cli=weightgrid.cmdline:main',
+              'wcg-cli=weightgrid.cli:main',
           ],
           'gui_scripts': [
               'wcg-gui=weightgrid.gui:main',

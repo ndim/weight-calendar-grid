@@ -49,7 +49,7 @@ PY_MAIN = wcg-cli
 
 PY_FILES =
 PY_FILES += weightgrid/__init__.py
-PY_FILES += weightgrid/cmdline.py
+PY_FILES += weightgrid/cli.py
 PY_FILES += weightgrid/gui.py
 PY_FILES += weightgrid/log.py
 PY_FILES += weightgrid/drivers/__init__.py

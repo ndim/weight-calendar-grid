@@ -12,7 +12,7 @@ from unittest import TestCase
 ########################################################################
 
 
-from ..cmdline import main
+from ..cli import main
 from .. import log
 from ..version import package_name, package_version
 

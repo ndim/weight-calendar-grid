@@ -18,7 +18,7 @@ from . import generate_grid
 from .utils import get_earliest_sunday, get_latest_sunday
 from . import drivers
 from . import version
-from .cmdline import set_lang
+from .cli import set_lang
 
 
 ##################################################################################

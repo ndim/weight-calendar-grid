@@ -15,7 +15,7 @@ import traceback
 ########################################################################
 
 
-from weightgrid import cmdline
+from weightgrid import cli
 from weightgrid import log
 
 
@@ -59,7 +59,7 @@ class Testcase(object):
       log.quiet("[user@host cwd]$ %s", ' '.join(['wcg-cli'] + testargs))
 
       try:
-         cmdline.main(testargs, simulated_infile=self._infile)
+         cli.main(testargs, simulated_infile=self._infile)
       except SystemExit as e:
          if e.code != expected_retcode:
             log.error("TEST CMD EXIT %d EXPECTED %d", e.code, expected_retcode)
@@ -250,7 +250,7 @@ def main():
 
 if __name__ == '__main__':
    log.prog = 'test-wcg'
-   cmdline.set_lang()
+   cli.set_lang()
    main()
 
 
