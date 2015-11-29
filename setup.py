@@ -27,6 +27,7 @@ setup(name='weight-calendar-grid',
       package_data={
           '': [
               '*.md',
+              'weightgrid/*.png',
               'LICENSE',
           ],
       },
