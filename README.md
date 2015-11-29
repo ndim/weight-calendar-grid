@@ -7,18 +7,23 @@ every day.
 
 Initial setup:
 
-  1. Print a page.
-  2. Hang printed page on wall or put it in similarly available space.
+  1. Print a page with your grid.
+
+  2. Hang printed page on wall or put it in similarly easily available
+     space close to the scale.
+
   3. Keep a dedicated pen at that very location.
 
 Daily:
 
   1. Step on scale and read the weight.
+
   2. Mark that day's weight on the page.
 
 Every few weeks or months:
 
   1. Print a new page and replace the old page with it.
+
   2. Optionally, type the marked values into some computer file.
 
 NOTE: The documentation is a bit out of date.
@@ -137,3 +142,11 @@ After that, you can run `./plot-wcg` and `./gui-wcg`.
 
 Installing the software anywhere is not supported yet, so you have to
 run the programs from the source tree.
+
+
+Development
+===========
+
+To run the set suite:
+
+    $ python3 setup.py test
