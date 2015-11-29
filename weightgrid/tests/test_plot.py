@@ -126,8 +126,12 @@ class ArgPairList(object):
         super(ArgPairList, self).__init__()
         self.iterators = []
         for n in range(0, len(args), 2):
-            assert(isinstance(args[n+1], str))
-            self.iterators.append(ArgList(args[n], [None, args[n+1]]))
+            if isinstance(args[n+1], str):
+                self.iterators.append(ArgList(args[n], [None, args[n+1]]))
+            elif isinstance(args[n+1], list):
+                self.iterators.append(ArgList(args[n], [None]+ args[n+1]))
+            else:
+                assert(False)
 
     def __iter__(self):
         for t in itertools.product(*self.iterators):
@@ -155,7 +159,9 @@ def test_comprehensive():
     arg_height = ArgList('--height', [None, 1.75])
     arg_initials = ArgList('--initials', [None, 'Tester'])
     arg_dates = ArgPairList('--begin-date', '2015-11-22',
-                            '--end-date', '2016-01-17')
+                            '--end-date', ['2016-01-17', '2016-02-14',
+                                           '2016-05-15'])
+    arg_weight = ArgList('--weight', ['70-81', '75', '75+-5'])
 
     iterators = [
         arg_driver,
@@ -163,6 +169,7 @@ def test_comprehensive():
         arg_height,
         arg_initials,
         arg_dates,
+        arg_weight,
     ]
 
     for no, args in enumerate(itertools.product(*iterators)):
@@ -177,7 +184,6 @@ def test_comprehensive():
 
 def check_args(no, args):
     common_args = [
-        '--weight=70-81',
     ]
 
     with open(os.path.join(tempdir, 'test.log'), 'a') as logfile:
