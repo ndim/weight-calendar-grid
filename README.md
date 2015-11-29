@@ -150,3 +150,10 @@ Development
 To run the set suite:
 
     $ python3 setup.py test
+
+You can set a few environment variables to influence the tests:
+
+  * WCG_TEST_KEEP=yes Keep around the files the tests generate.
+
+  * WCG_TEST_TIKZ=no Do not the tikz driver tests in the comprehensive
+    tests as those run SO much longer than the other drivers.

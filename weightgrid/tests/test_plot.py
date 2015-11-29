@@ -28,9 +28,12 @@ def setup():
 def teardown():
     global tempdir
     assert(os.path.isdir(tempdir))
-    for fname in os.listdir(tempdir):
-        os.unlink(os.path.join(tempdir, fname))
-    os.rmdir(tempdir)
+    if 'WCG_TEST_KEEP' in os.environ and os.environ['WCG_TEST_KEEP'] == 'yes':
+        log.quiet('keeping test files in ', tempdir)
+    else:
+        for fname in os.listdir(tempdir):
+            os.unlink(os.path.join(tempdir, fname))
+        os.rmdir(tempdir)
     tempdir = None
 
 
@@ -142,7 +145,10 @@ def test_comprehensive():
     arg_driver = ArgList('--driver')
     arg_driver.append('cairo')
     arg_driver.append('reportlab')
-    arg_driver.append('tikz')
+    if 'WCG_TEST_TIKZ' in os.environ and os.environ['WCG_TEST_TIKZ'] == 'no':
+        pass
+    else:
+        arg_driver.append('tikz')
 
     arg_lang = ArgList('--lang', [None, 'en', 'de'])
     arg_height = ArgList('--height', [None, 1.75])
