@@ -113,7 +113,7 @@ class ReportLabDriver(PageDriver):
     def render_ending(self, pdf):
         pdf.saveState()
 
-        # Determine text width
+        # Determine text width (can't use .stringWidth due to different fonts)
         text = pdf.beginText()
         text.setTextOrigin(0, 0)
         text.setFont("Helvetica", self.font_size)
@@ -279,13 +279,11 @@ class ReportLabDriver(PageDriver):
 
         if label_str:
             if p.font_bold:
+                w = pdf.stringWidth(label_str, "Helvetica-Bold", self.font_size)
                 pdf.setFont("Helvetica-Bold", self.font_size)
             else:
+                w = pdf.stringWidth(label_str, "Helvetica", self.font_size)
                 pdf.setFont("Helvetica", self.font_size)
-            text = pdf.beginText()
-            text.setTextOrigin(0,0)
-            text.textOut(label_str)
-            w = text.getX()
 
             cx = 0.5*(begin_x+end_x)
             cy = y0-1.25*mm
