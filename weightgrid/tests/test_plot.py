@@ -128,8 +128,14 @@ def test_comprehensive():
     arg_height = ArgList('--height', [None, 1.75])
     arg_initials = ArgList('--initials', [None, 'Tester'])
 
-    for no, args in enumerate(itertools.product(arg_driver, arg_lang,
-                                                arg_height, arg_initials)):
+    iterators = [
+        arg_driver,
+        arg_lang,
+        arg_height,
+        arg_initials,
+    ]
+
+    for no, args in enumerate(itertools.product(*iterators)):
         aa = []
         for a in args:
             aa.extend(a)
