@@ -37,13 +37,7 @@ ALL_TARGETS =
 ALL_TARGETS += $(ALL_PDF_TARGETS)
 ALL_TARGETS += $(PDF_ALL_TARGETS)
 
-WG_ARGS =
-
 -include locals.mk
-
-# some default demo values
-HEIGHT ?= 1.80
-KG_RANGE ?= auto
 
 .PHONY: all
 all: update-locale
@@ -86,11 +80,6 @@ pydoc:
 .PHONY: sloccount
 sloccount:
 	sloccount --details $(PY_MAIN) weightgrid
-
-
-.PHONY: pdf
-pdf: $(ALL_PDF_TARGETS) $(PDF_ALL_TARGETS)
-
 
 PACKAGE_NAME = weight-calendar-grid
 GUI_PROGRAM_NAME = gui-wcg
@@ -169,60 +158,3 @@ clean:
 	@set -x && $(RM) -f test--*.pdf
 	$(RM) -f $(CLEAN_FILES)
 
-# WG_ARGS += --dry-run
-WG_ARGS += --keep
-# WG_ARGS += --quiet
-# WG_ARGS += --verbose
-# WG_ARGS += --verbose
-# WG_ARGS += --verbose
-# WG_ARGS += --verbose
-# WG_ARGS += --begin=2013-01-13
-WG_ARGS += --height $(HEIGHT)
-WG_ARGS += --weight $(KG_RANGE)
-
-
-%.all.pdf: $(foreach lang,$(LANGUAGES),$(foreach driver,$(PDF_DRIVERS),%.$(driver).$(lang).pdf))
-	$(PDFTK) $^ cat output $@
-
-
-%.ALL.pdf: $(foreach driver,$(PDF_DRIVERS),%.$(driver).pdf)
-	$(PDFTK) $^ cat output $@
-
-%.cairo.eps: %.dat $(PY_MAIN) $(PY_FILES) $(PY_FILES_CAIRO)
-	$(PYTHON) $(PY_MAIN) --driver=cairo --input=$< --output=$@ $(WG_FLAGS) $(WG_ARGS)
-
-%.cairo.pdf: %.dat $(PY_MAIN) $(PY_FILES) $(PY_FILES_CAIRO)
-	$(PYTHON) $(PY_MAIN) --driver=cairo --input=$< --output=$@ $(WG_FLAGS) $(WG_ARGS)
-
-%.cairo.png: %.dat $(PY_MAIN) $(PY_FILES) $(PY_FILES_CAIRO)
-	$(PYTHON) $(PY_MAIN) --driver=cairo --input=$< --output=$@ $(WG_FLAGS) $(WG_ARGS)
-
-%.cairo.svg: %.dat $(PY_MAIN) $(PY_FILES) $(PY_FILES_CAIRO)
-	$(PYTHON) $(PY_MAIN) --driver=cairo --input=$< --output=$@ $(WG_FLAGS) $(WG_ARGS)
-
-%.tikz.pdf: %.dat $(PY_MAIN) $(PY_FILES) $(PY_FILES_TIKZ)
-	$(PYTHON) $(PY_MAIN) --driver=tikz  --input=$< --output=$@ $(WG_FLAGS) $(WG_ARGS)
-
-define RULESET_template
-
-%.ALL.$(2).$(1).pdf: $$(foreach driver,$$(PDF_DRIVERS),%.$$(driver).$(2).$(1).pdf)
-	$(PDFTK) $$^ cat output $$@
-
-%.cairo.$(2).$(1).eps: %.dat $(PY_MAIN) $(PY_FILES) $(PY_FILES_CAIRO)
-	$(PYTHON) $(PY_MAIN) --driver=cairo --lang=$(1) --mode=$(2) --input=$$< --output=$$@ $(WG_FLAGS) $(WG_ARGS)
-
-%.cairo.$(2).$(1).pdf: %.dat $(PY_MAIN) $(PY_FILES) $(PY_FILES_CAIRO)
-	$(PYTHON) $(PY_MAIN) --driver=cairo --lang=$(1) --mode=$(2) --input=$$< --output=$$@ $(WG_FLAGS) $(WG_ARGS)
-
-%.cairo.$(2).$(1).png: %.dat $(PY_MAIN) $(PY_FILES) $(PY_FILES_CAIRO)
-	$(PYTHON) $(PY_MAIN) --driver=cairo --lang=$(1) --mode=$(2) --input=$$< --output=$$@ $(WG_FLAGS) $(WG_ARGS)
-
-%.cairo.$(2).$(1).svg: %.dat $(PY_MAIN) $(PY_FILES) $(PY_FILES_CAIRO)
-	$(PYTHON) $(PY_MAIN) --driver=cairo --lang=$(1) --mode=$(2) --input=$$< --output=$$@ $(WG_FLAGS) $(WG_ARGS)
-
-%.tikz.$(2).$(1).pdf: %.dat $(PY_MAIN) $(PY_FILES) $(PY_FILES_TIKZ)
-	$(PYTHON) $(PY_MAIN) --driver=tikz  --lang=$(1) --mode=$(2) --input=$$< --output=$$@ $(WG_FLAGS) $(WG_ARGS)
-
-endef
-
-$(foreach mode,$(MODES),$(foreach lang,$(LANGUAGES),$(eval $(call RULESET_template,$(lang),$(mode)))))
