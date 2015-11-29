@@ -57,7 +57,7 @@ class TestCmdline(TestCase):
 
     def __test_pdf(self, args, pdf_fname=None, expected_code=0):
         with open(os.path.join(tempdir, 'test.log'), 'a') as logfile:
-            logfile.write('testing with file %s\n' % pdf_fname)
+            print('testing with file', pdf_fname, file=logfile)
 
         pdf_path = os.path.join(tempdir, pdf_fname)
         self.assertIsInstance(pdf_fname, str)
@@ -136,6 +136,9 @@ def test_comprehensive():
         yield check_args, no+1, aa
 
 
+########################################################################
+
+
 def check_args(no, args):
     common_args = [
         '--begin-date=2015-11-22',
@@ -144,20 +147,20 @@ def check_args(no, args):
     ]
 
     with open(os.path.join(tempdir, 'test.log'), 'a') as logfile:
-        logfile.write('TESTCASE %d\n' % no)
+        print('TESTCASE', no, file=logfile)
 
         argv = list(common_args)
         argv.extend(args)
-        logfile.write('     %s\n' % str(argv))
+        print('  argv', argv, file=logfile)
         pdf_fname = ('TESTCASE-%03d___%s.pdf' %
                      (no, '_'.join(argv).replace('.','_')))
-        logfile.write('     %s\n' % pdf_fname)
+        print('  ', pdf_fname, file=logfile)
 
         assert(isinstance(pdf_fname, str))
 
         pdf_path = os.path.join(tempdir, pdf_fname)
         argv.extend(['--output=%s' % pdf_path])
-        logfile.write('  args %s\n' % argv)
+        print('  args', argv, file=logfile)
         try:
             main(argv=argv)
             assert(False)
@@ -172,7 +175,7 @@ def check_args(no, args):
         assert(osr.st_size > 0)     # PDF file must be non-empty
         assert(osr.st_size >= 1024) # PDF file appears a bit too small
 
-        logfile.write('  status %s\n' % 'SUCCESS')
+        print('  status', 'SUCCESS', file=logfile)
 
 
 ########################################################################
