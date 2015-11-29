@@ -22,7 +22,7 @@ tempdir = None
 
 def setup():
     global tempdir
-    tempdir = tempfile.mkdtemp(prefix='weight-calendar-grid',
+    tempdir = tempfile.mkdtemp(prefix='weight-calendar-grid.',
                                suffix='.test-output')
 
 def teardown():

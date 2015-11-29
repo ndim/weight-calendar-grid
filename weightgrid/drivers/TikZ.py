@@ -36,7 +36,9 @@ from .. import log
 
 def _latex_to_pdf(texstr, keep_tmp_on_error, outfile):
 
-    workdir = tempfile.mkdtemp(prefix='weight-grid.', suffix='.wd')
+    basename = 'weight-calendar-grid'
+
+    workdir = tempfile.mkdtemp(prefix='%s.' % basename, suffix='.wd')
     log.debug("created workdir %s", workdir)
 
     def cleanup_workdir():
@@ -47,8 +49,6 @@ def _latex_to_pdf(texstr, keep_tmp_on_error, outfile):
             os.rmdir(os.path.join(dirpath, d))
         os.rmdir(workdir)
         log.debug("cleaned up workdir %s", workdir)
-
-    basename = 'weight-grid'
 
     texfname = os.path.join(workdir, '%s.tex' % basename)
     with open(texfname, 'w') as texfile:
