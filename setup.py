@@ -1,18 +1,32 @@
 #!/usr/bin/python3
 
+########################################################################
 
 from setuptools import setup
 
+import os
 
-def readme():
-    with open('README.md') as f:
-        return f.read()
+########################################################################
 
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-setup(name='weight-calendar-grid',
-      version='0.2.0',
+########################################################################
+
+version_ns_global, version_ns_local = {}, {}
+with open('weightgrid/version.py') as f:
+    exec(f.read(), version_ns_global, version_ns_local)
+
+########################################################################
+
+with open('README.md') as readme_file:
+    long_description = readme_file.read()
+
+########################################################################
+
+setup(name=version_ns_local['package_name'],
+      version=version_ns_local['package_version'],
       description='print a grid on sheet of paper and mark your weight every day',
-      long_description=readme(),
+      long_description=long_description,
       url='https://github.com/ndim/weight-calendar-grid',
       author='Hans Ulrich Niedermann',
       author_email='hun@n-dimensional.de',
@@ -48,3 +62,5 @@ setup(name='weight-calendar-grid',
       test_suite='nose.collector',
       tests_require=['nose'],
       zip_safe=False)
+
+########################################################################

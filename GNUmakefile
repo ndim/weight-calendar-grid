@@ -84,25 +84,7 @@ sloccount:
 PACKAGE_NAME = weight-calendar-grid
 GUI_PROGRAM_NAME = wcg-gui
 PROGRAM_NAME = $(PY_MAIN)
-PACKAGE_VERSION = 0.1.1
-
-VERSION_PY = weightgrid/version.py
-PY_FILES += weightgrid/version.py
-CLEAN_FILES += weightgrid/version.py
-weightgrid/version.py: GNUmakefile
-	echo '# Automatically generated from GNUmakefile' > $(VERSION_PY).new
-	echo '"""Automatically generated version data (from GNUmakefile)"""' >> $(VERSION_PY).new
-	echo 'package_name = "$(PACKAGE_NAME)"' >> $(VERSION_PY).new
-	echo 'package_version = "$(PACKAGE_VERSION)"' >> $(VERSION_PY).new
-	echo 'program_name = "$(PROGRAM_NAME)"' >> $(VERSION_PY).new
-	echo 'gui_program_name = "$(GUI_PROGRAM_NAME)"' >> $(VERSION_PY).new
-	echo '# End of file.' >> $(VERSION_PY).new
-	set -x; if cmp "$(VERSION_PY).new" "$(VERSION_PY)"; then \
-		rm -f "$(VERSION_PY).new"; \
-	else \
-		mv -f "$(VERSION_PY).new" "$(VERSION_PY)"; \
-	fi
-
+PACKAGE_VERSION = 0.1.1-borked
 
 .PHONY: check
 check: all test-wcg $(PY_FILES) $(PY_FILES_CAIRO)
@@ -114,7 +96,7 @@ COPYRIGHT_HOLDER = 'Hans Ulrich Niedermann <hun@n-dimensional.de>'
 BUG_ADDRESS = 'Hans Ulrich Niedermann <hun@n-dimensional.de>'
 
 .PHONY: update-po
-update-po: weightgrid/version.py
+update-po:
 	set -ex; \
 	cd po; \
 	xgettext -L Python \
@@ -140,7 +122,7 @@ dummy := $(shell $(MAKE) update-locale DUMMY=foo)
 endif
 
 .PHONY: update-locale
-update-locale: weightgrid/version.py
+update-locale:
 	set -ex; \
 	for po in po/*.po; do \
 		lang="$$(basename "$$po" .po)"; \

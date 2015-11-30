@@ -8,6 +8,7 @@ i18n related utility functions
 
 import locale
 import gettext
+import sys
 
 ########################################################################
 
