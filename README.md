@@ -54,21 +54,27 @@ Rationale
 I need a very low overhead way to record my weight to reliably do it.
 However, just writing down a numerical value on paper does not help
 much as I cannot immediately see how that value relates to the
-previous ones.  Typing the value into the computer and letting the
-computer plot the values helps, but has too much overhead.
+previous ones.
 
-So recording the weight on this custom grid paper does multiple
-things:
+Typing the value into a computer program and letting the program plot
+the values helps, but is too much hassle. The same applies to
+smartphone apps.
+
+Recording values on common off the shelf grid paper does not work as
+the 5x5mm or 1x1mm grids are not well suited for date and kg ranges.
+
+So I need a custom type of grid paper to record my weight on. This
+custom grid paper does multiple things:
 
   * I can immediately see how the last recorded value relates to the
-    previous ones and guess a trend.
+    previous ones and reasonably estimate a trend.
 
   * Marking the current value is a matter of seconds and has
-    instantanous results.
+    instantanous results: The visual extrapolation is instantaneous.
 
   * If I want to keep longer term records on the computer, I have
-    recorded values with 0.1kg precision which can easily be typed
-    into the computer.
+    recorded values with 0.1kg precision which can easily be read from
+    the diagram and then typed into the computer.
 
 So as long as the scale can neither record the weight nor display the
 graph, this turns out to be the best way to keep track of my weight.
@@ -110,8 +116,9 @@ Web Service
 ===========
 
 A web service with an HTML5 webapp might be an interesting way to
-supply many people with weight calendar grids. We have nothing
-implemented yet in this department, though.
+supply many people with weight calendar grid PDFs for printing out
+themselves.  We have nothing implemented yet in this department,
+though.
 
 
 Requirements
