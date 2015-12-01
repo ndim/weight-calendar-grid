@@ -15,6 +15,7 @@ from unittest import TestCase
 from ..cli import main
 from .. import log
 from ..version import package_name, package_version
+from .. import drivers
 
 
 ########################################################################
@@ -188,12 +189,20 @@ def test_comprehensive():
     # try all combinations of the following arguments
 
     arg_driver = ArgList('--driver')
-    arg_driver.append('cairo')
-    arg_driver.append('reportlab')
-    if 'WCG_TEST_TIKZ' in os.environ and os.environ['WCG_TEST_TIKZ'] == 'no':
-        pass
+    if 'WCG_TEST_DRIVERS' in os.environ:
+        drv_list = os.environ['WCG_TEST_DRIVERS'].split(',')
+        for drv in drv_list:
+            if drv == '':
+                continue
+            elif drv in drivers.GenericDriver.drivers:
+                arg_driver.append(drv)
+            else:
+                log.error('Did not find driver %s in list of drivers (%s)',
+                          repr(drv), ', '.join(drivers.GenericDriver.drivers))
+                sys.exit(1)
     else:
-        arg_driver.append('tikz')
+        for drv in drivers.GenericDriver.drivers:
+            arg_driver.append(drv)
 
     arg_lang = ArgList('--lang', [None, 'en', 'de'])
     arg_height = ArgList('--height', [None, 1.75])

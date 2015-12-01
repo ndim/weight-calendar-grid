@@ -177,5 +177,9 @@ You can set a few environment variables to influence the tests:
 
   * WCG_TEST_KEEP=yes Keep around the files the tests generate.
 
-  * WCG_TEST_TIKZ=no Do not the tikz driver tests in the comprehensive
-    tests as those run SO much longer than the other drivers.
+  * WCG_TEST_DRIVERS=cairo,reportlab,tikz
+
+    Only test the drivers listed here in the comprehensive tests as
+    those tests are many and tikz/pdflatex runs SO much longer than
+    the other drivers. The valid drivers are the same as listed by
+	`wcg-cli --list-options`.
