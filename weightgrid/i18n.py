@@ -8,6 +8,7 @@ i18n related utility functions
 
 import locale
 import gettext
+import os
 import sys
 
 ########################################################################
@@ -38,33 +39,48 @@ def print_language_list(outfile=None):
 
 # TODO: Look for locale/ in directories we may be installed to.
 
+__trans_cache = {}
+
 def set_lang(lang=None):
     log.verbose('set_lang(%s)', repr(lang))
 
-    if lang == default_language:
-        lang = None
+    if lang not in __trans_cache:
+        if lang == default_language:
+            lang = None
 
-    if lang:
-        for l in (locale.LC_ALL, locale.LC_MESSAGES, locale.LC_TIME):
-            locale.setlocale(l, languages[lang][1])
-    else:
-        locale.setlocale(locale.LC_ALL, '')
-
-    trans = None
-    try:
-        text_domain = 'plot-weight-calendar-grid'
         if lang:
-            trans = gettext.translation(text_domain, 'locale',
-                                        [languages[lang][1], lang])
+            for l in (locale.LC_ALL, locale.LC_MESSAGES, locale.LC_TIME):
+                locale.setlocale(l, languages[lang][1])
         else:
-            trans = gettext.translation(text_domain, 'locale')
-    except IOError as e:
-        if lang:
-            log.error("Could not find translations", exc_info=True)
-            sys.exit(1)
+            locale.setlocale(locale.LC_ALL, '')
 
-    if not trans:
-        trans = gettext.NullTranslations()
-    trans.install()
+        text_domain = 'weight-calendar-grid'
+
+        trans = None
+
+        locale_dirs = [ os.path.abspath(p)
+                        for p in ['locale', 'build/locale']]
+        for locale_dir in locale_dirs:
+            try:
+                if lang:
+                    trans = gettext.translation(text_domain, locale_dir,
+                                                [languages[lang][1], lang])
+                else:
+                    trans = gettext.translation(text_domain, locale_dir)
+                break
+            except FileNotFoundError as e:
+                continue
+
+        if not trans:
+            if lang:
+                log.error("Could not find translation for %s. I tried the following:", repr(lang))
+                for d in locale_dirs:
+                    log.error("    %s", d)
+                sys.exit(1)
+            trans = gettext.NullTranslations()
+
+        __trans_cache[lang] = trans
+
+    __trans_cache[lang].install()
 
 ########################################################################

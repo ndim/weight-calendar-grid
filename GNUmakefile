@@ -91,7 +91,7 @@ check: all test-wcg $(PY_FILES) $(PY_FILES_CAIRO)
 	$(PYTHON) test-wcg
 
 
-TEXT_DOMAIN = plot-weight-calendar-grid
+TEXT_DOMAIN = $(PACKAGE_NAME)
 COPYRIGHT_HOLDER = 'Hans Ulrich Niedermann <hun@n-dimensional.de>'
 BUG_ADDRESS = 'Hans Ulrich Niedermann <hun@n-dimensional.de>'
 
