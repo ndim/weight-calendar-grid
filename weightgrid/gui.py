@@ -18,7 +18,7 @@ from . import generate_grid
 from .utils import get_earliest_sunday, get_latest_sunday
 from . import drivers
 from . import version
-from .cli import set_lang
+from .i18n import set_lang
 
 
 ##################################################################################
@@ -947,10 +947,10 @@ class WeightGridApp(Gtk.Application):
         # super(WeightGridApp, self).do_command_line(args)
         Gtk.Application.do_command_line(self, args)
 
-        parser = argparse.ArgumentParser(prog='wcg-gui')
+        parser = argparse.ArgumentParser(prog=version.program_name_gui)
         parser.add_argument(
             '-V', '--version', action='version',
-            version = ('%(gui_program_name)s (%(package_name)s) %(package_version)s'
+            version = ('%(program_name_gui)s (%(package_name)s) %(package_version)s'
                        % vars(version)))
 
         # parse the command line stored in args, but skip the first

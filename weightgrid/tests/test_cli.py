@@ -214,11 +214,11 @@ def test_comprehensive():
 
     iterators = [
         arg_driver,
-        arg_lang,
         arg_height,
         arg_initials,
         arg_dates,
         arg_weight,
+        arg_lang,
     ]
 
     for no, args in enumerate(itertools.product(*iterators)):
