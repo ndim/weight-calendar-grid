@@ -10,6 +10,7 @@ import locale
 import gettext
 import os
 import sys
+from os.path import abspath, dirname
 
 ########################################################################
 
@@ -37,8 +38,6 @@ def print_language_list(outfile=None):
 
 ########################################################################
 
-# TODO: Look for locale/ in directories we may be installed to.
-
 __trans_cache = {}
 
 def set_lang(lang=None):
@@ -58,25 +57,37 @@ def set_lang(lang=None):
 
         trans = None
 
-        locale_dirs = [ os.path.abspath(p)
-                        for p in ['locale', 'build/locale']]
-        for locale_dir in locale_dirs:
-            try:
-                if lang:
+        locale_dirs = []
+        last_dir = None
+        curr_dir = abspath(dirname(__file__))
+        while last_dir != curr_dir:
+            for rel_dir in [os.path.join('share', 'locale'), 'locale']:
+                locale_dir = os.path.join(curr_dir, rel_dir)
+                locale_dirs.append(locale_dir)
+            last_dir = curr_dir
+            curr_dir = abspath(os.path.join(curr_dir, os.pardir))
+
+        if lang:
+            locale_dirs = [abspath('build/locale')] + locale_dirs
+            for locale_dir in locale_dirs:
+                log.debug('Looking for lang %s in %s', repr(lang), locale_dir)
+                try:
                     trans = gettext.translation(text_domain, locale_dir,
                                                 [languages[lang][1], lang])
-                else:
-                    trans = gettext.translation(text_domain, locale_dir)
-                break
-            except FileNotFoundError as e:
-                continue
+                    log.debug("Found %s translation in %s", repr(lang), locale_dir)
+                    break
+                except FileNotFoundError as e:
+                    continue
 
-        if not trans:
-            if lang:
-                log.error("Could not find translation for %s. I tried the following:", repr(lang))
+            if not trans:
+                log.error("Could not find translation for %s. I tried the following:",
+                         repr(lang))
                 for d in locale_dirs:
                     log.error("    %s", d)
                 sys.exit(1)
+
+        else:
+            log.warn('Using NULL translation')
             trans = gettext.NullTranslations()
 
         __trans_cache[lang] = trans

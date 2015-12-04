@@ -47,7 +47,6 @@ For detailed information on how to call `wcg-cli`, read the output of
     $ ./wcg-cli --help
 
 
-
 Rationale
 =========
 
@@ -143,12 +142,19 @@ Requirements
 Build and Install
 =================
 
-After the `git clone`, run `make`.
+After the `git clone`, run
 
-After that, you can run `./wcg-cli` and `./wcg-gui`.
+    $ python3 setup.py compile_catalog
+    $ python3 setup.py build
 
-Installing the software anywhere is not supported yet, so you have to
-run the programs from the source tree.
+(We are working on hooking `compile_catalog` into `build`.)
+
+After that, you can run `./wcg-cli` and `./wcg-gui` from the source
+tree or install the `weight-calendar-grid` with
+
+    $ python3 setup.py install
+
+Run with `--help` for details on installing somewhere.
 
 
 Development
@@ -164,7 +170,6 @@ setting `WCG_LOG_LEVEL` like so:
 
 Additional -q and -v parameters are optional and make the output one
 level more quiet or more verbose, respectively.
-
 
 Testing
 -------
@@ -183,3 +188,22 @@ You can set a few environment variables to influence the tests:
     those tests are many and tikz/pdflatex runs SO much longer than
     the other drivers. The valid drivers are the same as listed by
 	`wcg-cli --list-options`.
+
+Translations
+------------
+
+  * After adding, changing or removing translated strings in the Python source code:
+
+        $ python3 setup.py extract_messages
+        $ python3 setup.py update_catalog
+
+  * After updating a translation in
+    `weightgrid/locale/${LANG}/LC_MESSAGES/weight-calendar-grid.po`,
+    compile that file to its binary equivalent
+    `weightgrid/locale/${LANG}/LC_MESSAGES/weight-calendar-grid.mo`:
+
+        $ python3 setup.py compile_catalog
+
+  * Create translation for a new language:
+
+        $ python3 setup.py init_catalog --locale=${NEW_LANG}
