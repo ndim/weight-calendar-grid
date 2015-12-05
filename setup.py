@@ -69,7 +69,6 @@ setup(
         ],
     },
     setup_requires = [
-        'polib',
         'Babel>=1.3',
     ],
     test_suite='nose.collector',
