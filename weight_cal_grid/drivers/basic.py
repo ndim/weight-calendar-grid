@@ -27,6 +27,46 @@ from ..utils import (get_latest_first, get_next_first, get_latest_sunday,
 
 
 ########################################################################
+# We cannot use the normal strftime("%B") and "%b" functions
+# here. They only work with the globally set locale, not with one
+# given on a per call context basis.
+
+def N_(message): return message
+
+
+month_long_names = {
+    1:  N_("January"),
+    2:  N_("February"),
+    3:  N_("March"),
+    4:  N_("April"),
+    5:  N_("May"),
+    6:  N_("June"),
+    7:  N_("July"),
+    8:  N_("August"),
+    9:  N_("September"),
+    10: N_("October"),
+    11: N_("November"),
+    12: N_("December"),
+}
+
+
+month_short_names = {
+    1:  N_("Jan"),
+    2:  N_("Feb"),
+    3:  N_("Mar"),
+    4:  N_("Apr"),
+    5:  N_("May"),
+    6:  N_("Jun"),
+    7:  N_("Jul"),
+    8:  N_("Aug"),
+    9:  N_("Sep"),
+    10: N_("Oct"),
+    11: N_("Nov"),
+    12: N_("Dec"),
+}
+
+
+########################################################################
 
 
 class ClassDefinitionError(Exception):
@@ -162,6 +202,8 @@ class GenericDriver(object, metaclass=DriverMetaClass):
         self.keep_tmp_on_error = keep_tmp_on_error
         self.translation = translation or gettext.NullTranslation()
 
+    def _(self, msg):
+        return self.translation.gettext(msg)
 
     def count_axes(self):
         self.fix_dimensions()
@@ -1182,9 +1224,9 @@ class PageDriver(GenericDriver):
 
         days = (end - begin).days
         if   days > 6: # range should be wide enough for longest name of month
-            label_str = begin.strftime('%B')
+            label_str = self._(month_long_names[begin.month])
         elif days >= 3: # shortened name of month
-            label_str = begin.strftime('%b')
+            label_str = self._(month_short_names[begin.month])
         elif days >= 2: # number of month
             label_str = begin.strftime('%m')
         else: # no month label at all

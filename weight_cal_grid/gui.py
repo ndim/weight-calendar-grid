@@ -129,7 +129,7 @@ class SaneCalendar(Gtk.Calendar):
 
 class WeightGrid(Gtk.DrawingArea):
 
-    def __init__(self, lang=None):
+    def __init__(self):
         super(WeightGrid, self).__init__()
         self.set_size_request(297, 210)
         self.begin_date = None
@@ -139,7 +139,6 @@ class WeightGrid(Gtk.DrawingArea):
         self.user_height = None
         self.user_weight_lo = None
         self.user_weight_hi = None
-        self.output_lang = None
 
     def set_dates(self, begin_date, end_date):
         if ((self.begin_date == begin_date) and
@@ -195,7 +194,7 @@ class WeightGrid(Gtk.DrawingArea):
             keep_tmp_on_error=False,
             history_mode=False,
             initials=self.user_nick,
-            lang=self.output_lang)
+            lang=self.user_lang)
 
 
 ##################################################################################
@@ -213,7 +212,7 @@ class WeightGridWindow(Gtk.Window):
 
         self.data_fname = os.path.expanduser('~/.weight-calendar-grid.yaml')
 
-        self.weight_grid = WeightGrid(output_lang)
+        self.weight_grid = WeightGrid()
 
         self.weight_delta = 11
         self.set_default_size(960, 960)
