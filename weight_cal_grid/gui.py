@@ -1,3 +1,9 @@
+########################################################################
+
+
+"""Implement Graphical User Interface (GUI)"""
+
+
 ##################################################################################
 
 
@@ -7,6 +13,7 @@ import os
 import subprocess
 import sys
 import yaml
+
 from gi.repository import Gio, Gtk, cairo, GLib, Poppler
 from pprint import pprint
 
@@ -14,11 +21,11 @@ from pprint import pprint
 ##################################################################################
 
 
-from . import generate_grid
+from .      import generate_grid
 from .utils import get_earliest_sunday, get_latest_sunday
-from . import drivers
-from . import version
-from .i18n import set_lang
+from .      import drivers
+from .      import version
+from .i18n  import set_lang
 
 
 ##################################################################################

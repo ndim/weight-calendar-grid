@@ -1,5 +1,7 @@
+########################################################################
 
-"""Implement command line command"""
+
+"""Implement Command Line Interface (CLI)"""
 
 
 ########################################################################
@@ -12,8 +14,6 @@ import sys
 import time
 
 import locale
-import gettext
-
 
 from pprint import pprint
 
@@ -21,11 +21,11 @@ from pprint import pprint
 ########################################################################
 
 
-from . import generate_grid
-from . import drivers
-from . import log
-from . import version
-from .i18n import set_lang, languages, print_language_list
+from .      import generate_grid
+from .      import drivers
+from .      import log
+from .      import version
+from .i18n  import set_lang, languages, print_language_list
 
 
 ########################################################################
