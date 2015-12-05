@@ -1,16 +1,11 @@
 Note that some of these TODOs may have been implemented already.
 
-  * Replace GNUmakefile by setuptools based setup.py which requires
-    the following:
+  * Separate handling of UI and output translations in the code so
+    that we can have the UI in a language other than the output grid
+    language.
 
-    * Replace make generated weightgrid/version.py by setuptools based
-      logic.
-
-    * In setup.py, extract messages for translation from sourcecode
-      (update-po)
-
-    * In setup.py, compile translated message from source text into
-      binary (update-locale)
+  * Separate translations of UI strings and output grid strings into
+    disjunct text domains?
 
   * Write a web app serving PNGs and PDFs and allowing users to get
     grids for their data without locally running any special
