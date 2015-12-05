@@ -25,7 +25,7 @@ from .      import generate_grid
 from .utils import get_earliest_sunday, get_latest_sunday
 from .      import drivers
 from .      import version
-from .i18n  import set_lang
+from .i18n  import install_translation
 
 
 ##################################################################################
@@ -129,7 +129,7 @@ class SaneCalendar(Gtk.Calendar):
 
 class WeightGrid(Gtk.DrawingArea):
 
-    def __init__(self):
+    def __init__(self, lang=None):
         super(WeightGrid, self).__init__()
         self.set_size_request(297, 210)
         self.begin_date = None
@@ -139,6 +139,7 @@ class WeightGrid(Gtk.DrawingArea):
         self.user_height = None
         self.user_weight_lo = None
         self.user_weight_hi = None
+        self.output_lang = None
 
     def set_dates(self, begin_date, end_date):
         if ((self.begin_date == begin_date) and
@@ -182,8 +183,6 @@ class WeightGrid(Gtk.DrawingArea):
         else:
             cr.scale(h_scale, h_scale)
 
-        set_lang(self.user_lang)
-
         # draw the grid
         generate_grid(
             0.01 * self.user_height,
@@ -195,9 +194,8 @@ class WeightGrid(Gtk.DrawingArea):
             outfile=cr,
             keep_tmp_on_error=False,
             history_mode=False,
-            initials=self.user_nick)
-
-        set_lang()
+            initials=self.user_nick,
+            lang=self.output_lang)
 
 
 ##################################################################################
@@ -215,7 +213,7 @@ class WeightGridWindow(Gtk.Window):
 
         self.data_fname = os.path.expanduser('~/.weight-calendar-grid.yaml')
 
-        self.weight_grid = WeightGrid()
+        self.weight_grid = WeightGrid(output_lang)
 
         self.weight_delta = 11
         self.set_default_size(960, 960)
@@ -937,7 +935,7 @@ class WeightGridApp(Gtk.Application):
             application_id="net.lauft.app.wcg.gtk",
             flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
         self.args = None # store for parsed command line options
-        set_lang()
+        install_translation()
 
     def do_activate(self):
         win = WeightGridWindow(self)

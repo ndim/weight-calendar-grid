@@ -11,6 +11,7 @@
 
 import collections
 import datetime
+import gettext
 import math
 from pprint import pprint
 from abc import abstractmethod
@@ -132,7 +133,8 @@ class GenericDriver(object, metaclass=DriverMetaClass):
                  plot_points=None,
                  keep_tmp_on_error=False,
                  history_mode=False,
-                 initials=None):
+                 initials=None,
+                 translation=None):
 
         (min_kg, max_kg) = kg_range
         (begin_date, end_date) = date_range
@@ -158,6 +160,7 @@ class GenericDriver(object, metaclass=DriverMetaClass):
             self.plot_points = []
 
         self.keep_tmp_on_error = keep_tmp_on_error
+        self.translation = translation or gettext.NullTranslation()
 
 
     def count_axes(self):
