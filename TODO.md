@@ -26,9 +26,6 @@ Note that some of these TODOs may have been implemented already.
 
   * Optionally print for non-color printers, probably without BMI.
 
-  * Rename Python package from `weightgrid` to `weight_cal_grid` or
-    something else similarly containing the calendar word as well.
-
   * baseline align the month/year range labels (cairo/tikz)
 
   * Add `--date` `--date-range` argument, possibly replacing `-b` and `-e`.

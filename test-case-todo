@@ -15,8 +15,8 @@ import traceback
 ########################################################################
 
 
-from weightgrid import cli
-from weightgrid import log
+from weight_cal_grid import cli
+from weight_cal_grid import log
 
 
 ########################################################################

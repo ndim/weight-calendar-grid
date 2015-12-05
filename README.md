@@ -195,9 +195,9 @@ Translations
         $ python3 setup.py update_catalog
 
   * After updating a translation in
-    `weightgrid/locale/${LANG}/LC_MESSAGES/weight-calendar-grid.po`,
+    `weight_cal_grid/locale/${LANG}/LC_MESSAGES/weight-calendar-grid.po`,
     compile that file to its binary equivalent
-    `weightgrid/locale/${LANG}/LC_MESSAGES/weight-calendar-grid.mo`:
+    `weight_cal_grid/locale/${LANG}/LC_MESSAGES/weight-calendar-grid.mo`:
 
         $ python3 setup.py compile_catalog
 

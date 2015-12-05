@@ -15,7 +15,7 @@ chdir(dirname(abspath(__file__)))
 ########################################################################
 
 version_ns_global, version_ns_local = {}, {}
-with open('weightgrid/version.py') as f:
+with open('weight_cal_grid/version.py') as f:
     exec(f.read(), version_ns_global, version_ns_local)
 
 class Version(object): pass
@@ -56,7 +56,7 @@ setup(
             '*.md',
             'LICENSE',
         ],
-        'weightgrid': [
+        'weight_cal_grid': [
             '*.png',
             'locale/weight-calendar-grid.pot',
             'locale/*/LC_MESSAGES/*.mo',
@@ -70,10 +70,10 @@ setup(
     },
     entry_points = {
         'console_scripts': [
-            'wcg-cli=weightgrid.cli:main',
+            'wcg-cli=weight_cal_grid.cli:main',
         ],
         'gui_scripts': [
-            'wcg-gui=weightgrid.gui:main',
+            'wcg-gui=weight_cal_grid.gui:main',
         ],
     },
     setup_requires = [
