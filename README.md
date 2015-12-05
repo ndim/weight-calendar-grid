@@ -189,10 +189,13 @@ You can set a few environment variables to influence the tests:
 Translations
 ------------
 
-  * After adding, changing or removing translated strings in the Python source code:
+  * After adding, changing or removing translated strings in the
+    Python source code:
 
         $ python3 setup.py extract_messages
         $ python3 setup.py update_catalog
+
+    If you run into a TypeError exception, see below.
 
   * After updating a translation in
     `weight_cal_grid/locale/${LANG}/LC_MESSAGES/weight-calendar-grid.po`,
@@ -204,3 +207,27 @@ Translations
   * Create translation for a new language:
 
         $ python3 setup.py init_catalog --locale=${NEW_LANG}
+
+  * On Python 3.4 and Babel 1.3, you might run into an exception like
+
+        File "/usr/lib/python3.4/site-packages/babel/messages/frontend.py", line 585, in run
+            include_previous=self.previous, width=self.width)
+        File "/usr/lib/python3.4/site-packages/babel/messages/pofile.py", line 446, in write_po
+           _write(comment_header + u'\n')
+        File "/usr/lib/python3.4/site-packages/babel/messages/pofile.py", line 390, in _write
+           fileobj.write(text)
+        TypeError: must be str, not bytes
+
+    If you don't want to update your system to Babel 2.0 or newer, you
+    can edit
+    `/usr/lib/python3.4/site-packages/babel/messages/frontend.py` line
+    580 from
+
+        580             tmpfile = open(tmpname, 'w')
+
+    to
+
+        580             tmpfile = open(tmpname, 'wb')
+
+    which solves
+    [the issue](https://github.com/python-babel/babel/issues/91).
