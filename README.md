@@ -165,8 +165,8 @@ setting `WCG_LOG_LEVEL` like so:
 
     $ env WCG_LOG_LEVEL=verbose ./wcg-cli
 
-Additional -q and -v parameters are optional and make the output one
-level more quiet or more verbose, respectively.
+Additional `-q` and `-v` parameters are optional and make the output
+one level more quiet or more verbose, respectively.
 
 Testing
 -------
@@ -177,9 +177,9 @@ To run the set suite:
 
 You can set a few environment variables to influence the tests:
 
-  * WCG_TEST_KEEP=yes Keep around the files the tests generate.
+  * `WCG_TEST_KEEP=yes` Keep around the files the tests generate.
 
-  * WCG_TEST_DRIVERS=cairo,reportlab,tikz
+  * `WCG_TEST_DRIVERS=cairo,reportlab,tikz`
 
     Only test the drivers listed here in the comprehensive tests as
     those tests are many and tikz/pdflatex runs SO much longer than
