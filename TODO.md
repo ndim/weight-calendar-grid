@@ -1,9 +1,5 @@
 Note that some of these TODOs may have been implemented already.
 
-  * Separate handling of UI and output translations in the code so
-    that we can have the UI in a language other than the output grid
-    language.
-
   * Separate translations of UI strings and output grid strings into
     disjunct text domains?
 
