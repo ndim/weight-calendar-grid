@@ -3,6 +3,7 @@
 ########################################################################
 
 from setuptools import setup, find_packages
+from distutils.command.build import build as distutils_build
 
 from os      import chdir
 from os.path import abspath, dirname
@@ -20,11 +21,18 @@ with open('weightgrid/version.py') as f:
 class Version(object): pass
 version = Version()
 version.__dict__ = version_ns_local
+# Now we can use version.package_version etc as if we had imported
+# the version module.
 
 ########################################################################
 
 with open('README.md') as readme_file:
     long_description = readme_file.read()
+
+########################################################################
+
+# Hook building *.mo from *.po into the standard build target
+distutils_build.sub_commands.append(('compile_catalog', None))
 
 ########################################################################
 

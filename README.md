@@ -144,17 +144,14 @@ Build and Install
 
 After the `git clone`, run
 
-    $ python3 setup.py compile_catalog
     $ python3 setup.py build
 
-(We are working on hooking `compile_catalog` into `build`.)
-
 After that, you can run `./wcg-cli` and `./wcg-gui` from the source
-tree or install the `weight-calendar-grid` with
+tree or install the `weight-calendar-grid` package with
 
     $ python3 setup.py install
 
-Run with `--help` for details on installing somewhere.
+Run with `--help` for details on installing somewhere specific.
 
 
 Development
