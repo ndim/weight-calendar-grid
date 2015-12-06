@@ -67,6 +67,8 @@ def _latex_to_pdf(texstr, keep_tmp_on_error, outfile):
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.STDOUT,
                                  shell=False)
+        # FIXME: Our caller wants to print the process output in case
+        #        of us raising an exception.
         try:
             outs, errs = proc.communicate(timeout=300)
         except TimeoutExpired:
