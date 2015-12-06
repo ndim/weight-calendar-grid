@@ -3,6 +3,8 @@ Note that some of these TODOs may have been implemented already.
   * Separate translations of UI strings and output grid strings into
     disjunct text domains?
 
+  * Support printing multiple grids into a single PDF file.
+
   * Write a web app serving PNGs and PDFs and allowing users to get
     grids for their data without locally running any special
     software. This requires a few things:
