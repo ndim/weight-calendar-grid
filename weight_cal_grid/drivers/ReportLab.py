@@ -9,10 +9,19 @@
 ########################################################################
 
 
+import os
+from os.path import dirname, join
+
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.units import cm, mm
 from reportlab.lib.colors import white, red, black
 from reportlab.pdfgen import canvas
+
+# we know some glyphs are missing, suppress warnings
+import reportlab.rl_config
+reportlab.rl_config.warnOnMissingFontGlyphs = 0
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
 
 ########################################################################
@@ -21,7 +30,156 @@ from reportlab.pdfgen import canvas
 from .basic import PageDriver
 from .. import log
 from .. import version
+from ..utils import InternalLogicError
 
+
+########################################################################
+
+class FontNotFound(Exception):
+    """Given font has not been found"""
+    pass
+
+########################################################################
+
+class ClassDefinitionError(Exception):
+    """Some class has been defined in a wrong way"""
+    pass
+
+########################################################################
+
+class FontSetMeta(type):
+    def __new__(mcs, clsname, bases, clsdict):
+
+        required_members = {
+            'regular':    [str],
+            'bold':       [str],
+            'italic':     [str],
+            'bolditalic': [str],
+            'size':       [float,int],
+        }
+
+        # Extend the list of required members if class defines
+        # required_constants list.
+        if 'required_constants' in clsdict:
+            for k in clsdict['required_constants']:
+                if k not in required_members:
+                    required_members[k] = [float,int,str]
+
+        # Check presence and type of some required FontSet member
+        # constants.
+        missing_members = []
+        for k, types in required_members.items():
+            if k in clsdict:
+                if type(clsdict[k]) not in types:
+                    raise ClassDefinitionError(
+                        'Class %s member %s value %s has type %s. Must have a type from %s'
+                        % (repr(clsname), repr(k), clsdict[k],
+                           repr(type(clsdict[k])), repr(types)))
+            else:
+                missing_members.append(k)
+
+        # If we miss all required members, we are an abstract base
+        # class. If all required members are present, we are OK.
+        # In all in between cases, raise an exception.
+        if len(missing_members) == len(required_members):
+            # We are an abstract base class. That is OK.
+            pass
+        elif len(missing_members) == 0:
+            # We define all members. That is OK.
+            pass
+        else:
+            raise ClassDefinitionError(
+                'Class %s member constants undefined: %s'
+                % (repr(clsname), ', '.join(missing_members)))
+
+        return super(FontSetMeta, mcs).__new__(mcs, clsname, bases, clsdict)
+
+########################################################################
+
+class FontSet(object, metaclass=FontSetMeta):
+    pass
+
+########################################################################
+
+class HelveticaSet(FontSet):
+    size       = 9.5
+    regular    = 'Helvetica'
+    bold       = 'Helvetica-Bold'
+    italic     = 'Helvetical-Oblique'
+    bolditalic = 'Helvetical-BoldOblique'
+
+########################################################################
+
+class TTFSet(FontSet):
+
+    required_constants = ['font_dir']
+
+    def __init__(self):
+        font_list = []
+        for font_name in [self.regular, self.bold,
+                          self.italic, self.bolditalic]:
+            font_fpath = join(self.font_dir, '%s.ttf' % font_name)
+            if not os.path.exists(font_fpath):
+                raise FontNotFound(font_fpath)
+            font_list.append((font_name, font_fpath))
+        for font_name, font_fpath in font_list:
+            pdfmetrics.registerFont(TTFont(font_name, font_fpath))
+
+########################################################################
+
+class ReportLabVeraSet(TTFSet):
+    font_dir   = join(dirname(reportlab.__file__),'fonts')
+    size       = 9
+    regular    = 'Vera'
+    bold       = 'VeraBd'
+    italic     = 'VeraIt'
+    bolditalic = 'VeraBI'
+
+########################################################################
+
+class DejaVuSet(TTFSet):
+    font_dir = '/usr/share/fonts/dejavu'
+
+########################################################################
+
+class DejaVuSansSet(DejaVuSet):
+    size       = 9
+    regular    = 'DejaVuSans'
+    bold       = 'DejaVuSans-Bold'
+    italic     = 'DejaVuSans-Oblique'
+    bolditalic = 'DejaVuSans-BoldOblique'
+
+########################################################################
+
+class DejaVuSansCondensedSet(DejaVuSet):
+    size       = 9
+    regular    = 'DejaVuSansCondensed'
+    bold       = 'DejaVuSansCondensed-Bold'
+    italic     = 'DejaVuSansCondensed-Oblique'
+    bolditalic = 'DejaVuSansCondensed-BoldOblique'
+
+########################################################################
+
+class LiberationSet(TTFSet):
+    font_dir   = '/usr/share/fonts/liberation'
+
+########################################################################
+
+class LiberationSansSet(LiberationSet):
+    size       = 9.5
+    regular    = 'LiberationSans-Regular'
+    bold       = 'LiberationSans-Bold'
+    italic     = 'LiberationSans-Italic'
+    bolditalic = 'LiberationSans-BoldItalic'
+
+########################################################################
+
+class LiberationSansNarrowSet(LiberationSet):
+    size       = 10
+    regular    = 'LiberationSansNarrow-Regular'
+    bold       = 'LiberationSansNarrow-Bold'
+    italic     = 'LiberationSansNarrow-Italic'
+    bolditalic = 'LiberationSansNarrow-BoldItalic'
 
 ########################################################################
 
@@ -35,9 +193,10 @@ class ReportLabDriver(PageDriver):
     driver_name = 'reportlab'
     driver_formats = ['pdf']
 
-    font_size = 9.5
-    fontname_normal = 'Helvetica'
-    fontname_bold   = 'Helvetica-Bold'
+    # Fonts defined by self.load_fontset()
+    # font_size = 9.5
+    # fontname_regular = 'Helvetica'
+    # fontname_bold   = 'Helvetica-Bold'
 
     def __init__(self, *args, **kwargs):
         super(ReportLabDriver, self).__init__(*args, **kwargs)
@@ -48,8 +207,39 @@ class ReportLabDriver(PageDriver):
         pdf.setCreator('%s %s' % (version.package_name, version.package_version))
         pdf.setTitle(self._("Weight Calendar Grid"))
         pdf.setSubject(self._("Draw one mark a day and graphically watch your weight"))
+
+        self.load_fontset()
+
         self.render(pdf)
         pdf.save()
+
+    def load_fontset(self):
+        # Note that font_sets must contain one of the PDF standard
+        # fonts in the end, so that we can actually use some font even
+        # if we do not find any TTF files.
+        font_sets = [LiberationSansSet,
+                     LiberationSansNarrowSet,
+                     DejaVuSansCondensedSet,
+                     DejaVuSansSet,
+                     ReportLabVeraSet,
+                     HelveticaSet]
+        for klass in font_sets:
+            try:
+                font_set = klass()
+                self.fontname_regular    = font_set.regular
+                self.fontname_bold       = font_set.bold
+                self.fontname_italic     = font_set.italic
+                self.fontname_bolditalic = font_set.bolditalic
+                self.font_size           = font_set.size
+                assert(self.font_size)
+                assert(self.fontname_regular)
+                assert(self.fontname_bold)
+                assert(self.fontname_italic)
+                assert(self.fontname_bolditalic)
+                return
+            except FontNotFound:
+                pass
+        raise InternalLogicError()
 
     def _get_y(self, kg):
         y0 = self.sep_south # self.page_height - self.sep_south
@@ -76,7 +266,7 @@ class ReportLabDriver(PageDriver):
         if p.font_bold:
             pdf.setFont(self.fontname_bold, self.font_size)
         else:
-            pdf.setFont(self.fontname_normal, self.font_size)
+            pdf.setFont(self.fontname_regular, self.font_size)
         pdf.drawString((self.page_width - p.end_ofs + 0.5)*mm, y-1.25*mm, strbmi)
         pdf.drawRightString((p.begin_ofs-0.5)*mm, y-1.25*mm, strbmi)
         pdf.restoreState()
@@ -95,7 +285,7 @@ class ReportLabDriver(PageDriver):
             if style.font_bold:
                 pdf.setFont(self.fontname_bold, self.font_size)
             else:
-                pdf.setFont(self.fontname_normal, self.font_size)
+                pdf.setFont(self.fontname_regular, self.font_size)
             pdf.drawCentredString(x, (style.end_ofs - 3.0)*mm, label_str)
             pdf.drawCentredString(x, (self.page_height-style.begin_ofs+1.0)*mm, label_str)
         pdf.restoreState()
@@ -103,7 +293,7 @@ class ReportLabDriver(PageDriver):
     def render_initials(self, pdf):
         pdf.saveState()
         pdf.setFillColor(black)
-        pdf.setFont(self.fontname_normal, self.font_size)
+        pdf.setFont(self.fontname_regular, self.font_size)
         pdf.drawString(7*mm, 7*mm, self.initials)
         pdf.drawRightString((self.page_width-7)*mm, 7*mm, self.initials)
         pdf.drawString(7*mm, (self.page_height-7)*mm-0.5*self.font_size, self.initials)
@@ -120,18 +310,14 @@ class ReportLabDriver(PageDriver):
         # Determine text width (can't use .stringWidth due to different fonts)
         text = pdf.beginText()
         text.setTextOrigin(0, 0)
-        text.setFont(self.fontname_normal, self.font_size)
+        text.setFont(self.fontname_regular, self.font_size)
         text.textOut(self._("weight in "))
         text.setFont(self.fontname_bold, self.font_size)
         text.textOut("kg")
         w = text.getX();
 
         # Determine em size
-        text = pdf.beginText()
-        text.setTextOrigin(0, 0)
-        text.setFont(self.fontname_bold, self.font_size)
-        text.textOut('m')
-        em = text.getX();
+        em = pdf.stringWidth('m', self.fontname_bold, self.font_size)
 
         pdf.rotate(90)
 
@@ -148,7 +334,7 @@ class ReportLabDriver(PageDriver):
         pdf.setFillColor(black)
         text = pdf.beginText()
         text.setTextOrigin(rx, ry_left)
-        text.setFont(self.fontname_normal, self.font_size)
+        text.setFont(self.fontname_regular, self.font_size)
         text.textOut(self._("weight in "))
         text.setFont(self.fontname_bold, self.font_size)
         text.textOut("kg")
@@ -156,7 +342,7 @@ class ReportLabDriver(PageDriver):
 
         text = pdf.beginText()
         text.setTextOrigin(rx, ry_right)
-        text.setFont(self.fontname_normal, self.font_size)
+        text.setFont(self.fontname_regular, self.font_size)
         text.textOut(self._("weight in "))
         text.setFont(self.fontname_bold, self.font_size)
         text.textOut("kg")
@@ -168,7 +354,7 @@ class ReportLabDriver(PageDriver):
             text.setTextOrigin(0.5*self.page_height*mm+5*mm, -7*mm)
             text.setFont(self.fontname_bold, self.font_size)
             text.textOut('BMI')
-            text.setFont(self.fontname_normal, self.font_size)
+            text.setFont(self.fontname_regular, self.font_size)
             text.textOut(self._(" for height %.2fm") % self.height)
             pdf.drawText(text)
 
@@ -176,7 +362,7 @@ class ReportLabDriver(PageDriver):
             text.setTextOrigin(0.5*self.page_height*mm+5*mm, (5-self.page_width)*mm)
             text.setFont(self.fontname_bold, self.font_size)
             text.textOut('BMI')
-            text.setFont(self.fontname_normal, self.font_size)
+            text.setFont(self.fontname_regular, self.font_size)
             text.textOut(self._(" for height %.2fm") % self.height)
             pdf.drawText(text)
 
@@ -190,7 +376,7 @@ class ReportLabDriver(PageDriver):
         textobject.setFont(self.fontname_bold, self.font_size)
         # print(textobject.getCursor())
         textobject.textOut(r"%s " % self._("Use:"))
-        textobject.setFont(self.fontname_normal, self.font_size)
+        textobject.setFont(self.fontname_regular, self.font_size)
         # print(textobject.getCursor())
         textobject.textOut(self._("Print this page. "
                              "Keep in accessible place with pen. "
@@ -198,13 +384,13 @@ class ReportLabDriver(PageDriver):
         # print(textobject.getCursor())
         textobject.setFont(self.fontname_bold, self.font_size)
         textobject.textOut('x')
-        textobject.setFont(self.fontname_normal, self.font_size)
+        textobject.setFont(self.fontname_regular, self.font_size)
         textobject.textOut(self._(" every day. "
                              "Connect "))
         # print(textobject.getCursor())
         textobject.setFont(self.fontname_bold, self.font_size)
         textobject.textOut('x-x')
-        textobject.setFont(self.fontname_normal, self.font_size)
+        textobject.setFont(self.fontname_regular, self.font_size)
         textobject.textOut(self._(" to yesterday's mark. "
                              "Type marked values into computer as deemed useful."))
         # print(textobject.getCursor())
@@ -286,8 +472,8 @@ class ReportLabDriver(PageDriver):
                 w = pdf.stringWidth(label_str, self.fontname_bold, self.font_size)
                 pdf.setFont(self.fontname_bold, self.font_size)
             else:
-                w = pdf.stringWidth(label_str, self.fontname_normal, self.font_size)
-                pdf.setFont(self.fontname_normal, self.font_size)
+                w = pdf.stringWidth(label_str, self.fontname_regular, self.font_size)
+                pdf.setFont(self.fontname_regular, self.font_size)
 
             cx = 0.5*(begin_x+end_x)
             cy = y0-1.25*mm
@@ -312,7 +498,7 @@ class ReportLabDriver(PageDriver):
             if p.font_bold:
                 pdf.setFont(self.fontname_bold, self.font_size)
             else:
-                pdf.setFont(self.fontname_normal, self.font_size)
+                pdf.setFont(self.fontname_regular, self.font_size)
             pdf.drawString((self.page_width - p.end_ofs + 0.5)*mm, y-1.25*mm, kg_str)
             pdf.drawRightString((p.begin_ofs-0.5)*mm, y-1.25*mm, kg_str)
         pdf.restoreState()

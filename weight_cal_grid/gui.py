@@ -535,7 +535,7 @@ class WeightGridWindow(Gtk.Window):
     def period_in_days(self):
         return 7*self.period_weeks.get_value_as_int()
 
-    def popen_print_user(self, output_fname, user):
+    def popen_print_user(self, output_fname, user, driver=None):
         begin_str = self.calendar_begin.datetime_date.strftime('%Y-%m-%d')
         script_fname = os.path.join(os.path.dirname(os.path.dirname(__file__)),
                                     'wcg-cli')
@@ -545,7 +545,7 @@ class WeightGridWindow(Gtk.Window):
             lang_args = []
 
         args = ([script_fname,
-                 '--driver=%s' % 'tikz',
+                 '--driver=%s' % (driver or 'tikz'),
                  '--initials=%s' % user.nick,
                 ]
                 + lang_args +
@@ -625,13 +625,17 @@ class WeightGridWindow(Gtk.Window):
 
         self.print_pdf(output_fname)
 
-    def output_filename(self, user=None):
+    def output_filename(self, user=None, tag=None):
         # FIXME: We need unique file names even if two users have the same nick!
         begin_str = self.calendar_begin.datetime_date.strftime('%Y-%m-%d')
-        if user:
-            return 'WCG-USER-%s-%s.pdf' % (user.nick, begin_str, )
+        if tag:
+            ext = '%s.pdf' % tag
         else:
-            return 'WCG-FAMILY-%s.pdf'% begin_str
+            ext = 'pdf'
+        if user:
+            return 'WCG-USER-%s-%s.%s' % (user.nick, begin_str, ext)
+        else:
+            return 'WCG-FAMILY-%s.%s'% (begin_str, ext)
 
     def print_pdf(self, pdf_fname):
 
@@ -719,70 +723,78 @@ class WeightGridWindow(Gtk.Window):
         # FIXME: Show in UI when PDF generation is running.
         # FIXME: Properly handle UI quit while PDF generation is still running.
 
-        family_fname = self.ask_save_filename(self.output_filename())
-        if not family_fname:
-            return
+        variants = [
+            # ('reportlab', None),
+            # ('tikz',      None), ('reportlab', 'rl'), ('cairo',     'cr'),
+            ('tikz',      None),
+        ]
 
-        # FIXME: Use temp file names for per user PDFs?
-        # FIXME: Store all files (family and per user) in specific folder?
+        for driver, tag in variants:
+            family_fname = self.ask_save_filename(self.output_filename(tag=tag))
+            if not family_fname:
+                return
 
-        def func(model, path, treeiter, proc_list):
-            user = User(*model[treeiter][:])
-            if user.print_user:
-                print(_("Generating PDF for single user"), user)
-                output_fname = self.ask_save_filename(self.output_filename(user))
-                proc = self.popen_print_user(output_fname, user)
-                proc_list.append((proc, output_fname, ))
-            return False
+            # FIXME: Use temp file names for per user PDFs?
+            # FIXME: Store all files (family and per user) in specific folder?
 
-        proc_list = []
-        model = self.user_store
-        model.foreach(func, proc_list)
+            def func(model, path, treeiter, proc_list, driver, tag):
+                user = User(*model[treeiter][:])
+                if user.print_user:
+                    print(_("Generating PDF for single user"), user,
+                          _("using driver"), driver, _("for tag"), tag)
+                    default_fname = self.output_filename(user, tag)
+                    output_fname = self.ask_save_filename(default_fname)
+                    proc = self.popen_print_user(output_fname, user, driver)
+                    proc_list.append((proc, output_fname, ))
+                return False
 
-        while True:
-            while Gtk.events_pending():
-                Gtk.main_iteration()
+            model = self.user_store
+            proc_list = []
+            model.foreach(func, proc_list, driver, tag)
 
-            running = 0
+            while True:
+                while Gtk.events_pending():
+                    Gtk.main_iteration()
+
+                running = 0
+                for proc, fname in proc_list:
+                    proc.poll()
+                    if proc.returncode == None:
+                        running = running+1
+
+                if running == 0:
+                    break
+
+            file_names = []
             for proc, fname in proc_list:
+                print("Ret code for %s:" % fname, proc.returncode)
+                # FIXME: hard coded charset
+                sys.stdout.write(proc.stdout.read().decode('utf-8'))
+                file_names.append(fname)
+            file_names.sort()
+
+            args = (['pdfjoin',
+                     '-o', family_fname,
+                     '--landscape',
+                     '--paper', 'a4paper',
+            ] + file_names)
+            print(_("Generating family PDF"), family_fname)
+            print('CMD:', ' '.join(args))
+            proc = subprocess.Popen(args,
+                                    executable='/usr/bin/pdfjoin',
+                                    stdin=subprocess.DEVNULL,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT,
+                                    close_fds=True,
+                                    shell=False)
+            while proc.returncode == None:
+                while Gtk.events_pending():
+                    Gtk.main_iteration()
                 proc.poll()
-                if proc.returncode == None:
-                    running = running+1
-
-            if running == 0:
-                break
-
-        file_names = []
-        for proc, fname in proc_list:
-            print("Ret code for %s:" % fname, proc.returncode)
+            print("Ret code for %s:" % family_fname, proc.returncode)
             # FIXME: hard coded charset
             sys.stdout.write(proc.stdout.read().decode('utf-8'))
-            file_names.append(fname)
-        file_names.sort()
-
-        args = (['pdfjoin',
-                 '-o', family_fname,
-                 '--landscape',
-                 '--paper', 'a4paper',
-        ] + file_names)
-        print(_("Generating family PDF"), family_fname)
-        print('CMD:', ' '.join(args))
-        proc = subprocess.Popen(args,
-                                executable='/usr/bin/pdfjoin',
-                                stdin=subprocess.DEVNULL,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT,
-                                close_fds=True,
-                                shell=False)
-        while proc.returncode == None:
-            while Gtk.events_pending():
-                Gtk.main_iteration()
-            proc.poll()
-        print("Ret code for %s:" % family_fname, proc.returncode)
-        # FIXME: hard coded charset
-        sys.stdout.write(proc.stdout.read().decode('utf-8'))
-
-        self.print_pdf(family_fname)
+            self.print_pdf(family_fname)
 
     def update_dates(self):
         if self.weight_grid.set_dates(self.calendar_begin.datetime_date,

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: weight-calendar-grid 0.3.0\n"
 "Report-Msgid-Bugs-To: 'Hans Ulrich Niedermann <hun@n-dimensional.de>'\n"
-"POT-Creation-Date: 2015-12-05 21:09+0100\n"
-"PO-Revision-Date: 2015-12-05 21:01+0100\n"
+"POT-Creation-Date: 2015-12-06 18:47+0100\n"
+"PO-Revision-Date: 2015-12-06 18:50+0100\n"
 "Last-Translator: Hans Ulrich Niedermann <hun@n-dimensional.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -22,15 +22,15 @@ msgstr ""
 msgid "plot weight/calendar grid for easy weight tracking"
 msgstr "Gewicht-Kalender-Gitter zur einfachen Gewichtskontrolle"
 
-#: weight_cal_grid/gui.py:206 weight_cal_grid/drivers/ReportLab.py:45
+#: weight_cal_grid/gui.py:207 weight_cal_grid/drivers/ReportLab.py:208
 msgid "Weight Calendar Grid"
 msgstr "Gewicht-Kalender-Gitter"
 
-#: weight_cal_grid/gui.py:222
+#: weight_cal_grid/gui.py:228
 msgid "_Quit program"
 msgstr "Programm beenden"
 
-#: weight_cal_grid/gui.py:223
+#: weight_cal_grid/gui.py:229
 msgid ""
 "Quit the program. Expect strange things if there are PDF generation jobs "
 "or print jobs running in the background."
@@ -38,344 +38,365 @@ msgstr ""
 "Programm beenden. Wenn noch PDF-Erzeugung oder Druckaufträge im "
 "Hintergrund aktiv sind, sind seltsame Dinge zu erwarten."
 
-#: weight_cal_grid/gui.py:234
+#: weight_cal_grid/gui.py:240
 msgid "_Begin date"
 msgstr "_Anfangsdatum"
 
-#: weight_cal_grid/gui.py:241
+#: weight_cal_grid/gui.py:247
 msgid "_Today"
 msgstr "_Heute"
 
-#: weight_cal_grid/gui.py:242
+#: weight_cal_grid/gui.py:248
 msgid "Set begin date to today"
 msgstr "Setze Anfangsdatum auf heute"
 
-#: weight_cal_grid/gui.py:245
+#: weight_cal_grid/gui.py:251
 msgid "_Latest Sun"
 msgstr "_Jüngster So"
 
-#: weight_cal_grid/gui.py:246
+#: weight_cal_grid/gui.py:252
 msgid "Move the begin date to latest sunday (same day or in the past)"
 msgstr ""
 "Setze Anfangsdatum auf den nächstliegenden Sonntag (gleicher Tag oder in "
 "der Vergangenheit)"
 
-#: weight_cal_grid/gui.py:250
+#: weight_cal_grid/gui.py:256
 msgid "_Earliest Sun"
 msgstr "_Frühester So"
 
-#: weight_cal_grid/gui.py:251
+#: weight_cal_grid/gui.py:257
 msgid "Move the begin date to earliest sunday (same day or in the future)"
 msgstr ""
 "Setze Enddatum auf den nächstliegenden SOnntag (gleicher Tag oder in der "
 "Zukunft)"
 
-#: weight_cal_grid/gui.py:259
+#: weight_cal_grid/gui.py:265
 msgid "_End"
 msgstr "_Ende"
 
-#: weight_cal_grid/gui.py:272
+#: weight_cal_grid/gui.py:278
 msgid "_Period"
 msgstr "_Periode"
 
-#: weight_cal_grid/gui.py:274
+#: weight_cal_grid/gui.py:280
 msgid "Ad_vance"
 msgstr "_vorwärts"
 
-#: weight_cal_grid/gui.py:275
+#: weight_cal_grid/gui.py:281
 msgid "Move the dates one period into the future"
 msgstr "Verschiebe die Daten um eine Periode in die Zukunft"
 
-#: weight_cal_grid/gui.py:278
+#: weight_cal_grid/gui.py:284
 msgid "Re_cede"
 msgstr "_rückwärts"
 
-#: weight_cal_grid/gui.py:279
+#: weight_cal_grid/gui.py:285
 msgid "Move the dates one period into the past"
 msgstr "Verschiebe die Daten um eine Periode in die Vergangenheit"
 
-#: weight_cal_grid/gui.py:285
+#: weight_cal_grid/gui.py:291
 msgid "Duration of the period to display"
 msgstr "Dauer der anzuzeigenden Periode"
 
-#: weight_cal_grid/gui.py:290
+#: weight_cal_grid/gui.py:296
 msgid "weeks"
 msgstr "Wochen"
 
-#: weight_cal_grid/gui.py:353
+#: weight_cal_grid/gui.py:359
 msgid "nick"
 msgstr "Name"
 
-#: weight_cal_grid/gui.py:362
+#: weight_cal_grid/gui.py:368
 msgid "lang"
 msgstr "Sprache"
 
-#: weight_cal_grid/gui.py:373
+#: weight_cal_grid/gui.py:379
 msgid "height in cm"
 msgstr "Größe in cm"
 
-#: weight_cal_grid/gui.py:387
+#: weight_cal_grid/gui.py:393
 msgid "weight(min)"
 msgstr "Gewicht(min)"
 
-#: weight_cal_grid/gui.py:395
+#: weight_cal_grid/gui.py:401
 msgid "weight(max)"
 msgstr "Gewicht(max)"
 
-#: weight_cal_grid/gui.py:402
+#: weight_cal_grid/gui.py:408
 msgid "Print _selected user"
 msgstr "_Drucke ausgewählten Benutzer"
 
-#: weight_cal_grid/gui.py:404
+#: weight_cal_grid/gui.py:410
 msgid "Generate and print grid for the one selected user"
 msgstr "Erzeuge und drucke Diagramm für den ausgewählten Benutzer"
 
-#: weight_cal_grid/gui.py:409
+#: weight_cal_grid/gui.py:415
 msgid "Print _all marked users"
 msgstr "Drucke _alle markierten Benutzer"
 
-#: weight_cal_grid/gui.py:411
+#: weight_cal_grid/gui.py:417
 msgid "Generate and print grid for all marked user"
 msgstr "Erzeuge und drucke Diagramm für alle mit Häkchen markierten Benutzer"
 
-#: weight_cal_grid/gui.py:427
+#: weight_cal_grid/gui.py:433
 msgid "Generate1"
 msgstr "Erzeuge1"
 
-#: weight_cal_grid/gui.py:428
+#: weight_cal_grid/gui.py:434
 msgid "Generate PDF for selected user"
 msgstr "Erzeuge PDF für ausgewählten Benutzer"
 
-#: weight_cal_grid/gui.py:429
+#: weight_cal_grid/gui.py:435
 msgid "Print1"
 msgstr "Drucke1"
 
-#: weight_cal_grid/gui.py:430
+#: weight_cal_grid/gui.py:436
 msgid "Print the PDF for selected user"
 msgstr "Drucke das PDF für den ausgewählten Benutzer"
 
-#: weight_cal_grid/gui.py:431
+#: weight_cal_grid/gui.py:437
 msgid "View1"
 msgstr "Betrachte1"
 
-#: weight_cal_grid/gui.py:432
+#: weight_cal_grid/gui.py:438
 msgid "View the PDF for selected user in evince"
 msgstr "Betrachte das PDF für den ausgewählten Benutzer in evince"
 
-#: weight_cal_grid/gui.py:433
+#: weight_cal_grid/gui.py:439
 msgid "GenerateF"
 msgstr "ErzeugeF"
 
-#: weight_cal_grid/gui.py:434
+#: weight_cal_grid/gui.py:440
 msgid "Generate PDF for all marked users"
 msgstr "Erzeuge PDF für alle mit Häkchen markierten Benutzer"
 
-#: weight_cal_grid/gui.py:435
+#: weight_cal_grid/gui.py:441
 msgid "PrintF"
 msgstr "DruckeF"
 
-#: weight_cal_grid/gui.py:436
+#: weight_cal_grid/gui.py:442
 msgid "Print the PDF for all marked users"
 msgstr "Drucke PDF für alle mit Häkchen markierten Benutzer"
 
-#: weight_cal_grid/gui.py:437
+#: weight_cal_grid/gui.py:443
 msgid "ViewF"
 msgstr "BetrachteF"
 
-#: weight_cal_grid/gui.py:438
+#: weight_cal_grid/gui.py:444
 msgid "View the PDF for all marked users in evince"
 msgstr "Betrachte das PDF für alle markierten Benutzer in evince"
 
-#: weight_cal_grid/gui.py:444
+#: weight_cal_grid/gui.py:450
 msgid "_User list"
 msgstr "Liste der _Benutzer"
 
-#: weight_cal_grid/gui.py:447
+#: weight_cal_grid/gui.py:453
 msgid "_New user"
 msgstr "_Neu"
 
-#: weight_cal_grid/gui.py:448
+#: weight_cal_grid/gui.py:454
 msgid "Add new user to list of users. You must then enter a nick name."
 msgstr ""
 "Füge neuen Benutzer in Liste ein. Anschließend muss ein kurzer Name "
 "eingegeben werden."
 
-#: weight_cal_grid/gui.py:452
+#: weight_cal_grid/gui.py:458
 msgid "_Delete user"
 msgstr "_Löschen"
 
-#: weight_cal_grid/gui.py:454
+#: weight_cal_grid/gui.py:460
 msgid "Remove selected user from the list of users"
 msgstr "Lösche ausgewählten Benutzer aus der Liste"
 
-#: weight_cal_grid/gui.py:464
+#: weight_cal_grid/gui.py:470
 msgid "All heights in <b>cm</b>. All weights in <b>kg</b>."
 msgstr "Alle Größen in <b>cm</b>. Alle Gewichte in <b>kg</b>."
 
-#: weight_cal_grid/gui.py:558
+#: weight_cal_grid/gui.py:569
 msgid "Save as"
 msgstr "Speichern unter"
 
-#: weight_cal_grid/gui.py:571
+#: weight_cal_grid/gui.py:582
 msgid "Portable Document Format (PDF)"
 msgstr "Portable Document Format (PDF)"
 
-#: weight_cal_grid/gui.py:576
+#: weight_cal_grid/gui.py:587
 msgid "Any files"
 msgstr "Alle Dateien"
 
-#: weight_cal_grid/gui.py:604
+#: weight_cal_grid/gui.py:615
 msgid "Generating PDF for single user:"
 msgstr "Erzeuge PDF für Benutzer:"
 
-#: weight_cal_grid/gui.py:698
+#: weight_cal_grid/gui.py:648
+#, python-format
+msgid ""
+"Continue printing %s? wcg-gui will print lines much thicker than they "
+"should be."
+msgstr "Datei %s drucken? wcg-gui druckt Linien deutlich dicker, als sie sein sollten."
+
+#: weight_cal_grid/gui.py:653
+msgid ""
+"We strongly suggest to open the generated PDF file in <i>evince</i> and "
+"print from <i>evince</i> instead."
+msgstr "Wir empfehlen sehr, die erzeugte PDF-Datei in <i>evince</i> zu öffnen und mit <i>evince</i> zu drucken."
+
+#: weight_cal_grid/gui.py:743
 msgid "Generating PDF for single user"
 msgstr "Erzeuge PDF für Benutzer:"
 
-#: weight_cal_grid/gui.py:733
+#: weight_cal_grid/gui.py:744
+msgid "using driver"
+msgstr "mit Treiber"
+
+#: weight_cal_grid/gui.py:744
+msgid "for tag"
+msgstr "für Tag"
+
+#: weight_cal_grid/gui.py:781
 msgid "Generating family PDF"
 msgstr "Erzeuge Familien-PDF"
 
-#: weight_cal_grid/gui.py:760
+#: weight_cal_grid/gui.py:807
 #, python-format
 msgid "(from %(begin)s to %(end)s)"
 msgstr "(von %(begin)s bis %(end)s)"
 
-#: weight_cal_grid/drivers/ReportLab.py:46
+#: weight_cal_grid/drivers/ReportLab.py:209
 msgid "Draw one mark a day and graphically watch your weight"
 msgstr "Ein tägliches Kreuzchen für die graphische Verfolgung des Gewichts"
 
-#: weight_cal_grid/drivers/ReportLab.py:120
-#: weight_cal_grid/drivers/ReportLab.py:148
-#: weight_cal_grid/drivers/ReportLab.py:156
+#: weight_cal_grid/drivers/ReportLab.py:314
+#: weight_cal_grid/drivers/ReportLab.py:338
+#: weight_cal_grid/drivers/ReportLab.py:346
 msgid "weight in "
 msgstr "Gewicht in "
 
-#: weight_cal_grid/drivers/ReportLab.py:168
-#: weight_cal_grid/drivers/ReportLab.py:176
+#: weight_cal_grid/drivers/ReportLab.py:358
+#: weight_cal_grid/drivers/ReportLab.py:366
 #, python-format
 msgid " for height %.2fm"
 msgstr " für Körpergröße %.2fm"
 
-#: weight_cal_grid/drivers/ReportLab.py:188 weight_cal_grid/drivers/TikZ.py:286
+#: weight_cal_grid/drivers/ReportLab.py:378 weight_cal_grid/drivers/TikZ.py:289
 msgid "Use:"
 msgstr "Anleitung:"
 
-#: weight_cal_grid/drivers/ReportLab.py:191 weight_cal_grid/drivers/TikZ.py:287
+#: weight_cal_grid/drivers/ReportLab.py:381 weight_cal_grid/drivers/TikZ.py:290
 msgid "Print this page. Keep in accessible place with pen. Mark one "
 msgstr "Ausdrucken und mit Stiff griffbereit aufbewahren. Täglich ein "
 
-#: weight_cal_grid/drivers/ReportLab.py:198 weight_cal_grid/drivers/TikZ.py:291
+#: weight_cal_grid/drivers/ReportLab.py:388 weight_cal_grid/drivers/TikZ.py:294
 msgid " every day. Connect "
 msgstr " eintragen und "
 
-#: weight_cal_grid/drivers/ReportLab.py:204 weight_cal_grid/drivers/TikZ.py:294
+#: weight_cal_grid/drivers/ReportLab.py:394 weight_cal_grid/drivers/TikZ.py:297
 msgid " to yesterday's mark. Type marked values into computer as deemed useful."
 msgstr " mit gestrigem verbinden. Nach Bedarf Werte in Computer übertragen."
 
-#: weight_cal_grid/drivers/TikZ.py:165
+#: weight_cal_grid/drivers/TikZ.py:168
 msgid "<language specific options to LaTeX babel package>"
 msgstr "english,ngerman"
 
-#: weight_cal_grid/drivers/TikZ.py:339
+#: weight_cal_grid/drivers/TikZ.py:342
 #, python-format
 msgid "weight in %s"
 msgstr "Gewicht in %s"
 
-#: weight_cal_grid/drivers/TikZ.py:341
+#: weight_cal_grid/drivers/TikZ.py:344
 #, python-format
 msgid "%s for height %.2f\\,m"
 msgstr "%s für Körpergröße %.2f\\,m"
 
-#: weight_cal_grid/drivers/basic.py:38
+#: weight_cal_grid/drivers/basic.py:41
 msgid "January"
 msgstr "Januar"
 
-#: weight_cal_grid/drivers/basic.py:39
+#: weight_cal_grid/drivers/basic.py:42
 msgid "February"
 msgstr "Februar"
 
-#: weight_cal_grid/drivers/basic.py:40
+#: weight_cal_grid/drivers/basic.py:43
 msgid "March"
 msgstr "März"
 
-#: weight_cal_grid/drivers/basic.py:41
+#: weight_cal_grid/drivers/basic.py:44
 msgid "April"
 msgstr "April"
 
-#: weight_cal_grid/drivers/basic.py:42 weight_cal_grid/drivers/basic.py:58
+#: weight_cal_grid/drivers/basic.py:45 weight_cal_grid/drivers/basic.py:61
 msgid "May"
 msgstr "Mai"
 
-#: weight_cal_grid/drivers/basic.py:43
+#: weight_cal_grid/drivers/basic.py:46
 msgid "June"
 msgstr "Juni"
 
-#: weight_cal_grid/drivers/basic.py:44
+#: weight_cal_grid/drivers/basic.py:47
 msgid "July"
 msgstr "Juli"
 
-#: weight_cal_grid/drivers/basic.py:45
+#: weight_cal_grid/drivers/basic.py:48
 msgid "August"
 msgstr "August"
 
-#: weight_cal_grid/drivers/basic.py:46
+#: weight_cal_grid/drivers/basic.py:49
 msgid "September"
 msgstr "September"
 
-#: weight_cal_grid/drivers/basic.py:47
+#: weight_cal_grid/drivers/basic.py:50
 msgid "October"
 msgstr "Oktober"
 
-#: weight_cal_grid/drivers/basic.py:48
+#: weight_cal_grid/drivers/basic.py:51
 msgid "November"
 msgstr "November"
 
-#: weight_cal_grid/drivers/basic.py:49
+#: weight_cal_grid/drivers/basic.py:52
 msgid "December"
 msgstr "Dezember"
 
-#: weight_cal_grid/drivers/basic.py:54
+#: weight_cal_grid/drivers/basic.py:57
 msgid "Jan"
 msgstr "Jan"
 
-#: weight_cal_grid/drivers/basic.py:55
+#: weight_cal_grid/drivers/basic.py:58
 msgid "Feb"
 msgstr "Feb"
 
-#: weight_cal_grid/drivers/basic.py:56
+#: weight_cal_grid/drivers/basic.py:59
 msgid "Mar"
 msgstr "Mär"
 
-#: weight_cal_grid/drivers/basic.py:57
+#: weight_cal_grid/drivers/basic.py:60
 msgid "Apr"
 msgstr "Apr"
 
-#: weight_cal_grid/drivers/basic.py:59
+#: weight_cal_grid/drivers/basic.py:62
 msgid "Jun"
 msgstr "Jun"
 
-#: weight_cal_grid/drivers/basic.py:60
+#: weight_cal_grid/drivers/basic.py:63
 msgid "Jul"
 msgstr "Jul"
 
-#: weight_cal_grid/drivers/basic.py:61
+#: weight_cal_grid/drivers/basic.py:64
 msgid "Aug"
 msgstr "Aug"
 
-#: weight_cal_grid/drivers/basic.py:62
+#: weight_cal_grid/drivers/basic.py:65
 msgid "Sep"
 msgstr "Sep"
 
-#: weight_cal_grid/drivers/basic.py:63
+#: weight_cal_grid/drivers/basic.py:66
 msgid "Oct"
 msgstr "Okt"
 
-#: weight_cal_grid/drivers/basic.py:64
+#: weight_cal_grid/drivers/basic.py:67
 msgid "Nov"
 msgstr "Nov"
 
-#: weight_cal_grid/drivers/basic.py:65
+#: weight_cal_grid/drivers/basic.py:68
 msgid "Dec"
 msgstr "Dez"
 
