@@ -177,7 +177,8 @@ class GenericDriver(object, metaclass=DriverMetaClass):
                  keep_tmp_on_error=False,
                  history_mode=False,
                  initials=None,
-                 translation=None):
+                 translation=None,
+                 cmdline=None):
 
         (min_kg, max_kg) = kg_range
         (begin_date, end_date) = date_range
@@ -204,6 +205,7 @@ class GenericDriver(object, metaclass=DriverMetaClass):
 
         self.keep_tmp_on_error = keep_tmp_on_error
         self.translation = translation or gettext.NullTranslation()
+        self.cmdline = cmdline
 
     def _(self, msg):
         return self.translation.gettext(msg)
@@ -489,6 +491,11 @@ class GenericDriver(object, metaclass=DriverMetaClass):
 
     @abstractmethod
     def render_time_tick(self, ctx, style, date, label_str, id_str):
+        pass
+
+
+    @abstractmethod
+    def render_cmdline(self, ctx, sep_west, sep_south, cmdline):
         pass
 
 
@@ -1081,6 +1088,9 @@ class PageDriver(GenericDriver):
                            ((self.end_date - self.begin_date).days < 250) )
         if self.initials:
             self.render_initials(ctx)
+
+        if self.cmdline:
+            self.render_cmdline(ctx, self.sep_west, 5, self.cmdline)
 
         self.render_ending(ctx)
 

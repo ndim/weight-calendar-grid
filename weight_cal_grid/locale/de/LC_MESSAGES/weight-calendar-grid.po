@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: weight-calendar-grid 0.3.0\n"
 "Report-Msgid-Bugs-To: 'Hans Ulrich Niedermann <hun@n-dimensional.de>'\n"
-"POT-Creation-Date: 2015-12-06 18:47+0100\n"
+"POT-Creation-Date: 2015-12-06 19:01+0100\n"
 "PO-Revision-Date: 2015-12-06 18:50+0100\n"
 "Last-Translator: Hans Ulrich Niedermann <hun@n-dimensional.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "plot weight/calendar grid for easy weight tracking"
 msgstr "Gewicht-Kalender-Gitter zur einfachen Gewichtskontrolle"
 
-#: weight_cal_grid/gui.py:207 weight_cal_grid/drivers/ReportLab.py:208
+#: weight_cal_grid/gui.py:207 weight_cal_grid/drivers/ReportLab.py:227
 msgid "Weight Calendar Grid"
 msgstr "Gewicht-Kalender-Gitter"
 
@@ -233,13 +233,17 @@ msgstr "Erzeuge PDF für Benutzer:"
 msgid ""
 "Continue printing %s? wcg-gui will print lines much thicker than they "
 "should be."
-msgstr "Datei %s drucken? wcg-gui druckt Linien deutlich dicker, als sie sein sollten."
+msgstr ""
+"Datei %s drucken? wcg-gui druckt Linien deutlich dicker, als sie sein "
+"sollten."
 
 #: weight_cal_grid/gui.py:653
 msgid ""
 "We strongly suggest to open the generated PDF file in <i>evince</i> and "
 "print from <i>evince</i> instead."
-msgstr "Wir empfehlen sehr, die erzeugte PDF-Datei in <i>evince</i> zu öffnen und mit <i>evince</i> zu drucken."
+msgstr ""
+"Wir empfehlen sehr, die erzeugte PDF-Datei in <i>evince</i> zu öffnen und"
+" mit <i>evince</i> zu drucken."
 
 #: weight_cal_grid/gui.py:743
 msgid "Generating PDF for single user"
@@ -262,48 +266,48 @@ msgstr "Erzeuge Familien-PDF"
 msgid "(from %(begin)s to %(end)s)"
 msgstr "(von %(begin)s bis %(end)s)"
 
-#: weight_cal_grid/drivers/ReportLab.py:209
+#: weight_cal_grid/drivers/ReportLab.py:228
 msgid "Draw one mark a day and graphically watch your weight"
 msgstr "Ein tägliches Kreuzchen für die graphische Verfolgung des Gewichts"
 
-#: weight_cal_grid/drivers/ReportLab.py:314
-#: weight_cal_grid/drivers/ReportLab.py:338
-#: weight_cal_grid/drivers/ReportLab.py:346
+#: weight_cal_grid/drivers/ReportLab.py:366
+#: weight_cal_grid/drivers/ReportLab.py:390
+#: weight_cal_grid/drivers/ReportLab.py:398
 msgid "weight in "
 msgstr "Gewicht in "
 
-#: weight_cal_grid/drivers/ReportLab.py:358
-#: weight_cal_grid/drivers/ReportLab.py:366
+#: weight_cal_grid/drivers/ReportLab.py:410
+#: weight_cal_grid/drivers/ReportLab.py:418
 #, python-format
 msgid " for height %.2fm"
 msgstr " für Körpergröße %.2fm"
 
-#: weight_cal_grid/drivers/ReportLab.py:378 weight_cal_grid/drivers/TikZ.py:289
+#: weight_cal_grid/drivers/ReportLab.py:430 weight_cal_grid/drivers/TikZ.py:291
 msgid "Use:"
 msgstr "Anleitung:"
 
-#: weight_cal_grid/drivers/ReportLab.py:381 weight_cal_grid/drivers/TikZ.py:290
+#: weight_cal_grid/drivers/ReportLab.py:433 weight_cal_grid/drivers/TikZ.py:292
 msgid "Print this page. Keep in accessible place with pen. Mark one "
 msgstr "Ausdrucken und mit Stiff griffbereit aufbewahren. Täglich ein "
 
-#: weight_cal_grid/drivers/ReportLab.py:388 weight_cal_grid/drivers/TikZ.py:294
+#: weight_cal_grid/drivers/ReportLab.py:440 weight_cal_grid/drivers/TikZ.py:296
 msgid " every day. Connect "
 msgstr " eintragen und "
 
-#: weight_cal_grid/drivers/ReportLab.py:394 weight_cal_grid/drivers/TikZ.py:297
+#: weight_cal_grid/drivers/ReportLab.py:446 weight_cal_grid/drivers/TikZ.py:299
 msgid " to yesterday's mark. Type marked values into computer as deemed useful."
 msgstr " mit gestrigem verbinden. Nach Bedarf Werte in Computer übertragen."
 
-#: weight_cal_grid/drivers/TikZ.py:168
+#: weight_cal_grid/drivers/TikZ.py:170
 msgid "<language specific options to LaTeX babel package>"
 msgstr "english,ngerman"
 
-#: weight_cal_grid/drivers/TikZ.py:342
+#: weight_cal_grid/drivers/TikZ.py:344
 #, python-format
 msgid "weight in %s"
 msgstr "Gewicht in %s"
 
-#: weight_cal_grid/drivers/TikZ.py:344
+#: weight_cal_grid/drivers/TikZ.py:346
 #, python-format
 msgid "%s for height %.2f\\,m"
 msgstr "%s für Körpergröße %.2f\\,m"

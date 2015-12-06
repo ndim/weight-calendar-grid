@@ -67,6 +67,8 @@ def _latex_to_pdf(texstr, keep_tmp_on_error, outfile):
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.STDOUT,
                                  shell=False)
+        # FIXME: Our caller wants to print the process output in case
+        #        of us raising an exception.
         try:
             outs, errs = proc.communicate(timeout=300)
         except TimeoutExpired:
@@ -667,6 +669,14 @@ class TikZDriver(PageDriver):
         ctx.append('\\node[anchor=north west]'
                    ' at ([xshift=%fmm,yshift=%fmm]current page.north west)'
                    ' {%s};' % (+7.0, -7.0, self.initials))
+        ctx.append('')
+
+
+    def render_cmdline(self, ctx, sep_west, sep_south, cmdline):
+        cl = cmdline.replace('--', '-\/-')
+        ctx.append(r'\node[anchor=base west,font=\ttfamily\scriptsize]'
+                   r' at ([xshift=%fmm,yshift=%fmm]current page.south west)'
+                   r' {%s};' % (sep_west, sep_south, cl))
         ctx.append('')
 
 

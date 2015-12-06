@@ -183,6 +183,30 @@ class LiberationSansNarrowSet(LiberationSet):
 
 ########################################################################
 
+class LiberationMonoSet(LiberationSet):
+    size       = 6
+    regular    = 'LiberationMono-Regular'
+    bold       = 'LiberationMono-Bold'
+    italic     = 'LiberationMono-Italic'
+    bolditalic = 'LiberationMono-BoldItalic'
+
+class DejaVuSansMonoSet(DejaVuSet):
+    size       = 6
+    regular    = 'DejaVuSansMono'
+    bold       = 'DejaVuSansMono-Bold'
+    italic     = 'DejaVuSansMono-Oblique'
+    bolditalic = 'DejaVuSansMono-BoldOblique'
+
+class CourierSet(FontSet):
+    size       = 6
+    regular    = 'Courier'
+    bold       = 'Courier-Bold'
+    italic     = 'Courier-Oblique'
+    bolditalic = 'Courier-BoldOblique'
+
+
+########################################################################
+
 
 class ReportLabDriver(PageDriver):
 
@@ -192,11 +216,6 @@ class ReportLabDriver(PageDriver):
 
     driver_name = 'reportlab'
     driver_formats = ['pdf']
-
-    # Fonts defined by self.load_fontset()
-    # font_size = 9.5
-    # fontname_regular = 'Helvetica'
-    # fontname_bold   = 'Helvetica-Bold'
 
     def __init__(self, *args, **kwargs):
         super(ReportLabDriver, self).__init__(*args, **kwargs)
@@ -208,12 +227,13 @@ class ReportLabDriver(PageDriver):
         pdf.setTitle(self._("Weight Calendar Grid"))
         pdf.setSubject(self._("Draw one mark a day and graphically watch your weight"))
 
-        self.load_fontset()
+        self.load_fontset_mono()
+        self.load_fontset_sans()
 
         self.render(pdf)
         pdf.save()
 
-    def load_fontset(self):
+    def load_fontset_sans(self):
         # Note that font_sets must contain one of the PDF standard
         # fonts in the end, so that we can actually use some font even
         # if we do not find any TTF files.
@@ -236,6 +256,31 @@ class ReportLabDriver(PageDriver):
                 assert(self.fontname_bold)
                 assert(self.fontname_italic)
                 assert(self.fontname_bolditalic)
+                return
+            except FontNotFound:
+                pass
+        raise InternalLogicError()
+
+    def load_fontset_mono(self):
+        # Note that font_sets must contain one of the PDF standard
+        # fonts in the end, so that we can actually use some font even
+        # if we do not find any TTF files.
+        font_sets = [LiberationMonoSet,
+                     DejaVuSansMonoSet,
+                     CourierSet]
+        for klass in font_sets:
+            try:
+                font_set = klass()
+                self.fontname_mono_regular    = font_set.regular
+                self.fontname_mono_bold       = font_set.bold
+                self.fontname_mono_italic     = font_set.italic
+                self.fontname_mono_bolditalic = font_set.bolditalic
+                self.font_size_small          = font_set.size
+                assert(self.font_size_small)
+                assert(self.fontname_mono_regular)
+                assert(self.fontname_mono_bold)
+                assert(self.fontname_mono_italic)
+                assert(self.fontname_mono_bolditalic)
                 return
             except FontNotFound:
                 pass
@@ -288,6 +333,13 @@ class ReportLabDriver(PageDriver):
                 pdf.setFont(self.fontname_regular, self.font_size)
             pdf.drawCentredString(x, (style.end_ofs - 3.0)*mm, label_str)
             pdf.drawCentredString(x, (self.page_height-style.begin_ofs+1.0)*mm, label_str)
+        pdf.restoreState()
+
+    def render_cmdline(self, pdf, sep_west, sep_south, cmdline):
+        pdf.saveState()
+        pdf.setFillColor(black)
+        pdf.setFont(self.fontname_mono_regular, self.font_size_small)
+        pdf.drawString(sep_west*mm, sep_south*mm, cmdline)
         pdf.restoreState()
 
     def render_initials(self, pdf):
