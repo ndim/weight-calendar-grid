@@ -26,6 +26,7 @@ from .utils import get_earliest_sunday, get_latest_sunday
 from .      import drivers
 from .      import version
 from .i18n  import install_translation
+from .utils import InternalLogicError
 
 
 ##################################################################################
@@ -633,6 +634,29 @@ class WeightGridWindow(Gtk.Window):
             return 'WCG-FAMILY-%s.pdf'% begin_str
 
     def print_pdf(self, pdf_fname):
+
+        dlg = Gtk.MessageDialog(
+            self,
+            Gtk.DialogFlags.DESTROY_WITH_PARENT |
+            Gtk.DialogFlags.MODAL,
+            Gtk.MessageType.QUESTION,
+            Gtk.ButtonsType.YES_NO,
+            _("Continue printing %s? "
+              "wcg-gui will print lines much thicker than they should be.") %
+            pdf_fname
+        )
+        dlg.format_secondary_markup(
+            _("We strongly suggest to open the generated "
+              "PDF file in <i>evince</i> "
+              "and print from <i>evince</i> instead."))
+        response = dlg.run()
+        dlg.destroy()
+        if response == Gtk.ResponseType.YES:
+            pass
+        elif response == Gtk.ResponseType.NO:
+            return
+        else:
+            raise InternalLogicError()
 
         # printsettings = print_op.get_print_settings()
         printsettings = Gtk.PrintSettings()
