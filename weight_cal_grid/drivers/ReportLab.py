@@ -45,8 +45,8 @@ class ReportLabDriver(PageDriver):
         assert(output_format == 'pdf')
         pdf = canvas.Canvas(outfile, pagesize=landscape(A4))
         pdf.setCreator('%s %s' % (version.package_name, version.package_version))
-        pdf.setTitle(_("Weight Calendar Grid"))
-        pdf.setSubject(_("Draw one mark a day and graphically watch your weight"))
+        pdf.setTitle(self._("Weight Calendar Grid"))
+        pdf.setSubject(self._("Draw one mark a day and graphically watch your weight"))
         self.render(pdf)
         pdf.save()
 
@@ -120,7 +120,7 @@ class ReportLabDriver(PageDriver):
         text = pdf.beginText()
         text.setTextOrigin(0, 0)
         text.setFont("Helvetica", self.font_size)
-        text.textOut(_("weight in "))
+        text.textOut(self._("weight in "))
         text.setFont("Helvetica-Bold", self.font_size)
         text.textOut("kg")
         w = text.getX();
@@ -148,7 +148,7 @@ class ReportLabDriver(PageDriver):
         text = pdf.beginText()
         text.setTextOrigin(rx, ry_left)
         text.setFont("Helvetica", self.font_size)
-        text.textOut(_("weight in "))
+        text.textOut(self._("weight in "))
         text.setFont("Helvetica-Bold", self.font_size)
         text.textOut("kg")
         pdf.drawText(text)
@@ -156,7 +156,7 @@ class ReportLabDriver(PageDriver):
         text = pdf.beginText()
         text.setTextOrigin(rx, ry_right)
         text.setFont("Helvetica", self.font_size)
-        text.textOut(_("weight in "))
+        text.textOut(self._("weight in "))
         text.setFont("Helvetica-Bold", self.font_size)
         text.textOut("kg")
         pdf.drawText(text)
@@ -168,7 +168,7 @@ class ReportLabDriver(PageDriver):
             text.setFont("Helvetica-Bold", self.font_size)
             text.textOut('BMI')
             text.setFont("Helvetica", self.font_size)
-            text.textOut(_(" for height %.2fm") % self.height)
+            text.textOut(self._(" for height %.2fm") % self.height)
             pdf.drawText(text)
 
             text = pdf.beginText()
@@ -176,7 +176,7 @@ class ReportLabDriver(PageDriver):
             text.setFont("Helvetica-Bold", self.font_size)
             text.textOut('BMI')
             text.setFont("Helvetica", self.font_size)
-            text.textOut(_(" for height %.2fm") % self.height)
+            text.textOut(self._(" for height %.2fm") % self.height)
             pdf.drawText(text)
 
         pdf.restoreState()
@@ -188,23 +188,23 @@ class ReportLabDriver(PageDriver):
         textobject.setTextOrigin(self.sep_west*mm, 7*mm)
         textobject.setFont("Helvetica-Bold", self.font_size)
         # print(textobject.getCursor())
-        textobject.textOut(r"%s " % _("Use:"))
+        textobject.textOut(r"%s " % self._("Use:"))
         textobject.setFont("Helvetica", self.font_size)
         # print(textobject.getCursor())
-        textobject.textOut(_("Print this page. "
+        textobject.textOut(self._("Print this page. "
                              "Keep in accessible place with pen. "
                              "Mark one "))
         # print(textobject.getCursor())
         textobject.setFont("Helvetica-Bold", self.font_size)
         textobject.textOut('x')
         textobject.setFont("Helvetica", self.font_size)
-        textobject.textOut(_(" every day. "
+        textobject.textOut(self._(" every day. "
                              "Connect "))
         # print(textobject.getCursor())
         textobject.setFont("Helvetica-Bold", self.font_size)
         textobject.textOut('x-x')
         textobject.setFont("Helvetica", self.font_size)
-        textobject.textOut(_(" to yesterday's mark. "
+        textobject.textOut(self._(" to yesterday's mark. "
                              "Type marked values into computer as deemed useful."))
         # print(textobject.getCursor())
         pdf.drawText(textobject)

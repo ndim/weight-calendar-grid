@@ -165,7 +165,7 @@ class TikZDriver(PageDriver):
         d['plot_stem_point_radius'] = self.plot_stem_point_radius
 
         # for e.g. German, babel_opt should translate to "english,ngerman"
-        babel_opt   = _('<language specific options to LaTeX babel package>')
+        babel_opt   = self._("<language specific options to LaTeX babel package>")
         if babel_opt == '<language specific options to LaTeX babel package>':
             babel_opt = 'english'
         d['babel_opt'] = babel_opt
@@ -286,15 +286,15 @@ class TikZDriver(PageDriver):
             d['mark_delta_left']  = mdleft
             d['mark_delta_right'] = mdright
             # TODO: Only print Use: line if scaling of axes actually allow entering data.
-            d['use_text'] = (r"\textbf{%s} " % _("Use:") +
-                             _("Print this page. "
+            d['use_text'] = (r"\textbf{%s} " % self._("Use:") +
+                             self._("Print this page. "
                               "Keep in accessible place with pen. "
                               "Mark one ") +
                              "{\marktikz}" +
-                             _(" every day. "
+                             self._(" every day. "
                                "Connect ") +
                              "{\connectmarktikz}" +
-                             _(" to yesterday's mark. "
+                             self._(" to yesterday's mark. "
                                "Type marked values into computer as deemed useful."))
             ctx.append(r"""
 \begin{scope}[every node/.style={inner sep=0}]

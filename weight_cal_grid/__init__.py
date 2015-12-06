@@ -17,6 +17,7 @@ import time
 
 from . import drivers
 from . import log
+from .i18n import get_translation
 
 
 ########################################################################
@@ -179,7 +180,8 @@ def generate_grid(height,
                   outfile,
                   keep_tmp_on_error,
                   history_mode,
-                  initials):
+                  initials,
+                  lang):
 
     """Generate the things to plot and hand them to the driver."""
     (begin_date, end_date) = date_range
@@ -211,7 +213,8 @@ def generate_grid(height,
                         plot_points=plot_points,
                         keep_tmp_on_error=keep_tmp_on_error,
                         history_mode=history_mode,
-                        initials=initials)
+                        initials=initials,
+                        translation=get_translation(lang))
 
     driver.count_axes()
 

@@ -1,3 +1,9 @@
+########################################################################
+
+
+"""Implement Graphical User Interface (GUI)"""
+
+
 ##################################################################################
 
 
@@ -7,6 +13,7 @@ import os
 import subprocess
 import sys
 import yaml
+
 from gi.repository import Gio, Gtk, cairo, GLib, Poppler
 from pprint import pprint
 
@@ -14,11 +21,11 @@ from pprint import pprint
 ##################################################################################
 
 
-from . import generate_grid
+from .      import generate_grid
 from .utils import get_earliest_sunday, get_latest_sunday
-from . import drivers
-from . import version
-from .i18n import set_lang
+from .      import drivers
+from .      import version
+from .i18n  import install_translation
 
 
 ##################################################################################
@@ -175,8 +182,6 @@ class WeightGrid(Gtk.DrawingArea):
         else:
             cr.scale(h_scale, h_scale)
 
-        set_lang(self.user_lang)
-
         # draw the grid
         generate_grid(
             0.01 * self.user_height,
@@ -188,9 +193,8 @@ class WeightGrid(Gtk.DrawingArea):
             outfile=cr,
             keep_tmp_on_error=False,
             history_mode=False,
-            initials=self.user_nick)
-
-        set_lang()
+            initials=self.user_nick,
+            lang=self.user_lang)
 
 
 ##################################################################################
@@ -930,7 +934,7 @@ class WeightGridApp(Gtk.Application):
             application_id="net.lauft.app.wcg.gtk",
             flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
         self.args = None # store for parsed command line options
-        set_lang()
+        install_translation()
 
     def do_activate(self):
         win = WeightGridWindow(self)

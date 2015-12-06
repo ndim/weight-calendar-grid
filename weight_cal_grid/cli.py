@@ -1,5 +1,7 @@
+########################################################################
 
-"""Implement command line command"""
+
+"""Implement Command Line Interface (CLI)"""
 
 
 ########################################################################
@@ -12,8 +14,6 @@ import sys
 import time
 
 import locale
-import gettext
-
 
 from pprint import pprint
 
@@ -21,11 +21,11 @@ from pprint import pprint
 ########################################################################
 
 
-from . import generate_grid
-from . import drivers
-from . import log
-from . import version
-from .i18n import set_lang, languages, print_language_list
+from .      import generate_grid
+from .      import drivers
+from .      import log
+from .      import version
+from .i18n  import install_translation, languages, print_language_list
 
 
 ########################################################################
@@ -235,7 +235,6 @@ class OutFileType(argparse.FileType):
 
 
 def main(argv=None, simulated_infile=None):
-    set_lang()
     parser = argparse.ArgumentParser(
         prog=version.program_name_cli,
         description=_('plot weight/calendar grid for easy weight tracking'),
@@ -379,7 +378,7 @@ Note that the KG_RANGE can take one of four forms:
 
     if args.lang:
         log.verbose('setting locale %s', args.lang)
-        set_lang(args.lang)
+        install_translation(args.lang)
 
     if simulated_infile and not args.input:
         log.debug("Using simulated input file")
@@ -418,7 +417,8 @@ Note that the KG_RANGE can take one of four forms:
         args.output,
         args.keep_tmp_on_error,
         args.plot_mode == 'history',
-        args.initials)
+        args.initials,
+        args.lang)
 
     sys.exit(0)
 
