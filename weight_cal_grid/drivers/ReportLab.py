@@ -36,7 +36,8 @@ class ReportLabDriver(PageDriver):
     driver_formats = ['pdf']
 
     font_size = 9.5
-
+    fontname_normal = 'Helvetica'
+    fontname_bold   = 'Helvetica-Bold'
 
     def __init__(self, *args, **kwargs):
         super(ReportLabDriver, self).__init__(*args, **kwargs)
@@ -73,9 +74,9 @@ class ReportLabDriver(PageDriver):
 
         pdf.setFillColorRGB(*p.font_color)
         if p.font_bold:
-            pdf.setFont("Helvetica-Bold", self.font_size)
+            pdf.setFont(self.fontname_bold, self.font_size)
         else:
-            pdf.setFont("Helvetica", self.font_size)
+            pdf.setFont(self.fontname_normal, self.font_size)
         pdf.drawString((self.page_width - p.end_ofs + 0.5)*mm, y-1.25*mm, strbmi)
         pdf.drawRightString((p.begin_ofs-0.5)*mm, y-1.25*mm, strbmi)
         pdf.restoreState()
@@ -92,9 +93,9 @@ class ReportLabDriver(PageDriver):
         if style.do_label:
             pdf.setFillColor(black)
             if style.font_bold:
-                pdf.setFont("Helvetica-Bold", self.font_size)
+                pdf.setFont(self.fontname_bold, self.font_size)
             else:
-                pdf.setFont("Helvetica", self.font_size)
+                pdf.setFont(self.fontname_normal, self.font_size)
             pdf.drawCentredString(x, (style.end_ofs - 3.0)*mm, label_str)
             pdf.drawCentredString(x, (self.page_height-style.begin_ofs+1.0)*mm, label_str)
         pdf.restoreState()
@@ -102,7 +103,7 @@ class ReportLabDriver(PageDriver):
     def render_initials(self, pdf):
         pdf.saveState()
         pdf.setFillColor(black)
-        pdf.setFont("Helvetica", self.font_size)
+        pdf.setFont(self.fontname_normal, self.font_size)
         pdf.drawString(7*mm, 7*mm, self.initials)
         pdf.drawRightString((self.page_width-7)*mm, 7*mm, self.initials)
         pdf.drawString(7*mm, (self.page_height-7)*mm-0.5*self.font_size, self.initials)
@@ -119,16 +120,16 @@ class ReportLabDriver(PageDriver):
         # Determine text width (can't use .stringWidth due to different fonts)
         text = pdf.beginText()
         text.setTextOrigin(0, 0)
-        text.setFont("Helvetica", self.font_size)
+        text.setFont(self.fontname_normal, self.font_size)
         text.textOut(self._("weight in "))
-        text.setFont("Helvetica-Bold", self.font_size)
+        text.setFont(self.fontname_bold, self.font_size)
         text.textOut("kg")
         w = text.getX();
 
         # Determine em size
         text = pdf.beginText()
         text.setTextOrigin(0, 0)
-        text.setFont("Helvetica", self.font_size)
+        text.setFont(self.fontname_bold, self.font_size)
         text.textOut('m')
         em = text.getX();
 
@@ -147,17 +148,17 @@ class ReportLabDriver(PageDriver):
         pdf.setFillColor(black)
         text = pdf.beginText()
         text.setTextOrigin(rx, ry_left)
-        text.setFont("Helvetica", self.font_size)
+        text.setFont(self.fontname_normal, self.font_size)
         text.textOut(self._("weight in "))
-        text.setFont("Helvetica-Bold", self.font_size)
+        text.setFont(self.fontname_bold, self.font_size)
         text.textOut("kg")
         pdf.drawText(text)
 
         text = pdf.beginText()
         text.setTextOrigin(rx, ry_right)
-        text.setFont("Helvetica", self.font_size)
+        text.setFont(self.fontname_normal, self.font_size)
         text.textOut(self._("weight in "))
-        text.setFont("Helvetica-Bold", self.font_size)
+        text.setFont(self.fontname_bold, self.font_size)
         text.textOut("kg")
         pdf.drawText(text)
 
@@ -165,17 +166,17 @@ class ReportLabDriver(PageDriver):
             pdf.setFillColor(red)
             text = pdf.beginText()
             text.setTextOrigin(0.5*self.page_height*mm+5*mm, -7*mm)
-            text.setFont("Helvetica-Bold", self.font_size)
+            text.setFont(self.fontname_bold, self.font_size)
             text.textOut('BMI')
-            text.setFont("Helvetica", self.font_size)
+            text.setFont(self.fontname_normal, self.font_size)
             text.textOut(self._(" for height %.2fm") % self.height)
             pdf.drawText(text)
 
             text = pdf.beginText()
             text.setTextOrigin(0.5*self.page_height*mm+5*mm, (5-self.page_width)*mm)
-            text.setFont("Helvetica-Bold", self.font_size)
+            text.setFont(self.fontname_bold, self.font_size)
             text.textOut('BMI')
-            text.setFont("Helvetica", self.font_size)
+            text.setFont(self.fontname_normal, self.font_size)
             text.textOut(self._(" for height %.2fm") % self.height)
             pdf.drawText(text)
 
@@ -186,24 +187,24 @@ class ReportLabDriver(PageDriver):
         pdf.setFillColor(black)
         textobject = pdf.beginText()
         textobject.setTextOrigin(self.sep_west*mm, 7*mm)
-        textobject.setFont("Helvetica-Bold", self.font_size)
+        textobject.setFont(self.fontname_bold, self.font_size)
         # print(textobject.getCursor())
         textobject.textOut(r"%s " % self._("Use:"))
-        textobject.setFont("Helvetica", self.font_size)
+        textobject.setFont(self.fontname_normal, self.font_size)
         # print(textobject.getCursor())
         textobject.textOut(self._("Print this page. "
                              "Keep in accessible place with pen. "
                              "Mark one "))
         # print(textobject.getCursor())
-        textobject.setFont("Helvetica-Bold", self.font_size)
+        textobject.setFont(self.fontname_bold, self.font_size)
         textobject.textOut('x')
-        textobject.setFont("Helvetica", self.font_size)
+        textobject.setFont(self.fontname_normal, self.font_size)
         textobject.textOut(self._(" every day. "
                              "Connect "))
         # print(textobject.getCursor())
-        textobject.setFont("Helvetica-Bold", self.font_size)
+        textobject.setFont(self.fontname_bold, self.font_size)
         textobject.textOut('x-x')
-        textobject.setFont("Helvetica", self.font_size)
+        textobject.setFont(self.fontname_normal, self.font_size)
         textobject.textOut(self._(" to yesterday's mark. "
                              "Type marked values into computer as deemed useful."))
         # print(textobject.getCursor())
@@ -282,11 +283,11 @@ class ReportLabDriver(PageDriver):
 
         if label_str:
             if p.font_bold:
-                w = pdf.stringWidth(label_str, "Helvetica-Bold", self.font_size)
-                pdf.setFont("Helvetica-Bold", self.font_size)
+                w = pdf.stringWidth(label_str, self.fontname_bold, self.font_size)
+                pdf.setFont(self.fontname_bold, self.font_size)
             else:
-                w = pdf.stringWidth(label_str, "Helvetica", self.font_size)
-                pdf.setFont("Helvetica", self.font_size)
+                w = pdf.stringWidth(label_str, self.fontname_normal, self.font_size)
+                pdf.setFont(self.fontname_normal, self.font_size)
 
             cx = 0.5*(begin_x+end_x)
             cy = y0-1.25*mm
@@ -309,9 +310,9 @@ class ReportLabDriver(PageDriver):
         if p.do_label:
             pdf.setFillColorRGB(*p.font_color)
             if p.font_bold:
-                pdf.setFont("Helvetica-Bold", self.font_size)
+                pdf.setFont(self.fontname_bold, self.font_size)
             else:
-                pdf.setFont("Helvetica", self.font_size)
+                pdf.setFont(self.fontname_normal, self.font_size)
             pdf.drawString((self.page_width - p.end_ofs + 0.5)*mm, y-1.25*mm, kg_str)
             pdf.drawRightString((p.begin_ofs-0.5)*mm, y-1.25*mm, kg_str)
         pdf.restoreState()
