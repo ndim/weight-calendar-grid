@@ -205,6 +205,11 @@ class WeightGridWindow(Gtk.Window):
     def __init__(self, app):
         title = _("Weight Calendar Grid")
 
+        # Only start updating the storage after all the initial events
+        # while setting up the GUI with still incomplete data have
+        # finished firing.
+        self.do_update_storage = False
+
         super(WeightGridWindow, self).__init__(title=title, application=app)
 
         self.set_icon_from_file(os.path.join(os.path.dirname(__file__),
@@ -478,6 +483,11 @@ class WeightGridWindow(Gtk.Window):
         self.hbox.pack_start(sw, True, True, 0)
         self.add(self.hbox)
 
+        # Only start updating the storage after all the initial events
+        # while setting up the GUI with still incomplete data have
+        # finished firing.
+        self.do_update_storage = True
+
     def on_gen1_clicked(self, widget):
         pass
 
@@ -699,6 +709,7 @@ class WeightGridWindow(Gtk.Window):
                 output_fname = self.ask_save_filename(self.output_filename(user))
                 proc = self.popen_print_user(output_fname, user)
                 proc_list.append((proc, output_fname, ))
+            return False
 
         proc_list = []
         model = self.user_store
@@ -913,6 +924,12 @@ class WeightGridWindow(Gtk.Window):
         self.update_user()
 
     def update_storage(self):
+        # Only start updating the storage after all the initial events
+        # while setting up the GUI with still incomplete data have
+        # finished firing.
+        if not self.do_update_storage:
+            return
+
         year, month, day = self.calendar_begin.get_date()
         s = yaml.dump({'start_date': datetime.date(year,month,day),
                        'weeks': self.period_weeks.get_value_as_int(),
