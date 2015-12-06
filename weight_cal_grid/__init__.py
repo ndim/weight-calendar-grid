@@ -207,6 +207,24 @@ def generate_grid(height,
     if not output_format:
         output_format = driver_cls.driver_formats[0]
 
+    clitems = []
+    clitems.append('wcg-cli')
+    clitems.append('--driver=%s' % driver_cls.driver_name)
+    if output_format:
+        clitems.append('--format=%s' % output_format)
+    if begin_date:
+        clitems.append('--begin=%s' % begin_date)
+    if end_date:
+        clitems.append('--end=%s' % end_date)
+    if initials:
+        clitems.append('--initials=%s' % initials)
+    clitems.append('--weight=%.1f-%.1f' % (min_kg, max_kg))
+    if height:
+        clitems.append('--height=%.2f' % height)
+    if lang:
+        clitems.append('--lang=%s' % lang)
+    # FIXME: plotting mode stuff missing here
+
     # set up driver
     driver = driver_cls(height, (min_kg, max_kg),
                         (begin_date, end_date),
@@ -214,7 +232,8 @@ def generate_grid(height,
                         keep_tmp_on_error=keep_tmp_on_error,
                         history_mode=history_mode,
                         initials=initials,
-                        translation=get_translation(lang))
+                        translation=get_translation(lang),
+                        cmdline=' '.join(clitems))
 
     driver.count_axes()
 

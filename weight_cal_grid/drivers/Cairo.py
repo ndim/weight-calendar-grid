@@ -104,7 +104,7 @@ class PDFOutputFormat(BaseOutputFormat):
         self.ctx.scale(self.pt_to_mm, self.pt_to_mm)
         self.ctx.set_source_rgb(0.0, 0.0, 0.0)
         self.ctx.select_font_face(self.font_face)
-        self.ctx.set_font_size(10 * pt_in_mm)
+        self.ctx.set_font_size(9 * pt_in_mm)
 
     def close(self):
         self.sfc.show_page()
@@ -128,7 +128,7 @@ class EPSOutputFormat(BaseOutputFormat):
         self.ctx.scale(self.pt_to_mm, self.pt_to_mm)
         self.ctx.set_source_rgb(0.0, 0.0, 0.0)
         self.ctx.select_font_face(self.font_face)
-        self.ctx.set_font_size(10 * pt_in_mm)
+        self.ctx.set_font_size(9 * pt_in_mm)
 
     def close(self):
         self.sfc.show_page()
@@ -151,7 +151,7 @@ class SVGOutputFormat(BaseOutputFormat):
         self.ctx.scale(self.pt_to_mm, self.pt_to_mm)
         self.ctx.set_source_rgb(0.0, 0.0, 0.0)
         self.ctx.select_font_face(self.font_face)
-        self.ctx.set_font_size(10 * pt_in_mm)
+        self.ctx.set_font_size(9 * pt_in_mm)
 
     def close(self):
         self.sfc.finish()
@@ -226,6 +226,9 @@ class CairoDriver(PageDriver):
 
     # Looks VERY similar to \\sffamily. Coincidence?
     font_face = 'Latin Modern Sans'
+
+    font_mono_face = 'monospace'
+    font_mono_face = 'Bitstream Vera Sans Mono'
 
 
     def _get_y(self, kg):
@@ -674,6 +677,17 @@ class CairoDriver(PageDriver):
                                   self.page_width - 7.0,
                                   self.page_height - 7.0,
                                   self.initials)
+
+
+    def render_cmdline(self, ctx, sep_west, sep_south, cmdline):
+        ctx.save()
+        # FIXME: Why don't we actually select a monospace font here?
+        ctx.select_font_face(self.font_mono_face)
+        ctx.set_font_size(6 * pt_in_mm)
+        self.__render_left_text(ctx,
+                                sep_west, self.page_height-sep_south,
+                                cmdline)
+        ctx.restore()
 
 
 ########################################################################

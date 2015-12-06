@@ -36,8 +36,11 @@ class ReportLabDriver(PageDriver):
     driver_formats = ['pdf']
 
     font_size = 9.5
+    font_size_small = 6
     fontname_normal = 'Helvetica'
     fontname_bold   = 'Helvetica-Bold'
+    fontname_mono_normal   = 'Courier'
+    fontname_mono_bold     = 'Courier-Bold'
 
     def __init__(self, *args, **kwargs):
         super(ReportLabDriver, self).__init__(*args, **kwargs)
@@ -98,6 +101,13 @@ class ReportLabDriver(PageDriver):
                 pdf.setFont(self.fontname_normal, self.font_size)
             pdf.drawCentredString(x, (style.end_ofs - 3.0)*mm, label_str)
             pdf.drawCentredString(x, (self.page_height-style.begin_ofs+1.0)*mm, label_str)
+        pdf.restoreState()
+
+    def render_cmdline(self, pdf, sep_west, sep_south, cmdline):
+        pdf.saveState()
+        pdf.setFillColor(black)
+        pdf.setFont(self.fontname_mono_normal, self.font_size_small)
+        pdf.drawString(sep_west*mm, sep_south*mm, cmdline)
         pdf.restoreState()
 
     def render_initials(self, pdf):

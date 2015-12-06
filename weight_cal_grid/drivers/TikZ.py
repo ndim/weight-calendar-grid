@@ -672,4 +672,12 @@ class TikZDriver(PageDriver):
         ctx.append('')
 
 
+    def render_cmdline(self, ctx, sep_west, sep_south, cmdline):
+        cl = cmdline.replace('--', '-\/-')
+        ctx.append(r'\node[anchor=base west,font=\ttfamily\scriptsize]'
+                   r' at ([xshift=%fmm,yshift=%fmm]current page.south west)'
+                   r' {%s};' % (sep_west, sep_south, cl))
+        ctx.append('')
+
+
 ########################################################################
