@@ -498,7 +498,7 @@ class TikZDriver(PageDriver):
 
         x = self._get_x(date)
         ctx.append('%% date %s' % id_str)
-        ctx.append('\\draw[%s] '
+        ctx.append('\\draw[%s,line cap=round] '
                    '([xshift=%fmm,yshift=-%fmm]current page.north west)'
                    ' -- '
                    '([xshift=%fmm,yshift=%fmm]current page.south west)'
