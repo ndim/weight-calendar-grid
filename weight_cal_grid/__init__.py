@@ -227,7 +227,8 @@ def generate_grid(height,
         clitems.append('--lang=%s' % lang)
     clitems.append('--mode=%s' % { False: 'mark',
                                    True:  'history' }[history_mode])
-    # FIXME: plotting mode stuff missing here
+    if infile:
+        clitems.append('--input=…')
 
     # set up driver
     driver = driver_cls(height, (min_kg, max_kg),
