@@ -218,7 +218,7 @@ def generate_grid(height,
         clitems.append('--end=%s' % end_date)
     if initials:
         clitems.append('--initials=%s' % initials)
-    clitems.append('--weight=%.1f-%.1f' % (min_kg, max_kg))
+    clitems.append('--weight=%d-%d' % (int(min_kg), int(max_kg)))
     if height:
         clitems.append('--height=%.2f' % height)
     if lang:
