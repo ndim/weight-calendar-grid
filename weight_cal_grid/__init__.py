@@ -223,6 +223,8 @@ def generate_grid(height,
         clitems.append('--height=%.2f' % height)
     if lang:
         clitems.append('--lang=%s' % lang)
+    clitems.append('--mode=%s' % { False: 'mark',
+                                   True:  'history' }[history_mode])
     # FIXME: plotting mode stuff missing here
 
     # set up driver
