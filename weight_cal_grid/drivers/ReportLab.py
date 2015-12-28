@@ -423,34 +423,35 @@ class ReportLabDriver(PageDriver):
 
         pdf.restoreState()
 
-        pdf.saveState()
-        # TODO: Use platypus Flowables to add the marks to the text.
-        pdf.setFillColor(black)
-        textobject = pdf.beginText()
-        textobject.setTextOrigin(self.sep_west*mm, 7*mm)
-        textobject.setFont(self.fontname_bold, self.font_size)
-        # print(textobject.getCursor())
-        textobject.textOut(r"%s " % self._("Use:"))
-        textobject.setFont(self.fontname_regular, self.font_size)
-        # print(textobject.getCursor())
-        textobject.textOut(self._("Print this page. "
-                             "Keep in accessible place with pen. "
-                             "Mark one "))
-        # print(textobject.getCursor())
-        textobject.setFont(self.fontname_bold, self.font_size)
-        textobject.textOut('x')
-        textobject.setFont(self.fontname_regular, self.font_size)
-        textobject.textOut(self._(" every day. "
-                             "Connect "))
-        # print(textobject.getCursor())
-        textobject.setFont(self.fontname_bold, self.font_size)
-        textobject.textOut('x-x')
-        textobject.setFont(self.fontname_regular, self.font_size)
-        textobject.textOut(self._(" to yesterday's mark. "
-                             "Type marked values into computer as deemed useful."))
-        # print(textobject.getCursor())
-        pdf.drawText(textobject)
-        pdf.restoreState()
+        if not self.history_mode: # print usage note
+            pdf.saveState()
+            # TODO: Use platypus Flowables to add the marks to the text.
+            pdf.setFillColor(black)
+            textobject = pdf.beginText()
+            textobject.setTextOrigin(self.sep_west*mm, 7*mm)
+            textobject.setFont(self.fontname_bold, self.font_size)
+            # print(textobject.getCursor())
+            textobject.textOut(r"%s " % self._("Use:"))
+            textobject.setFont(self.fontname_regular, self.font_size)
+            # print(textobject.getCursor())
+            textobject.textOut(self._("Print this page. "
+                                 "Keep in accessible place with pen. "
+                                 "Mark one "))
+            # print(textobject.getCursor())
+            textobject.setFont(self.fontname_bold, self.font_size)
+            textobject.textOut('x')
+            textobject.setFont(self.fontname_regular, self.font_size)
+            textobject.textOut(self._(" every day. "
+                                 "Connect "))
+            # print(textobject.getCursor())
+            textobject.setFont(self.fontname_bold, self.font_size)
+            textobject.textOut('x-x')
+            textobject.setFont(self.fontname_regular, self.font_size)
+            textobject.textOut(self._(" to yesterday's mark. "
+                                 "Type marked values into computer as deemed useful."))
+            # print(textobject.getCursor())
+            pdf.drawText(textobject)
+            pdf.restoreState()
 
     # TODO: Actually plot weight data
     def render_plot_mark(self, pdf, point):
