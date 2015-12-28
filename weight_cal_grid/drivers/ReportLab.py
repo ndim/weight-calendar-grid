@@ -304,6 +304,7 @@ class ReportLabDriver(PageDriver):
         pdf.saveState()
 
         pdf.setLineWidth(p.line_width)
+        pdf.setLineCap(1)
         pdf.setStrokeColorRGB(*p.line_color)
         pdf.line(p.begin_ofs*mm, y, (self.page_width-p.end_ofs)*mm, y)
 
@@ -322,6 +323,7 @@ class ReportLabDriver(PageDriver):
         south_ofs = style.begin_ofs
         north_ofs = style.end_ofs
         pdf.setLineWidth(style.line_width)
+        pdf.setLineCap(1)
         pdf.setStrokeColor(black)
         pdf.line(x, north_ofs*mm, x, (self.page_height-south_ofs)*mm)
 
@@ -542,6 +544,7 @@ class ReportLabDriver(PageDriver):
     def render_axis_kg_tick(self, pdf, y, kg_str, p):
         pdf.saveState()
         pdf.setLineWidth(p.line_width)
+        pdf.setLineCap(1)
         pdf.setStrokeColorRGB(*p.line_color)
         pdf.line(p.begin_ofs*mm, y, (self.page_width-p.end_ofs)*mm, y)
 
