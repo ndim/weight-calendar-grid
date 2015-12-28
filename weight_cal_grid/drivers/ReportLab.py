@@ -9,6 +9,7 @@
 ########################################################################
 
 
+import math
 import os
 from os.path import dirname, join
 
@@ -454,11 +455,26 @@ class ReportLabDriver(PageDriver):
     # TODO: Actually plot weight data
     def render_plot_mark(self, pdf, point):
         (x, y) = point
+        pdf.saveState()
+        pdf.setStrokeColorRGB(*(self.plot_color))
+        pdf.setLineCap(1)
+        pdf.setLineWidth(self.plot_line_width)
+        pdf.line(x-self.mark_delta*mm, y-self.mark_delta*mm,
+                 x+self.mark_delta*mm, y+self.mark_delta*mm)
+        pdf.line(x-self.mark_delta*mm, y+self.mark_delta*mm,
+                 x+self.mark_delta*mm, y-self.mark_delta*mm)
+        pdf.restoreState()
 
     # TODO: Actually plot weight data
     def render_plot_mavg_segment(self, pdf, point1, point2, color):
         (x1, y1) = point1
         (x2, y2) = point2
+        pdf.saveState()
+        pdf.setLineWidth(2*self.plot_line_width)
+        pdf.setLineCap(1)
+        pdf.setStrokeColor(color)
+        pdf.line(x1, y1, x2, y2)
+        pdf.restoreState()
 
     # TODO: Actually plot weight data
     def render_plot_point(self, pdf, point):
@@ -467,15 +483,45 @@ class ReportLabDriver(PageDriver):
     # TODO: Actually plot weight data
     def render_plot_stem(self, pdf, coords, color):
         (x, y, ay) = coords
+        pdf.saveState()
+        pdf.setLineWidth(self.plot_line_width)
+        pdf.setLineCap(1)
+        pdf.setStrokeColor(color)
+        pdf.line(x, ay, x, y)
+        pdf.restoreState()
 
     # TODO: Actually plot weight data
     def render_plot_stem_point(self, pdf, point, color):
         (x, y) = point
+        pdf.saveState()
+        pdf.setFillColor(white)
+        pdf.setStrokeColor(color)
+        pdf.circle(x, y, self.plot_stem_point_radius*mm, stroke=1, fill=1)
+        pdf.restoreState()
 
-    # TODO: Actually plot weight data
+    def render_plot_value_line_begin(self, pdf, shorten_segments):
+        pdf.saveState()
+        self.shorten_value_line_segments = shorten_segments
+        pdf.setStrokeColor(self.plot_color)
+        pdf.setLineWidth(self.plot_line_width)
+        pdf.setLineCap(1)
+
+    def render_plot_value_line_end(self, pdf):
+        pdf.restoreState()
+
     def render_plot_value_line_segment(self, pdf, point1, point2):
         (x1, y1) = point1
         (x2, y2) = point2
+        if self.shorten_value_line_segments:
+            # shorten the line at start and finish
+            dx, dy = x2-x1, y2-y1
+            dr = math.sqrt(dx*dx + dy*dy)
+            f = self.plot_line_shorten/dr
+            if f < 0.5:
+                sx, sy = f*dx*mm, f*dy*mm
+                pdf.line(x1+sx, y1+sy, x2-sx, y2-sy)
+        else:
+            pdf.line(x1, y1, x2, y2)
 
     def render_calendar_range(self, pdf, date_range, is_first_last,
                               level, label_str, p, north=False):
