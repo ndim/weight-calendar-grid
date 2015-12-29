@@ -1199,33 +1199,27 @@ class PageDriver(GenericDriver):
     def render_plot_value_line_segment(self, ctx, point1, point2, dashed=False):
         (x1, y1) = point1
         (x2, y2) = point2
-        pass
 
     @abstractmethod
     def render_plot_stem_point(self, ctx, point, color):
         (x, y) = point
-        pass
 
     @abstractmethod
     def render_plot_mavg_segment(self, ctx, point1, point2, color):
         (x1, y1) = point1
         (x2, y2) = point2
-        pass
 
     @abstractmethod
     def render_plot_stem(self, ctx, coords, color):
         (x, y, ay) = coords
-        pass
 
     @abstractmethod
     def render_plot_point(self, ctx, point):
         (x, y) = point
-        pass
 
     @abstractmethod
     def render_plot_mark(self, ctx, point):
         (x, y) = point
-        pass
 
 
     @abstractmethod
@@ -1326,7 +1320,6 @@ class PageDriver(GenericDriver):
                               level, label_str, p, north=False):
         (begin_date, end_date) = date_range
         (is_begin_first, is_end_last) = is_first_last
-        pass
 
 
     def __render_axis_bmi(self, ctx):
