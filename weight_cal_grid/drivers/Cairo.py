@@ -415,21 +415,23 @@ class CairoDriver(PageDriver):
 
 
     def render_plot_value_line_begin(self, ctx, shorten_segments):
-        ctx.save()
         self.shorten_value_line_segments = shorten_segments
-
-
-    def render_plot_value_line_end(self, ctx):
+        ctx.save()
         ctx.set_line_cap(cairo.LINE_CAP_ROUND)
         ctx.set_line_width(self.plot_line_width * pt_in_mm)
         ctx.set_source_rgb(*self.plot_color)
-        ctx.stroke()
+
+
+    def render_plot_value_line_end(self, ctx):
         ctx.restore()
 
 
-    def render_plot_value_line_segment(self, ctx, point1, point2):
+    def render_plot_value_line_segment(self, ctx, point1, point2, dashed=False):
         (x1, y1) = point1
         (x2, y2) = point2
+        ctx.save()
+        if dashed:
+            ctx.set_dash([1, 1.5])
         if self.shorten_value_line_segments:
             # shorten the line at start and finish
             dx, dy = x2-x1, y2-y1
@@ -442,6 +444,8 @@ class CairoDriver(PageDriver):
         else:
             ctx.move_to(x1, y1) # skip move_to() if we are already at (x1, y1)?!
             ctx.line_to(x2, y2)
+        ctx.stroke()
+        ctx.restore()
 
 
     def render_plot_stem_point(self, ctx, point, color):

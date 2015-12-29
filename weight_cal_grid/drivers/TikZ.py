@@ -389,13 +389,17 @@ class TikZDriver(PageDriver):
         ctx.append(r'\end{scope}')
 
 
-    def render_plot_value_line_segment(self, ctx, point1, point2):
+    def render_plot_value_line_segment(self, ctx, point1, point2, dashed=False):
         (x1, y1) = point1
         (x2, y2) = point2
-        ctx.append('\\draw[] '
+        draw_style = {
+            False: '',
+            True:  'dash pattern=on 1mm off 1.5mm',
+        }[dashed]
+        ctx.append('\\draw[%s] '
                    '([xshift=%fmm,yshift=%fmm]current page.south west) -- '
                    '([xshift=%fmm,yshift=%fmm]current page.south west)'
-                   ';' % (x1, y1, x2, y2))
+                   ';' % (draw_style, x1, y1, x2, y2))
 
 
     def render_plot_stem_point(self, ctx, point, color):

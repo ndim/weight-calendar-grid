@@ -510,9 +510,12 @@ class ReportLabDriver(PageDriver):
     def render_plot_value_line_end(self, pdf):
         pdf.restoreState()
 
-    def render_plot_value_line_segment(self, pdf, point1, point2):
+    def render_plot_value_line_segment(self, pdf, point1, point2, dashed=False):
         (x1, y1) = point1
         (x2, y2) = point2
+        pdf.saveState()
+        if dashed:
+            pdf.setDash(1*mm, 1.5*mm)
         if self.shorten_value_line_segments:
             # shorten the line at start and finish
             dx, dy = x2-x1, y2-y1
@@ -523,6 +526,7 @@ class ReportLabDriver(PageDriver):
                 pdf.line(x1+sx, y1+sy, x2-sx, y2-sy)
         else:
             pdf.line(x1, y1, x2, y2)
+        pdf.restoreState()
 
     def render_calendar_range(self, pdf, date_range, is_first_last,
                               level, label_str, p, north=False):

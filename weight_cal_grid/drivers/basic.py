@@ -1175,10 +1175,16 @@ class PageDriver(GenericDriver):
                 if kg:
                     x = self._get_x(day)
                     y = self._get_y(kg)
-                    if p_day and (day - p_day).days == 1:
-                        self.render_plot_value_line_segment(ctx,
-                                                            (p_x, p_y),
-                                                            (x, y))
+                    if p_day:
+                        if (day - p_day).days == 1:
+                            self.render_plot_value_line_segment(ctx,
+                                                                (p_x, p_y),
+                                                                (x, y))
+                        elif (day - p_day).days == 2:
+                            self.render_plot_value_line_segment(ctx,
+                                                                (p_x, p_y),
+                                                                (x, y),
+                                                                dashed=True)
                     p_day, p_x, p_y = day, x, y
             self.render_plot_value_line_end(ctx)
 
@@ -1190,7 +1196,7 @@ class PageDriver(GenericDriver):
         pass
 
     @abstractmethod
-    def render_plot_value_line_segment(self, ctx, point1, point2):
+    def render_plot_value_line_segment(self, ctx, point1, point2, dashed=False):
         (x1, y1) = point1
         (x2, y2) = point2
         pass
