@@ -924,7 +924,7 @@ class PageDriver(GenericDriver):
 
     plot_color = (0.00, 0.60, 0.00)
     plot_mavg_hi_color = (0.00, 0.00, 0.80)
-    plot_mavg_lo_color = (0.85, 0.85, 0.85)
+    plot_mavg_lo_color = (0.75, 0.75, 0.75)
     plot_mavg_q_cutoff = 0.30
 
 
