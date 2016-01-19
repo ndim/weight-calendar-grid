@@ -26,8 +26,6 @@ Every few weeks or months:
 
   2. Optionally, type the marked values into some computer file.
 
-NOTE: The documentation is a bit out of date.
-
 To print a page, create a PDF file with `wcg-cli` and print that.
 
 Example for someone of 1.78m height and a weight of around 85kg:
@@ -125,16 +123,18 @@ Requirements
 
   * [Python3](https://www.python.org/)
 
+    We do not support Python 2.
+
   * pdflatex and TikZ if you want really nice looking PDFs
+
+  * [ReportLab](http://www.reportlab.com) if you want to hack on the
+    ReportLab based PDF driver
 
   * Gtk3 if you want to run the GUI
 
   * [cairo](http://cairographics.org/) and
     [pycairo](http://cairographics.org/pycairo/) if you want basic
     PDFs without pdflatex or if you want the GUI
-
-  * [ReportLab](http://www.reportlab.com) if you want to hack on the
-    ReportLab based PDF driver
 
   * [gettext](http://www.gnu.org/software/gettext/) for the translations
 
