@@ -3,6 +3,7 @@ python:
   - 3.5
 install:
   - travis_retry pip install babel reportlab
+  - python -m locale
   - travis_retry python setup.py build
   - travis_retry python setup.py install
 script:
