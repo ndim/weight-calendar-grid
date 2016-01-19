@@ -1,9 +1,12 @@
 language: python
 python:
   - 3.5
+before_install:
+  - locale -a
+  - locale
 install:
   - travis_retry pip install babel reportlab
-  - python -m locale
+  - travis_retry python -m locale
   - travis_retry python setup.py build
   - travis_retry python setup.py install
 script:
