@@ -2,7 +2,7 @@ language: python
 python:
   - 3.5
 install:
-  - travis_retry pip install babel gettext reportlab
+  - travis_retry pip install babel reportlab
   - travis_retry python setup.py
   - travis_retry python setup.py install
 script:
