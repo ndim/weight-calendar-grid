@@ -10,7 +10,6 @@ from unittest import TestCase
 ########################################################################
 
 
-from ..gui import main
 from ..version import package_name, package_version
 
 
