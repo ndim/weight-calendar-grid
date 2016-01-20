@@ -3,28 +3,30 @@ Summary
 
 The lowest threshold way to record your body weight is to use a
 printed page of custom grid paper and make a pen mark on the page
-every day.
+every day. `weight-calendar-grid` creates PDF files of that grid
+paper.
 
-Initial setup:
 
-  1. Print a page with your grid.
+  * Initial setup:
 
-  2. Hang printed page on wall or put it in similarly easily available
-     space close to the scale.
+	1. Print a page with your grid.
 
-  3. Keep a dedicated pen at that very location.
+	2. Hang printed page on wall or put it in similarly easily available
+	   space close to the scale.
 
-Daily:
+	3. Keep a dedicated pen at that very location.
 
-  1. Step on scale and read the weight.
+  * Daily:
 
-  2. Mark that day's weight on the page.
+	1. Step on scale and read the weight.
 
-Every few weeks or months:
+	2. Mark that day's weight on the page.
 
-  1. Print a new page and replace the old page with it.
+  * Every few weeks or months:
 
-  2. Optionally, type the marked values into some computer file.
+	1. Print a new page and replace the old page with it.
+
+	2. Optionally, type the marked values into some computer file.
 
 To print a page, create a PDF file with `wcg-cli` and print that.
 
@@ -32,7 +34,7 @@ Example for someone of 1.78m height and a weight of around 85kg:
 
     $ ./wcg-cli -o my-weight.pdf --height=1.78 --weight=80-90
 
-Example for someone of  unspecified height and a weight of around 85kg:
+Example for someone of unspecified height and a weight of around 85kg:
 
     $ ./wcg-cli -o my-weight.pdf --weight=85+-5
 
