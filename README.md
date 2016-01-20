@@ -6,6 +6,7 @@ printed page of custom grid paper and make a pen mark on the page
 every day. `weight-calendar-grid` creates PDF files of that grid
 paper.
 
+[![Build Status](https://travis-ci.org/ndim/weight-calendar-grid.svg?branch=master)](https://travis-ci.org/ndim/weight-calendar-grid)
 
   * Initial setup:
 
